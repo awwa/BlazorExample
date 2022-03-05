@@ -3,10 +3,7 @@ using Xunit;
 using System.Net;
 using System.Net.Http;
 using System.Diagnostics;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Test;
 
