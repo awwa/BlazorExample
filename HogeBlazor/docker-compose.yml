@@ -1,0 +1,10 @@
+version: "3"
+services:
+  app:
+    build: .
+    container_name: "csharp-dotnet-server-docker"
+    ports:
+      - 5020:5020
+    volumes:
+      - .:/hoge
+    command: ["dotnet", "watch", "run"]
