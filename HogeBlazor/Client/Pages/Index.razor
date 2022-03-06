@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject ILogger<Counter> logger
 
 <PageTitle>Index</PageTitle>
 
@@ -7,3 +8,78 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<RadzenButton Click="@ButtonClicked" Text="@text"></RadzenButton>
+
+<h4 class="mb-4">@inputText</h4>
+<RadzenTextBox Change=@(args => OnChange(args, "TextBox")) Class="w-100" />
+
+<RadzenScheduler @ref=@scheduler 
+    SlotRender=@OnSlotRender 
+    TItem="Appointment" 
+    Data=@appointments 
+    StartProperty="Start" 
+    EndProperty="End"
+    TextProperty="Text" 
+    SelectedIndex="2"
+    Culture=@ci
+    DefaultCulture=@ci
+    AppointmentRender=@OnAppointmentRender>
+    <RadzenDayView />
+    <RadzenWeekView />
+    <RadzenMonthView />
+</RadzenScheduler>
+@code {
+    string text = "Hi";
+    string inputText = "";
+    CultureInfo ci = new CultureInfo("ja-JP", false).Parent;
+
+    RadzenScheduler<Appointment> scheduler = new RadzenScheduler<Appointment>();
+
+    IList<Appointment> appointments = new List<Appointment>
+    {
+        new Appointment { Start = DateTime.Today.AddDays(-2), End = DateTime.Today.AddDays(-2), Text = "Birthday" },
+        new Appointment { Start = DateTime.Today.AddDays(-11), End = DateTime.Today.AddDays(-10), Text = "Day off" },
+        new Appointment { Start = DateTime.Today.AddDays(-10), End = DateTime.Today.AddDays(-8), Text = "Work from home" },
+        new Appointment { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(12), Text = "Online meeting" },
+        new Appointment { Start = DateTime.Today.AddHours(10), End = DateTime.Today.AddHours(13), Text = "Skype call" },
+        new Appointment { Start = DateTime.Today.AddHours(14), End = DateTime.Today.AddHours(14).AddMinutes(30), Text = "Dentist appointment" },
+        new Appointment { Start = DateTime.Today.AddDays(1), End = DateTime.Today.AddDays(12), Text = "Vacation" },
+    };
+
+    void ButtonClicked()
+    {
+        //
+        logger.LogWarning(CultureInfo.CurrentCulture.ToString());
+        Console.WriteLine(CultureInfo.CurrentCulture.ToString());
+    }
+
+    void OnChange(string value, string name)
+    {
+        inputText = value;
+    }
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        // Highlight today in month view
+        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<Appointment> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+        if (args.Data.Text == "Birthday")
+        {
+            args.Attributes["style"] = "background: red";
+        }
+    }
+    public class Appointment
+    {
+        public DateTime Start {get; set;}
+        public DateTime End {get; set;}
+        public string Text { get; set;} = "";
+    }
+}
