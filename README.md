@@ -22,3 +22,11 @@
     ```
     $ dotnet sln add CommonLib.Test/CommonLib.Test.csproj
     ```
+## 実行
+```
+$ dotnet run --project HelloBlazor/HelloBlazor.csproj
+```
+## テスト
+```
+$ dotnet test
+```
