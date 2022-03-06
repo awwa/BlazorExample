@@ -17,6 +17,9 @@
     $ cd HogeBlazor/Server
     $ dotnet run
     ```
+# デバッグ
+Visual Studio Codeでプロジェクトを開きF5。
+
 # デプロイ手順
 - Dockerビルド
     ```

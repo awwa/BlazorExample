@@ -14,7 +14,8 @@ Welcome to your new app.
 <h4 class="mb-4">@inputText</h4>
 <RadzenTextBox Change=@(args => OnChange(args, "TextBox")) Class="w-100" />
 
-<RadzenScheduler @ref=@scheduler 
+<RadzenScheduler 
+    @ref=@scheduler 
     SlotRender=@OnSlotRender 
     TItem="Appointment" 
     Data=@appointments 
@@ -22,8 +23,6 @@ Welcome to your new app.
     EndProperty="End"
     TextProperty="Text" 
     SelectedIndex="2"
-    Culture=@ci
-    DefaultCulture=@ci
     AppointmentRender=@OnAppointmentRender>
     <RadzenDayView />
     <RadzenWeekView />
@@ -32,9 +31,7 @@ Welcome to your new app.
 @code {
     string text = "Hi";
     string inputText = "";
-    CultureInfo ci = new CultureInfo("ja-JP", false).Parent;
-
-    RadzenScheduler<Appointment> scheduler = new RadzenScheduler<Appointment>();
+    RadzenScheduler<Appointment>? scheduler = new RadzenScheduler<Appointment>();
 
     IList<Appointment> appointments = new List<Appointment>
     {
@@ -50,7 +47,8 @@ Welcome to your new app.
     void ButtonClicked()
     {
         //
-        logger.LogWarning(CultureInfo.CurrentCulture.ToString());
+        //CultureInfo ci = new CultureInfo("es-MX", false);
+        //CultureInfo.CurrentCulture = ci;
         Console.WriteLine(CultureInfo.CurrentCulture.ToString());
     }
 
