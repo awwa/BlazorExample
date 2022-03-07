@@ -1,3 +1,13 @@
+# 環境の構築
+
+- Visual Studio Codeのインストール
+- .NET SDK 6.0のインストール
+    - https://dotnet.microsoft.com/en-us/download
+- EntityFramework Coreツールのインストール
+    ```
+    $ dotnet tool install --global dotnet-ef
+    ```
+
 # ビルド手順
     ```
     $ git clone https://github.com/awwa/blazor-example.git

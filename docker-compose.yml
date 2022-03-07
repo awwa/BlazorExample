@@ -1,10 +1,21 @@
-version: "3"
+version: "3.1"
 services:
-  app:
-    build: .
-    container_name: "csharp-dotnet-server-docker"
+  webapp:
+    build: 
+      context: .
+      dockerfile: Docker/webapp/Dockerfile
+    container_name: "hoge-blazor-web-app"
     ports:
       - 5020:5020
-    volumes:
-      - .:/hoge
     command: ["dotnet", "watch", "run"]
+  mysql:
+    container_name: hoge-blazor-mysql
+    hostname: hoge-blazor-mysql
+    build: ./Docker/mysql
+    volumes:
+      - ./Docker/mysql/db:/docker-entrypoint-initdb.d  #初期データをマウントする場所
+    image: mysql:hoge-blazor-mysql
+    ports:
+        - "3306:3306"
+    environment:
+        MYSQL_ROOT_PASSWORD: password   #コンテナ内のMySQLを起動する際のパスワードを設定
