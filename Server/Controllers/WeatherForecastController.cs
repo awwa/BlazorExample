@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using HogeBlazor.Shared;
+using HogeBlazor.Server.Helpers;
 
 namespace HogeBlazor.Server.Controllers;
 
@@ -13,24 +14,24 @@ public class WeatherForecastController : ControllerBase
     };
 
     // private readonly ILogger<WeatherForecastController> _logger;
-    // private HogeBlazorDbContext _context;
+    private readonly HogeBlazorDbContext _context;
 
     // public WeatherForecastController(ILogger<WeatherForecastController> logger)
     // {
     //     _logger = logger;
     // }
 
-    // public WeatherForecastController(HogeBlazorDbContext context)
-    // {
-    //     _context = context;
-    // }
+    public WeatherForecastController(HogeBlazorDbContext context)
+    {
+        _context = context;
+    }
 
     [HttpGet]
-    public IEnumerable<WeatherForecast> Get()
+    public async Task<IEnumerable<WeatherForecast>> Get()
     {
         //_logger.LogInformation("Hoge Get");
         // _context = new HogeBlazorDbContext();
-        // await _context.Database.EnsureCreatedAsync();
+        await _context.Database.EnsureCreatedAsync();
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
