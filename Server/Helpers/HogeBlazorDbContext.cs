@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.Extensions;
 using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.Extensions.Configuration;
 
 namespace HogeBlazor.Server.Helpers;
 public class Member
@@ -13,23 +13,19 @@ public class Member
 public class HogeBlazorDbContext : DbContext
 {
     public DbSet<Member>? Members{get;set;}
-    // private readonly string _connectionString;
 
     public HogeBlazorDbContext(DbContextOptions options)
         : base(options)
     {
     }
-    // public HogeBlazorDbContext(string connectionString)
-    // {
-    //     _connectionString = connectionString;
-    // }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-//     //  #warning To protect potentially sensitive information in your connection string, 
-//     //  you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 
-//     //  for guidance on storing connection strings.
-        optionsBuilder.UseMySql(connectionString: @"server=localhost;database=hoge_blazor;userid=root;password=password", 
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+        string conn = configuration.GetConnectionString("HogeBlazorDatabase");
+        optionsBuilder.UseMySql(connectionString: conn, 
             new MySqlServerVersion(new Version(8, 0, 27))
             /*mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)*/);
     }

@@ -30,7 +30,6 @@ public class WeatherForecastController : ControllerBase
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
         //_logger.LogInformation("Hoge Get");
-        // _context = new HogeBlazorDbContext();
         await _context.Database.EnsureCreatedAsync();
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
