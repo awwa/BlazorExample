@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using HogeBlazor.Shared;
-using HogeBlazor.Server.Helpers;
+using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Helpers;
 
 namespace HogeBlazor.Server.Controllers;
 

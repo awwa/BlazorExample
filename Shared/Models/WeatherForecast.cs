@@ -1,4 +1,4 @@
-namespace HogeBlazor.Shared;
+namespace HogeBlazor.Shared.Models;
 
 public class WeatherForecast
 {
