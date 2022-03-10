@@ -5,7 +5,8 @@ namespace HogeBlazor.Shared.Helpers;
 
 public class HogeBlazorDbContext : DbContext
 {
-    public DbSet<Member>? Members{get;set;}
+    public DbSet<Member>? Members { get; set; }
+    public DbSet<User>? Users { get; set; }
 
     public HogeBlazorDbContext(DbContextOptions<HogeBlazorDbContext> options)
         : base(options)
