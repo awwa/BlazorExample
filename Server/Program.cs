@@ -6,17 +6,8 @@ using HogeBlazor.Server.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-// Add services to the container.
-//var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
-builder.Services.AddDbContext<HogeBlazorDbContext>(
-    // options => options.UseSqlServer(
-        // @"server=localhost;database=hoge_blazor;userid=root;password=password"//, 
-        ///*new MySqlServerVersion(new Version(8, 0, 27)*/)
-    //options => options.UseMySql(
-//         "Server=localhost;User=root;Password=password;Database=hoge_blazor",
-//         "auto"
-//    )
-);
+
+builder.Services.AddDbContext<HogeBlazorDbContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

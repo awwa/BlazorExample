@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
-using Microsoft.Extensions.Configuration;
 
 namespace HogeBlazor.Server.Helpers;
 public class Member
