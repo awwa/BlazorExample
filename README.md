@@ -6,11 +6,17 @@
     ```
     $ dotnet tool install --global dotnet-ef
     ```
-
+- 
+    npm install nswag -g
+- OpenAPIツールのインストール
+    ```
+    $ dotnet tool install -g Microsoft.dotnet-openapi
+    ```
 # ビルド手順
     ```
     $ git clone https://github.com/awwa/blazor-example.git
     $ cd HogeBlazor
+    $ nswag run nswag.json
     $ dotnet build
     ```
 

@@ -1,5 +1,5 @@
 ﻿@page "/fetchdata"
-@using HogeBlazor.Shared.Models
+@using HogeBlazor.Client.Helpers
 @inject HttpClient Http
 
 <PageTitle>Weather forecast</PageTitle>
@@ -27,7 +27,7 @@ else
             @foreach (var forecast in forecasts)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.Date.ToString()</td>
                     <td>@forecast.TemperatureC</td>
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
@@ -42,6 +42,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        @* forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast"); *@
+
+        var client = new WeatherForecastClient("", Http);
+        var forecasts2 = (List<WeatherForecast>)(await client.GetAsync());
+        forecasts = forecasts2.ToArray();
     }
 }

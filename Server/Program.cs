@@ -13,6 +13,7 @@ builder.Logging.AddConsole();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddOpenApiDocument();
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -40,7 +41,7 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseOpenApi();
 
 app.MapRazorPages();
 app.MapControllers();
