@@ -1,8 +1,7 @@
 # 環境の構築
 
-- Visual Studio Codeのインストール
-- .NET SDK 6.0のインストール
-    - https://dotnet.microsoft.com/en-us/download
+- [Visual Studio Code](https://code.visualstudio.com/download)のインストール
+- [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
 - EntityFramework Coreツールのインストール
     ```
     $ dotnet tool install --global dotnet-ef
@@ -14,6 +13,9 @@
     $ cd HogeBlazor
     $ dotnet build
     ```
+
+# デバッグ
+Visual Studio Codeでプロジェクトを開きF5。
 
 # 開発用インスタンスの実行
 - Client
@@ -27,8 +29,6 @@
     $ cd HogeBlazor/Server
     $ dotnet run
     ```
-# デバッグ
-Visual Studio Codeでプロジェクトを開きF5。
 
 # デプロイ手順
 - Dockerビルド
@@ -120,3 +120,8 @@ Visual Studio Codeでプロジェクトを開きF5。
 
     成功!   -失敗:     0、合格:     1、スキップ:     0、合計:     1、期間: < 1 ms - /Users/wataru/github/blazor-example/HogeBlazor/Server.Test/bin/Debug/net6.0/Server.Test.dll (net6.0)
     ```
+
+# TODO
+- openapiの導入
+- マイグレーションと初期データ投入の実装
+- PostgreSQLの導入
