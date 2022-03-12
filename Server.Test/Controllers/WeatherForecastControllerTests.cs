@@ -15,9 +15,9 @@ public class WeatherForecastControllerTest
     public WeatherForecastControllerTest()
     {
         var application = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder => 
+            .WithWebHostBuilder(builder =>
             {
-                builder.UseSetting("https_port", "5020");
+                builder.UseSetting("https_port", "5000");
             });
         _client = application.CreateClient();
     }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HogeBlazor.Server.Migrations
 {
     [DbContext(typeof(HogeBlazorDbContext))]
-    [Migration("20220312003648_InitialCreate")]
+    [Migration("20220312013025_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

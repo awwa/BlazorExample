@@ -22,7 +22,7 @@ builder.Configuration.AddConfiguration(configuration);
 string connectionString = builder.Configuration.GetConnectionString("HogeBlazorDatabase");
 builder.Services.AddDbContext<HogeBlazorDbContext>(
     options => options.UseMySql(connectionString: connectionString,
-            new MySqlServerVersion(new Version(8, 0, 27))
+            new MySqlServerVersion(new Version(8, 0, 28))
 ));
 
 var app = builder.Build();
