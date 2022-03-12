@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using HogeBlazor.Shared.Models;
 
-namespace HogeBlazor.Shared.Helpers;
+namespace HogeBlazor.Server.Helpers;
 
 public class HogeBlazorDbContext : DbContext
 {

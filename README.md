@@ -13,11 +13,25 @@
     $ dotnet tool install -g Microsoft.dotnet-openapi
     ```
 # ビルド手順
+    1. git clone
     ```
     $ git clone https://github.com/awwa/blazor-example.git
     $ cd HogeBlazor
-    $ nswag run nswag.json
+    ```
+
+    2. ServerのControllerからApiクライアントのビルド
+    ```
+    $ nswag run ./OpenApi/nswag.json
+    ```
+
+    3. ソリューション全体のビルド
+    ```
     $ dotnet build
+    ```
+
+    4. データベースの構築
+    ```
+    $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj 
     ```
 
 # デバッグ
@@ -34,6 +48,40 @@ Visual Studio Codeでプロジェクトを開きF5。
     ```
     $ cd HogeBlazor/Server
     $ dotnet run
+    ```
+# DBマイグレーション
+
+1. モデルの修正
+    ./Shared/Models/*.cs を編集
+2. マイグレーションの追加
+    ```
+    $ cd HogeBlazor/Server
+    $ dotnet ef migrations add [マイグレーション名]
+3. マイグレーションの実行
+    ```
+    $ cd HogeBlazor
+    $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj 
+    ```
+# DBマイグレーションの初期化
+開発を進めていて、マイグレーションをキレイにしたいときに実行する。
+1. データベースの削除
+    ```
+    $ mysql -h 127.0.0.1 -uroot -p
+    > drop database hoge_blazor;
+    ```
+
+2. マイグレーションファイルの削除
+    ```
+    $ rm ./Servers/Migrations/*
+    ```
+3. マイグレーションの追加
+    ```
+    $ cd HogeBlazor/Server
+    $ dotnet ef migrations add InitialCreate
+4. マイグレーションの実行
+    ```
+    $ cd HogeBlazor
+    $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj 
     ```
 
 # デプロイ手順

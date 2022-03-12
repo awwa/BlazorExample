@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using System.Diagnostics;
 using Pomelo.EntityFrameworkCore.MySql;
-using HogeBlazor.Shared.Helpers;
+using HogeBlazor.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +21,7 @@ var configuration = new ConfigurationBuilder()
 builder.Configuration.AddConfiguration(configuration);
 string connectionString = builder.Configuration.GetConnectionString("HogeBlazorDatabase");
 builder.Services.AddDbContext<HogeBlazorDbContext>(
-    options => options.UseMySql(connectionString: connectionString, 
+    options => options.UseMySql(connectionString: connectionString,
             new MySqlServerVersion(new Version(8, 0, 27))
 ));
 
@@ -49,4 +49,4 @@ app.MapFallbackToFile("index.html");
 
 app.Run();
 
-public partial class Program {}
+public partial class Program { }
