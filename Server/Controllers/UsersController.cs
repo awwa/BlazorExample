@@ -6,7 +6,7 @@ using HogeBlazor.Shared.Models;
 namespace HogeBlazor.Server.Controllers;
 
 [ApiController]
-[Route("controller")]
+[Route("/api/v1/[controller]")]
 public class UsersController : ControllerBase
 {
     private readonly HogeBlazorDbContext _context;

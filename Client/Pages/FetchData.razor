@@ -15,16 +15,16 @@
 else
 {
     <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var forecast in forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToString()</td>
@@ -44,7 +44,7 @@ else
     {
         @* forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast"); *@
 
-        var client = new WeatherForecastClient("", Http);
+        var client = new WeatherForecastClient("/api/v1", Http);
         var forecasts2 = (List<WeatherForecast>)(await client.GetAsync());
         forecasts = forecasts2.ToArray();
     }
