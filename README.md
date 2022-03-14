@@ -85,7 +85,7 @@ Visual Studio Codeでプロジェクトを開きF5。
     $ cd HogeBlazor
     $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj 
     ```
-# DBマイグレーションの初期化
+# DBマイグレーションのリセット
 開発を進めていて、マイグレーションをキレイにしたいときに実行する。
 1. データベースの削除
     ```
@@ -123,27 +123,12 @@ Visual Studio Codeでプロジェクトを開きF5。
     ```
 
 # デプロイ手順
-- Dockerビルド
-    ```
-    $ cd HogeBlazor
-    $ docker-compose build
-    ```
-- 起動確認
-    `--force-recreate`オプションを付けるとコンテナを再構築するため、DBに登録済みのデータが全初期化されるので開発環境で実行する際は要注意。
-    ```
-    $ docker-compose up -d --force-recreate
-    # doneが出ても実際に起動完了するまでに少し時間がかかるのでlogsコマンドで起動確認
-    $ docker-compose logs
-    ```
-    `http://localhost:5000`にアクセス
-- 実行環境にコンテナをデプロイ
-    TODO 書きかけ。実行環境ごとに異なる
+mainブランチを更新。
+あとは`.github/workflows/deploy_ecs_aws.yml`に従ってAmazon ECSにデプロイが実行される。
 
-docker build -t sample .
-docker images
-docker tag 7b1b30224e93 450190930314.dkr.ecr.ap-northeast-1.amazonaws.com/sample:latest
-docker images
-docker push 450190930314.dkr.ecr.ap-northeast-1.amazonaws.com/sample:latest
+- 参考
+    - [Amazon Elastic Container Serviceへのデプロイ](https://docs.github.com/ja/actions/deployment/deploying-to-your-cloud-provider/deploying-to-amazon-elastic-container-service)
+    - [GitHub ActionsからECSとECRへのCI/CDを最小権限で実行したい](https://dev.classmethod.jp/articles/github-actions-ecs-ecr-minimum-iam-policy/)
 
 # プロジェクトの構築手順
 ゼロからプロジェクトを構築する手順をまとめた。
@@ -209,6 +194,5 @@ docker push 450190930314.dkr.ecr.ap-northeast-1.amazonaws.com/sample:latest
 
 
 # TODO
-- openapiの導入
 - マイグレーションと初期データ投入の実装
-- PostgreSQLの導入
+- コンテナで動くMySQLにコンテナで動くWebAppから接続
