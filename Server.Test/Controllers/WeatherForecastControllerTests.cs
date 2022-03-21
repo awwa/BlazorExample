@@ -25,8 +25,8 @@ public class WeatherForecastControllerTest
     [Fact]
     public async void Test2()
     {
-        HttpResponseMessage response = await _client.GetAsync("/WeatherForecast");
-        response.EnsureSuccessStatusCode();
+        HttpResponseMessage response = await _client.GetAsync("/api/v1/WeatherForecast");
+        //response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
         Debug.WriteLine(responseBody);

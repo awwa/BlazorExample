@@ -5,18 +5,18 @@ namespace HogeBlazor.Server.Helpers;
 
 public class HogeBlazorDbContext : DbContext
 {
-    public virtual DbSet<Member>? Members { get; set; }
-    public virtual DbSet<User>? Users { get; set; }
+    public virtual DbSet<Member> Members { get; set; } = default!;
+    public virtual DbSet<User> Users { get; set; } = default!;
 
     public HogeBlazorDbContext()
         : base()
     {
-
     }
     public HogeBlazorDbContext(DbContextOptions<HogeBlazorDbContext> options)
         : base(options)
     {
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // 論理削除されたレコードを除外する

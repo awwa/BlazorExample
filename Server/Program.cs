@@ -30,11 +30,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseWebAssemblyDebugging();
+    // app.UseWebAssemblyDebugging();
+    app.UseExceptionHandler("/error-development");
 }
 else
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/error");
+    // app.UseExceptionHandler("/Error");
 }
 
 app.UseBlazorFrameworkFiles();

@@ -5,7 +5,7 @@ using HogeBlazor.Server.Helpers;
 namespace HogeBlazor.Server.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route($"{Const.API_BASE_PATH_V1}[controller]")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
