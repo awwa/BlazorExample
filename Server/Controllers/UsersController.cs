@@ -37,7 +37,7 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [Route("/api/v1/users")]
+    [Route(Const.API_BASE_PATH_V1 + "users")]
     public async Task<ActionResult<UserDTO>> GetByQuery([FromQuery] string? name, string? email, User.RoleType? role)
     {
         var exList = new List<Expression<Func<User, bool>>>();
@@ -59,7 +59,7 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <returns>該当データが見つかった場合：StatusOk+UserDTO、見つからなかった場合：StatusNotFound</returns>
     [HttpGet]
-    [Route("/api/v1/users/{id}")]
+    [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
     public async Task<ActionResult<UserDTO>> GetById(int id)
     {
         var user = await _context.Users.FindAsync(id);
@@ -71,11 +71,18 @@ public class UsersController : ControllerBase
         return Ok(dto);
     }
 
+    // TODO
     // [HttpDelete]
     // public void Delete()
     // {
     //     _context.Users
     // }
+
+    // TODO
+    // [HttpPut]
+
+    // TODO
+    // [HttpPost]
 
     private static UserDTO ItemToDTO(User user) =>
         new UserDTO

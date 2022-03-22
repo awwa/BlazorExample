@@ -38,5 +38,32 @@ public class HogeBlazorDbContext : DbContext
                 role: User.RoleType.Admin
             )
         );
+        modelBuilder.Entity<User>().HasData(
+            new User(
+                id: 2,
+                name: "削除済みユーザー",
+                email: "deleted@hogeblazor",
+                role: User.RoleType.Admin
+            )
+            {
+                IsDel = true
+            }
+        );
+        modelBuilder.Entity<User>().HasData(
+            new User(
+                id: 3,
+                name: "一般ユーザー",
+                email: "user@hogeblazor",
+                role: User.RoleType.User
+            )
+        );
+        modelBuilder.Entity<User>().HasData(
+            new User(
+                id: 4,
+                name: "ゲストユーザー",
+                email: "guest@hogeblazor",
+                role: User.RoleType.Guest
+            )
+        );
     }
 }
