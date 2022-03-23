@@ -11,7 +11,7 @@ namespace HogeBlazor.Server.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly HogeBlazorDbContext _context = default!;
-    private readonly ILogger<UsersController> _logger;
+    private readonly ILogger<UsersController> _logger = default!;
 
     public UsersController(HogeBlazorDbContext context, ILogger<UsersController> logger)
     {
@@ -27,6 +27,7 @@ public class UsersController : ControllerBase
         public User.RoleType Role { get; set; } = default;
         public DateTime CreatedAt { get; set; } = default;
         public DateTime UpdatedAt { get; set; } = default;
+        public bool IsDel { get; set; } = false;
     }
 
     /// <summary>
@@ -38,7 +39,9 @@ public class UsersController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route(Const.API_BASE_PATH_V1 + "users")]
-    public async Task<ActionResult<UserDTO>> GetByQuery([FromQuery] string? name, string? email, User.RoleType? role)
+    public async Task<ActionResult<List<UserDTO>>> GetUserByQuery(
+        [FromQuery] string? name, string? email, User.RoleType? role
+    )
     {
         var exList = new List<Expression<Func<User, bool>>>();
         if (name != null) exList.Add(x => x.Name == name);
@@ -60,7 +63,7 @@ public class UsersController : ControllerBase
     /// <returns>該当データが見つかった場合：StatusOk+UserDTO、見つからなかった場合：StatusNotFound</returns>
     [HttpGet]
     [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
-    public async Task<ActionResult<UserDTO>> GetById(int id)
+    public async Task<ActionResult<UserDTO>> GetUserById(int id)
     {
         var user = await _context.Users.FindAsync(id);
         if (user == null)
@@ -71,18 +74,38 @@ public class UsersController : ControllerBase
         return Ok(dto);
     }
 
-    // TODO
-    // [HttpDelete]
-    // public void Delete()
-    // {
-    //     _context.Users
-    // }
+    [HttpDelete]
+    [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
+    public async Task<ActionResult> DeleteUser(int id)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 
     // TODO
     // [HttpPut]
 
-    // TODO
-    // [HttpPost]
+    [HttpPost]
+    [Route(Const.API_BASE_PATH_V1 + "users")]
+    public async Task<ActionResult<UserDTO>> PostUser(User user)
+    {
+        try
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, ItemToDTO(user));
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
     private static UserDTO ItemToDTO(User user) =>
         new UserDTO
@@ -92,7 +115,8 @@ public class UsersController : ControllerBase
             Email = user.Email,
             Role = user.Role,
             CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
+            UpdatedAt = user.UpdatedAt,
+            IsDel = user.IsDel
         };
 
 }

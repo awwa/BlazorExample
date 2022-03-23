@@ -19,6 +19,7 @@ public class HogeBlazorDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         // 論理削除されたレコードを除外する
         modelBuilder.Entity<User>()
             .HasQueryFilter(s => !s.IsDel);
