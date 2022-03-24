@@ -127,7 +127,7 @@ public class UsersController : ControllerBase
 
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, ItemToDTO(newUser));
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
