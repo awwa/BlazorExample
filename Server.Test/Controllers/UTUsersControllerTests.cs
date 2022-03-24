@@ -20,10 +20,9 @@ public class UTUsersControllerTests : IDisposable
     private SqliteConnection _connection;
     private readonly DbContextOptions<HogeBlazorDbContext> _contextOptions;
     private UsersController _controller;
-    private Mock<ILogger<UsersController>> _mockLogger;
+    // private Mock<ILogger<UsersController>> _mockLogger;
     public UTUsersControllerTests()
     {
-        Console.WriteLine("================");
         // DbContextはMoqで置き換えれない。UseInMemoryを使う(C# EFCore)
         // https://demi-urge.com/useinmemory/
         // DbContextとControllerをインスタンス化
@@ -31,12 +30,10 @@ public class UTUsersControllerTests : IDisposable
         _connection.Open();
         _contextOptions = new DbContextOptionsBuilder<HogeBlazorDbContext>()
             .UseSqlite(_connection)
-            // .UseInMemoryDatabase(databaseName: "UnitTestDB")
             .Options;
-        // using var context = new HogeBlazorDbContext(_contextOptions);
-        using var context = CreateContext();
+        _context = CreateContext();
 
-        if (context.Database.EnsureCreated())
+        if (_context.Database.EnsureCreated())
         {
             // using var viewCommand = context.Database.GetDbConnection().CreateCommand();
             //             viewCommand.CommandText = @"
@@ -46,21 +43,8 @@ public class UTUsersControllerTests : IDisposable
             //             viewCommand.ExecuteNonQuery();
         }
 
-        // context.Users.AddRange(
-        // new User(id: 1, name: "管理者", email: "admin@example.com", User.RoleType.Admin),
-        // new User(id: 2, name: "削除済みユーザー", email: "deleted@hogeblazor", role: User.RoleType.Admin) { IsDel = true },
-        // new User(id: 3, name: "一般ユーザー", email: "user@hogeblazor", role: User.RoleType.User),
-        // new User(id: 4, name: "ゲストユーザー", email: "guest@hogeblazor", role: User.RoleType.Guest));
-        // context.SaveChanges();
-
-        // context.AddRange(
-        //     new Blog { Name = "Blog1", Url = "http://blog1.com" },
-        //     new Blog { Name = "Blog2", Url = "http://blog2.com" });
-        // context.SaveChanges();
-
-        // _context = new HogeBlazorDbContext(_contextOptions);
-        _mockLogger = new Mock<ILogger<UsersController>>();
-        // _controller = new UsersController(_context, mockLogger.Object);
+        var mockLogger = new Mock<ILogger<UsersController>>();
+        _controller = new UsersController(_context, mockLogger.Object);
     }
 
     HogeBlazorDbContext CreateContext() => new HogeBlazorDbContext(_contextOptions);
@@ -72,7 +56,7 @@ public class UTUsersControllerTests : IDisposable
     /// <returns></returns>
     private async Task ClearTable(HogeBlazorDbContext context)
     {
-        // .IgnoreQueryFilters() で論理削除を無視して全データを取得
+        // .IgnoreQueryFilters() で論理削除を無視して全データを取得して削除
         var users = await context.Users.IgnoreQueryFilters().ToListAsync<User>();
         foreach (var user in users)
         {
@@ -83,10 +67,12 @@ public class UTUsersControllerTests : IDisposable
 
     private async Task AddBasicData(HogeBlazorDbContext context)
     {
-        context.Users.Add(new User(id: 1, name: "管理者", email: "admin@example.com", User.RoleType.Admin));
-        context.Users.Add(new User(id: 2, name: "削除済みユーザー", email: "deleted@hogeblazor", role: User.RoleType.Admin) { IsDel = true });
-        context.Users.Add(new User(id: 3, name: "一般ユーザー", email: "user@hogeblazor", role: User.RoleType.User));
-        context.Users.Add(new User(id: 4, name: "ゲストユーザー", email: "guest@hogeblazor", role: User.RoleType.Guest));
+        context.Users.AddRange(
+            new User(id: 1, name: "管理者", email: "admin@example.com", User.RoleType.Admin),
+            new User(id: 2, name: "削除済みユーザー", email: "deleted@hogeblazor", role: User.RoleType.Admin) { IsDel = true },
+            new User(id: 3, name: "一般ユーザー", email: "user@hogeblazor", role: User.RoleType.User),
+            new User(id: 4, name: "ゲストユーザー", email: "guest@hogeblazor", role: User.RoleType.Guest)
+        );
         await context.SaveChangesAsync();
     }
 
@@ -97,12 +83,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByQueryReturnsDTOListIfItExistsByName()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<List<UserDTO>> result = await controller.GetUserByQuery(name: "管理者");
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "管理者");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -115,12 +99,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByQueryReturnsDTOListIfItExistsByEmail()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<List<UserDTO>> result = await controller.GetUserByQuery(email: "user@hogeblazor");
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(email: "user@hogeblazor");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -133,12 +115,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByQueryReturnsDTOListIfItExistsByRole()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<List<UserDTO>> result = await controller.GetUserByQuery(role: User.RoleType.Admin);
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(role: User.RoleType.Admin);
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -151,12 +131,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByQueryReturnsEmptyListIfItNotExists()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<List<UserDTO>> result = await controller.GetUserByQuery(name: "存在しないユーザー");
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "存在しないユーザー");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -168,12 +146,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByQueryNotReturnsDeletedObject()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<List<UserDTO>> result = await controller.GetUserByQuery(name: "削除済みユーザー");
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "削除済みユーザー");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -185,12 +161,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByQueryReturnsAllDTOListIfNoParamSpecified()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<List<UserDTO>> result = await controller.GetUserByQuery();
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery();
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -202,12 +176,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByQueryReturnsAllDTOListIfNullParamSpecified()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<List<UserDTO>> result = await controller.GetUserByQuery(name: null, email: null, role: null);
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: null, email: null, role: null);
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -222,12 +194,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByIdReturnsDTOObjectIfItExists()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<UserDTO> result = await controller.GetUserById(1);
+        ActionResult<UserDTO> result = await _controller.GetUserById(1);
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -239,12 +209,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByIdReturnsNotFoundIfNoExists()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<UserDTO> result = await controller.GetUserById(5);
+        ActionResult<UserDTO> result = await _controller.GetUserById(5);
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var ngResult = Assert.IsType<NotFoundResult>(actionResult.Result);
@@ -254,12 +222,10 @@ public class UTUsersControllerTests : IDisposable
     public async void GetUserByIdReturnsDTOObjectIfItIsDeleted()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult<UserDTO> result = await controller.GetUserById(2);
+        ActionResult<UserDTO> result = await _controller.GetUserById(2);
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -274,12 +240,10 @@ public class UTUsersControllerTests : IDisposable
     public async void PostUserSuccessForEmptyTable()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
+        await ClearTable(_context);
         // Act
         var data = new User(id: 1, name: "ほげ太郎", email: "admin@example.com", User.RoleType.Admin);
-        ActionResult<UserDTO> result = await controller.PostUser(data);
+        ActionResult<UserDTO> result = await _controller.PostUser(data);
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var createdResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
@@ -298,13 +262,11 @@ public class UTUsersControllerTests : IDisposable
     public async void PostUserFailsIfDuplicateKey()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
+        await ClearTable(_context);
         // Act
         var data = new User(id: 1, name: "ほげ太郎", email: "admin@example.com", User.RoleType.Admin);
-        await controller.PostUser(data);
-        ActionResult<UserDTO> result = await controller.PostUser(data);    // 重複するデータをPOST
+        await _controller.PostUser(data);
+        ActionResult<UserDTO> result = await _controller.PostUser(data);    // 重複するデータをPOST
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
@@ -316,12 +278,10 @@ public class UTUsersControllerTests : IDisposable
     public async void DeleteUserSuccess()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult result = await controller.DeleteUser(1);
+        ActionResult result = await _controller.DeleteUser(1);
         // Assert
         var noContentResult = Assert.IsType<NoContentResult>(result);
     }
@@ -330,12 +290,10 @@ public class UTUsersControllerTests : IDisposable
     public async void DeleteUserFailIfItNoExists()
     {
         // Arrange
-        using var context = CreateContext();
-        var controller = new UsersController(context, _mockLogger.Object);
-        await ClearTable(context);
-        await AddBasicData(context);
+        await ClearTable(_context);
+        await AddBasicData(_context);
         // Act
-        ActionResult result = await controller.DeleteUser(5);
+        ActionResult result = await _controller.DeleteUser(5);
         // Assert
         var notFoundResult = Assert.IsType<NotFoundResult>(result);
     }

@@ -113,18 +113,13 @@ public class UsersController : ControllerBase
     {
         try
         {
-            Console.WriteLine("****************");
             _context.Users.Add(user);
             int id = await _context.SaveChangesAsync();
-            Console.WriteLine($"id: {id}");
             var newUser = await _context.Users.FindAsync(id);
             if (newUser == null)
             {
                 return StatusCode(500);
             }
-            Console.WriteLine("****************");
-            Console.WriteLine(newUser.CreatedAt);
-
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, ItemToDTO(newUser));
         }
         catch (Exception ex)
