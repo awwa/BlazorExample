@@ -33,6 +33,7 @@ public class UsersController : ControllerBase
     /// <summary>
     /// クエリによるユーザ一覧取得
     /// 引数でnull指定することにより、Where句から条件指定を除外できる
+    /// 引数を指定しなかった場合のデフォルト値はnull
     /// ASP.NET Core Web API のコントローラー アクションの戻り値の型
     /// https://docs.microsoft.com/ja-jp/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
     /// </summary>
@@ -40,7 +41,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     [Route(Const.API_BASE_PATH_V1 + "users")]
     public async Task<ActionResult<List<UserDTO>>> GetUserByQuery(
-        [FromQuery] string? name, string? email, User.RoleType? role
+        [FromQuery] string? name = null, string? email = null, User.RoleType? role = null
     )
     {
         var exList = new List<Expression<Func<User, bool>>>();
@@ -89,7 +90,22 @@ public class UsersController : ControllerBase
     }
 
     // TODO
-    // [HttpPut]
+    // [HttpPatch]
+    // [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
+    // public async Task<ActionResult<UserDTO>> PatchUser(int id, User user)
+    // {
+    //     if (id != user.Id)
+    //     {
+    //         return BadRequest();
+    //     }
+    //     //var user = await _context.Users.FindAsync(id);
+    //     // if (user == null)
+    //     // {
+    //     //     return NotFound();
+    //     // }
+    //     // _context
+
+    // }
 
     [HttpPost]
     [Route(Const.API_BASE_PATH_V1 + "users")]
@@ -97,9 +113,19 @@ public class UsersController : ControllerBase
     {
         try
         {
+            Console.WriteLine("****************");
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, ItemToDTO(user));
+            int id = await _context.SaveChangesAsync();
+            Console.WriteLine($"id: {id}");
+            var newUser = await _context.Users.FindAsync(id);
+            if (newUser == null)
+            {
+                return StatusCode(500);
+            }
+            Console.WriteLine("****************");
+            Console.WriteLine(newUser.CreatedAt);
+
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, ItemToDTO(newUser));
         }
         catch (ArgumentException ex)
         {

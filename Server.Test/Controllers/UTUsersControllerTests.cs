@@ -9,7 +9,7 @@ using static HogeBlazor.Server.Controllers.UsersController;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
+using System;
 
 namespace HogeBlazor.Server.Test.Controllers;
 
@@ -65,12 +65,12 @@ public class UTUsersControllerTests
         await ClearTable();
         await AddBasicData();
         // Act
-        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "管理者", email: null, role: null);
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "管理者");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
         var users = Assert.IsType<List<UserDTO>>(okResult.Value);
-        Assert.Equal(1, users.Count);
+        Assert.Single(users);
         Assert.Equal("管理者", users[0].Name);
     }
 
@@ -81,12 +81,12 @@ public class UTUsersControllerTests
         await ClearTable();
         await AddBasicData();
         // Act
-        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: null, email: "user@hogeblazor", role: null);
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(email: "user@hogeblazor");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
         var users = Assert.IsType<List<UserDTO>>(okResult.Value);
-        Assert.Equal(1, users.Count);
+        Assert.Single(users);
         Assert.Equal("一般ユーザー", users[0].Name);
     }
 
@@ -97,12 +97,12 @@ public class UTUsersControllerTests
         await ClearTable();
         await AddBasicData();
         // Act
-        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: null, email: null, role: User.RoleType.Admin);
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(role: User.RoleType.Admin);
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
         var users = Assert.IsType<List<UserDTO>>(okResult.Value);
-        Assert.Equal(1, users.Count);
+        Assert.Single(users);
         Assert.Equal("管理者", users[0].Name);
     }
 
@@ -113,12 +113,12 @@ public class UTUsersControllerTests
         await ClearTable();
         await AddBasicData();
         // Act
-        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "存在しないユーザー", email: null, role: null);
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "存在しないユーザー");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
         var users = Assert.IsType<List<UserDTO>>(okResult.Value);
-        Assert.Equal(0, users.Count);
+        Assert.Empty(users);
     }
 
     [Fact]
@@ -128,12 +128,43 @@ public class UTUsersControllerTests
         await ClearTable();
         await AddBasicData();
         // Act
-        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "削除済みユーザー", email: null, role: null);
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: "削除済みユーザー");
         // Assert
         var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
         var users = Assert.IsType<List<UserDTO>>(okResult.Value);
-        Assert.Equal(0, users.Count);
+        Assert.Empty(users);
+    }
+
+    [Fact]
+    public async void GetUserByQueryReturnsAllDTOListIfNoParamSpecified()
+    {
+        // Arrange
+        await ClearTable();
+        await AddBasicData();
+        // Act
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery();
+        // Assert
+        var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
+        var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+        var users = Assert.IsType<List<UserDTO>>(okResult.Value);
+        Assert.Equal(3, users.Count);
+    }
+
+    [Fact]
+    public async void GetUserByQueryReturnsAllDTOListIfNullParamSpecified()
+    {
+        // Arrange
+        await ClearTable();
+        await AddBasicData();
+        // Act
+        ActionResult<List<UserDTO>> result = await _controller.GetUserByQuery(name: null, email: null, role: null);
+        // Assert
+        var actionResult = Assert.IsType<ActionResult<List<UserDTO>>>(result);
+        var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+        var users = Assert.IsType<List<UserDTO>>(okResult.Value);
+        Assert.Equal(3, users.Count);
+        Console.WriteLine(users[0].CreatedAt);
     }
     #endregion
 
@@ -164,7 +195,6 @@ public class UTUsersControllerTests
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var ngResult = Assert.IsType<NotFoundResult>(actionResult.Result);
-        Assert.Equal(404, ngResult.StatusCode);
     }
 
     [Fact]
@@ -178,11 +208,9 @@ public class UTUsersControllerTests
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-        Assert.Equal(200, okResult.StatusCode);
         var user = Assert.IsType<UserDTO>(okResult.Value);
         Assert.Equal("削除済みユーザー", user.Name);
-        Assert.Equal(true, user.IsDel);
-
+        Assert.True(user.IsDel);
     }
     #endregion
 
@@ -198,9 +226,15 @@ public class UTUsersControllerTests
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var createdResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
-        Assert.Equal(201, createdResult.StatusCode);
         var user = Assert.IsType<UserDTO>(createdResult.Value);
         Assert.Equal(1, user.Id);
+        Assert.Equal("ほげ太郎", user.Name);
+        Assert.Equal("admin@example.com", user.Email);
+        Assert.Equal(User.RoleType.Admin, user.Role);
+        Assert.Equal(new DateTime(), user.CreatedAt);
+        Console.WriteLine(user.CreatedAt);
+        Console.WriteLine(new DateTime());
+        Assert.False(user.IsDel);
     }
 
     [Fact]
@@ -215,7 +249,6 @@ public class UTUsersControllerTests
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
-        Assert.Equal(400, badRequestResult.StatusCode);
     }
     #endregion
 
@@ -230,7 +263,6 @@ public class UTUsersControllerTests
         ActionResult result = await _controller.DeleteUser(1);
         // Assert
         var noContentResult = Assert.IsType<NoContentResult>(result);
-        Assert.Equal(204, noContentResult.StatusCode);
     }
 
     [Fact]
@@ -243,7 +275,6 @@ public class UTUsersControllerTests
         ActionResult result = await _controller.DeleteUser(5);
         // Assert
         var notFoundResult = Assert.IsType<NotFoundResult>(result);
-        Assert.Equal(404, notFoundResult.StatusCode);
     }
     #endregion
 

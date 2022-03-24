@@ -1,23 +1,12 @@
-using HogeBlazor.Server.Controllers;
 using HogeBlazor.Shared.Models;
 using HogeBlazor.Server.Helpers;
 using Xunit;
 using System.Net;
 using System.Net.Http;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Text.Json;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Moq;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using static HogeBlazor.Server.Controllers.UsersController;
-using Microsoft.EntityFrameworkCore.Query;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Threading;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Text;
 
 namespace HogeBlazor.Server.Test.Controllers;
@@ -50,7 +39,7 @@ public class E2EUsersControllerTests
     //     string responseBody = await response.Content.ReadAsStringAsync();
     //     Debug.WriteLine(responseBody);
     //     List<User> users = JsonSerializer.Deserialize<List<User>>(responseBody);
-    //     Assert.Equal(1, users.Count);
+    //     Assert.Single(users);
     // }
 
     [Fact]
@@ -64,7 +53,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(1, users.Count);
+            Assert.Single(users);
         }
         else
         {
@@ -83,7 +72,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(0, users.Count);
+            Assert.Empty(users);
         }
         else
         {
@@ -121,7 +110,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(1, users.Count);
+            Assert.Single(users);
         }
         else
         {
@@ -140,7 +129,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(1, users.Count);
+            Assert.Single(users);
         }
         else
         {
@@ -159,7 +148,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(1, users.Count);
+            Assert.Single(users);
         }
         else
         {
@@ -178,7 +167,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(1, users.Count);
+            Assert.Single(users);
         }
         else
         {
@@ -197,7 +186,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(1, users.Count);
+            Assert.Single(users);
         }
         else
         {
@@ -216,7 +205,7 @@ public class E2EUsersControllerTests
         var users = JsonSerializer.Deserialize<List<User>>(responseBody);
         if (users != null)
         {
-            Assert.Equal(1, users.Count);
+            Assert.Single(users);
         }
         else
         {
@@ -241,7 +230,9 @@ public class E2EUsersControllerTests
     //     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     //     string responseBody = await response.Content.ReadAsStringAsync();
     //     Assert.NotNull(responseBody);
-    //     var users = JsonSerializer.Deserialize<List<User>>(responseBody);
+    //     var user = JsonSerializer.Deserialize<User>(responseBody);
+    //     Assert.NotNull(user);
+    //     Assert.Equal("追加ユーザー", user.Name);
     // }
 
     // [Fact]
