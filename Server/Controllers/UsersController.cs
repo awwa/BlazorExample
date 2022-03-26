@@ -20,6 +20,9 @@ public class UsersController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// クライアント返却用クラス
+    /// </summary>
     public class UserDTO
     {
         public int Id { get; set; } = default;
@@ -41,6 +44,7 @@ public class UsersController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route(Const.API_BASE_PATH_V1 + "users")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDTO>))]
     public async Task<ActionResult<List<UserDTO>>> GetUserByQuery(
         [FromQuery] string? name = null, string? email = null, User.RoleType? role = null
     )
@@ -60,12 +64,14 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// IDをキーにしてユーザ1件取得
+    /// IDをキーにしたユーザ1件取得
     /// </summary>
     /// <returns>該当データが見つかった場合：StatusOk+UserDTO、見つからなかった場合：StatusNotFound</returns>
     [HttpGet]
     [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
-    public async Task<ActionResult<UserDTO>> GetUserById(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> GetUserById(int id)
     {
         var user = await _context.Users.FindAsync(id);
         if (user == null)
@@ -76,8 +82,15 @@ public class UsersController : ControllerBase
         return Ok(dto);
     }
 
+    /// <summary>
+    /// ユーザー削除
+    /// </summary>
+    /// <param name="id">削除するユーザーのID</param>
+    /// <returns>空</returns>
     [HttpDelete]
     [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteUser(int id)
     {
         var user = await _context.Users.FindAsync(id);
@@ -90,26 +103,48 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    // TODO
-    // [HttpPatch]
-    // [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
-    // public async Task<ActionResult<UserDTO>> PatchUser(int id, User user)
-    // {
-    //     if (id != user.Id)
-    //     {
-    //         return BadRequest();
-    //     }
-    //     //var user = await _context.Users.FindAsync(id);
-    //     // if (user == null)
-    //     // {
-    //     //     return NotFound();
-    //     // }
-    //     // _context
+    /// <summary>
+    /// ユーザーの更新
+    /// </summary>
+    /// <param name="id">更新するユーザーのID</param>
+    /// <param name="name">更新する名前。指定必須</param>
+    /// <param name="email">更新するメールアドレス。指定必須</param>
+    /// <param name="plainPassword">更新する平文パスワード。指定必須</param>
+    /// <param name="role">更新するロール。指定必須</param>
+    /// <returns>ユーザーID</returns>
+    [HttpPut]
+    [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> PutUser(
+        int id,
+        string name,
+        string email,
+        string plainPassword,
+        User.RoleType role)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        user.Name = name;
+        user.Email = email;
+        user.PlainPassword = plainPassword;
+        user.Role = role;
+        int idUpdated = await _context.SaveChangesAsync();
+        return Ok(idUpdated);
+    }
 
-    // }
-
+    /// <summary>
+    /// ユーザー追加
+    /// </summary>
+    /// <param name="user">追加するユーザー</param>
+    /// <returns>更新後のユーザーデータ</returns>
     [HttpPost]
     [Route(Const.API_BASE_PATH_V1 + "users")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserDTO))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserDTO>> PostUser(User user)
     {
         try
@@ -120,6 +155,8 @@ public class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
+            // わざわざExceptionをcatchしているのは、利用するDBによって挙動が異なるのを避けるため
+            // UTでSqliteをつかうと、SqliteExceptionが発生するが、PostgreSQLを使うと別の例外が発生する
             return BadRequest(ex.Message);
         }
     }
@@ -131,6 +168,11 @@ public class UsersController : ControllerBase
     //     return Ok();
     // }
 
+    /// <summary>
+    /// DBモデルからクライアント用モデルへの変換
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     private static UserDTO ItemToDTO(User user) =>
         new UserDTO
         {

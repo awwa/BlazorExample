@@ -303,6 +303,36 @@ public class UTUsersControllerTests : IDisposable
         var notFoundResult = Assert.IsType<NotFoundResult>(result);
     }
     #endregion
+
+    #region PutUser()テスト
+    [Fact]
+    public async void PutUserSuccess()
+    {
+        // Arrange
+        await ClearTable(_context);
+        await AddBasicData(_context);
+        // Act
+        ActionResult<int> result = await _controller.PutUser(1, name: "更新 次郎", email: "update@example.com", plainPassword: "updated", role: User.RoleType.Guest);
+        // Assert
+        var actionResult = Assert.IsType<ActionResult<int>>(result);
+        var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+        var id = Assert.IsType<int>(okResult.Value);
+        Assert.Equal(1, id);
+    }
+
+    [Fact]
+    public async void PutUserFailIfItNoExists()
+    {
+        // Arrange
+        await ClearTable(_context);
+        await AddBasicData(_context);
+        // Act
+        ActionResult result = await _controller.PutUser(100, name: "更新 次郎", email: "update@example.com", plainPassword: "updated", role: User.RoleType.Guest);
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundResult>(result);
+    }
+
+    #endregion
     // [Fact]
     // public void TestHoge()
     // {
