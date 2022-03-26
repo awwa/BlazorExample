@@ -10,7 +10,8 @@ builder.Logging.AddConsole();
 
 //builder.Services.AddDbContext<HogeBlazorDbContext>();
 
-
+// builder.Services.AddMvcCore();
+// builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddOpenApiDocument();
@@ -48,6 +49,7 @@ app.UseOpenApi();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+//app.UseMvc();
 
 app.Run();
 

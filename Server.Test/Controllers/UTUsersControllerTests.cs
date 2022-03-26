@@ -20,11 +20,13 @@ public class UTUsersControllerTests : IDisposable
     private SqliteConnection _connection;
     private readonly DbContextOptions<HogeBlazorDbContext> _contextOptions;
     private UsersController _controller;
-    // private Mock<ILogger<UsersController>> _mockLogger;
+
+    #region テスト準備
     public UTUsersControllerTests()
     {
-        // DbContextはMoqで置き換えれない。UseInMemoryを使う(C# EFCore)
-        // https://demi-urge.com/useinmemory/
+        // テストではSQLite インメモリを使う
+        // https://docs.microsoft.com/ja-jp/ef/core/testing/testing-without-the-database#sqlite-in-memory
+        // 実物のDBとはいくつか挙動が異なる点があるので要注意
         // DbContextとControllerをインスタンス化
         _connection = new SqliteConnection("Filename=:memory:");
         _connection.Open();
@@ -33,14 +35,9 @@ public class UTUsersControllerTests : IDisposable
             .Options;
         _context = CreateContext();
 
+        // DB構築
         if (_context.Database.EnsureCreated())
         {
-            // using var viewCommand = context.Database.GetDbConnection().CreateCommand();
-            //             viewCommand.CommandText = @"
-            // CREATE VIEW AllResources AS
-            // SELECT Url
-            // FROM Blogs;";
-            //             viewCommand.ExecuteNonQuery();
         }
 
         var mockLogger = new Mock<ILogger<UsersController>>();
@@ -51,7 +48,7 @@ public class UTUsersControllerTests : IDisposable
     public void Dispose() => _connection.Dispose();
 
     /// <summary>
-    /// テーブルクリア処理
+    /// テーブルクリア
     /// </summary>
     /// <returns></returns>
     private async Task ClearTable(HogeBlazorDbContext context)
@@ -65,20 +62,28 @@ public class UTUsersControllerTests : IDisposable
         await context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// 初期データ投入
+    /// </summary>
+    /// <param name="context">DbContext</param>
+    /// <returns></returns>
     private async Task AddBasicData(HogeBlazorDbContext context)
     {
         context.Users.AddRange(
-            new User(id: 1, name: "管理者", email: "admin@example.com", User.RoleType.Admin),
-            new User(id: 2, name: "削除済みユーザー", email: "deleted@hogeblazor", role: User.RoleType.Admin) { IsDel = true },
-            new User(id: 3, name: "一般ユーザー", email: "user@hogeblazor", role: User.RoleType.User),
-            new User(id: 4, name: "ゲストユーザー", email: "guest@hogeblazor", role: User.RoleType.Guest)
+            new User(name: "管理者", email: "admin@example.com", plainPassword: "password", role: User.RoleType.Admin) { Id = 1 },
+            new User(name: "削除済みユーザー", email: "deleted@hogeblazor", plainPassword: "password", role: User.RoleType.Admin) { Id = 2, IsDel = true },
+            new User(name: "一般ユーザー", email: "user@hogeblazor", plainPassword: "password", role: User.RoleType.User) { Id = 3 },
+            new User(name: "ゲストユーザー", email: "guest@hogeblazor", plainPassword: "password", role: User.RoleType.Guest) { Id = 4 }
         );
         await context.SaveChangesAsync();
     }
+    #endregion
 
     #region GetUserByQuery()テスト
     // ASP.NET Core でコントローラーのロジックの単体テストを行う
     // https://docs.microsoft.com/ja-jp/aspnet/core/mvc/controllers/testing?view=aspnetcore-6.0
+    // コントローラのUTではモデルクラスのバリデーションは行われない
+    // モデルクラスのバリデーションはモデルクラスのUT（Share.Test/Models/UserTest.csなど）で行ってください
     [Fact]
     public async void GetUserByQueryReturnsDTOListIfItExistsByName()
     {
@@ -242,19 +247,19 @@ public class UTUsersControllerTests : IDisposable
         // Arrange
         await ClearTable(_context);
         // Act
-        var data = new User(id: 1, name: "ほげ太郎", email: "admin@example.com", User.RoleType.Admin);
+        var data = new User(name: "ほげ太郎", email: "admin@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
         ActionResult<UserDTO> result = await _controller.PostUser(data);
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
         var createdResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
         var user = Assert.IsType<UserDTO>(createdResult.Value);
-        Assert.Equal(1, user.Id);
+        Assert.Equal(5, user.Id);
         Assert.Equal("ほげ太郎", user.Name);
         Assert.Equal("admin@example.com", user.Email);
         Assert.Equal(User.RoleType.Admin, user.Role);
-        Assert.NotEqual(new DateTime(), user.CreatedAt);
-        Console.WriteLine(user.CreatedAt);
-        Console.WriteLine(new DateTime());
+        var now = DateTime.UtcNow;
+        Assert.InRange<int>((now - user.CreatedAt).Seconds, 0, 2);
+        Assert.InRange<int>((now - user.UpdatedAt).Seconds, 0, 2);
         Assert.False(user.IsDel);
     }
 
@@ -264,7 +269,7 @@ public class UTUsersControllerTests : IDisposable
         // Arrange
         await ClearTable(_context);
         // Act
-        var data = new User(id: 1, name: "ほげ太郎", email: "admin@example.com", User.RoleType.Admin);
+        var data = new User(name: "ほげ太郎", email: "admin@example.com", plainPassword: "password", role: User.RoleType.Admin) { Id = 1 };
         await _controller.PostUser(data);
         ActionResult<UserDTO> result = await _controller.PostUser(data);    // 重複するデータをPOST
         // Assert
@@ -298,5 +303,11 @@ public class UTUsersControllerTests : IDisposable
         var notFoundResult = Assert.IsType<NotFoundResult>(result);
     }
     #endregion
+    // [Fact]
+    // public void TestHoge()
+    // {
+    //     ActionResult result = _controller.Hoge(null);
+    //     var okResult = Assert.IsType<OkResult>(result);
+    // }
 
 }

@@ -4,6 +4,7 @@ using HogeBlazor.Server.Helpers;
 using HogeBlazor.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.ComponentModel.DataAnnotations;
 
 namespace HogeBlazor.Server.Controllers;
 
@@ -115,18 +116,20 @@ public class UsersController : ControllerBase
         {
             _context.Users.Add(user);
             int id = await _context.SaveChangesAsync();
-            var newUser = await _context.Users.FindAsync(id);
-            if (newUser == null)
-            {
-                return StatusCode(500);
-            }
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, ItemToDTO(newUser));
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, ItemToDTO(user));
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
+
+    // [HttpPost]
+    // [Route(Const.API_BASE_PATH_V1 + "hoge")]
+    // public ActionResult Hoge(User user)
+    // {
+    //     return Ok();
+    // }
 
     private static UserDTO ItemToDTO(User user) =>
         new UserDTO

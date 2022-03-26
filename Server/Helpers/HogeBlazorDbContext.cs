@@ -32,39 +32,44 @@ public class HogeBlazorDbContext : DbContext
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
         // 初期データの投入
         modelBuilder.Entity<User>().HasData(
-            new User(
-                id: 1,
-                name: "管理者",
-                email: "admin@hogeblazor",
-                role: User.RoleType.Admin
-            )
+            new User(name: "管理者", email: "admin@hogeblazor", plainPassword: "password", role: User.RoleType.Admin)
+            {
+                Id = 1
+            }
         );
         modelBuilder.Entity<User>().HasData(
             new User(
-                id: 2,
                 name: "削除済みユーザー",
                 email: "deleted@hogeblazor",
+                plainPassword: "password",
                 role: User.RoleType.Admin
             )
             {
+                Id = 2,
                 IsDel = true
             }
         );
         modelBuilder.Entity<User>().HasData(
             new User(
-                id: 3,
                 name: "一般ユーザー",
                 email: "user@hogeblazor",
+                plainPassword: "password",
                 role: User.RoleType.User
             )
+            {
+                Id = 3
+            }
         );
         modelBuilder.Entity<User>().HasData(
             new User(
-                id: 4,
                 name: "ゲストユーザー",
                 email: "guest@hogeblazor",
+                plainPassword: "password",
                 role: User.RoleType.Guest
             )
+            {
+                Id = 4
+            }
         );
     }
 }

@@ -7,32 +7,98 @@ namespace HogeBlazor.Shared.Models;
 [Index(nameof(Email), IsUnique = true)]
 public class User
 {
-    private string _password = "";
+    private string _plainPassword = string.Empty;
 
+    /// <summary>
+    /// Usersテーブル内のキー情報
+    /// </summary>
+    /// <value></value>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public int Id { get; set; }
-    [Required]
+
+    /// <summary>
+    /// ユーザーの表示名
+    /// </summary>
+    /// <value></value>
+    [Required(ErrorMessage = "{0}を入力する必要があります。")]
+    [StringLength(100, ErrorMessage = "{0}は文字数{1}以内である必要があります。")]
     public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// メールアドレス
+    /// ログイン時のキー情報
+    /// </summary>
+    /// <value></value>
+    [Required(ErrorMessage = "{0}を入力する必要があります。")]
+    [EmailAddress]
+    [StringLength(100, ErrorMessage = "{0}は文字数{1}以内である必要があります。")]
     public string Email { get; set; } = string.Empty;
-    [Required]
-    public string Password
+
+    /// <summary>
+    /// 平文のパスワード
+    /// </summary>
+    /// <value></value>
+    [Required(ErrorMessage = "{0}を入力する必要があります。")]
+    // [PlainPassword]
+    [StringLength(100, MinimumLength = 8, ErrorMessage = "{0}は文字数{2}から{1}の範囲内である必要があります。")]
+    public string PlainPassword
     {
-        get { return _password; }
-        set { _password = hash(value); }
+        set
+        {
+            _plainPassword = value;
+            HashedPassword = hash(value);
+        }
+        get
+        {
+            return _plainPassword;
+        }
     }
+
+    /// <summary>
+    /// ハッシュ化したパスワード
+    /// </summary>
+    /// <value></value>
+    [Column("Password")]
+    public string HashedPassword
+    {
+        get; set;
+    }
+
+    /// <summary>
+    /// ロール
+    /// </summary>
+    /// <value></value>
     [Required]
     public RoleType Role { get; set; }
-    [Required]
+
+    /// <summary>
+    /// レコード作成時刻
+    /// </summary>
+    /// <value></value>
+    [Required(ErrorMessage = "{0}を入力する必要があります。")]
     [Column(TypeName = "Timestamp")]
     public DateTime CreatedAt { get; set; }
-    [Required]
+
+    /// <summary>
+    /// レコード更新時刻
+    /// </summary>
+    /// <value></value>
+    [Required(ErrorMessage = "{0}を入力する必要があります。")]
     [Column(TypeName = "Timestamp")]
     public DateTime UpdatedAt { get; set; }
-    // https://blog.beachside.dev/entry/2020/03/30/200000
-    [Required]
+
+    /// <summary>
+    /// 論理削除フラグ
+    /// https://blog.beachside.dev/entry/2020/03/30/200000
+    /// </summary>
+    /// <value></value>
+    [Required(ErrorMessage = "{0}を入力する必要があります。")]
     public bool IsDel { get; set; } = false;
 
+    /// <summary>
+    /// ロール列挙型
+    /// </summary>
     public enum RoleType
     {
         Admin,
@@ -40,17 +106,52 @@ public class User
         Guest
     }
 
-    public User(int id, string name, string email, RoleType role)
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="name">名前</param>
+    /// <param name="email">メールアドレス</param>
+    /// <param name="plainPassword">パスワード</param>
+    /// <param name="role">ロール</param>
+    public User(string name, string email, string plainPassword, RoleType role)
     {
-        this.Id = id;
         this.Name = name;
         this.Email = email;
+        this.PlainPassword = plainPassword;
+        this.HashedPassword = hash(plainPassword);
         this.Role = role;
     }
 
+    // public User(int id, string name, string email, RoleType role)
+    // {
+    //     this.Id = id;
+    //     this.Name = name;
+    //     this.Email = email;
+    //     this.Role = role;
+    // }
+
+    /// <summary>
+    /// ハッシュ関数
+    /// パスワードのハッシュ化に内部的に利用
+    /// </summary>
+    /// <param name="plain">平文文字列</param>
+    /// <returns>ハッシュ化した文字列</returns>
     public static string hash(string plain)
     {
         return BCrypt.Net.BCrypt.HashPassword(plain, workFactor: 5);
     }
 
+    // public class PlainPasswordAttribute : ValidationAttribute
+    // {
+    //     public string GetErrorMessage()
+    //     {
+    //         return "Passwordは文字数8から100の範囲内である必要があります。";
+    //     }
+
+    //     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    //     {
+
+    //         return ValidationResult.Success;
+    //     }
+    // }
 }
