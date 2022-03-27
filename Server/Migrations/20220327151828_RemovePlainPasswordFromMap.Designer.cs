@@ -3,6 +3,7 @@ using System;
 using HogeBlazor.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HogeBlazor.Server.Migrations
 {
     [DbContext(typeof(HogeBlazorDbContext))]
-    partial class HogeBlazorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220327151828_RemovePlainPasswordFromMap")]
+    partial class RemovePlainPasswordFromMap
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

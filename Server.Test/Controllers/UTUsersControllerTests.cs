@@ -70,10 +70,10 @@ public class UTUsersControllerTests : IDisposable
     private async Task AddBasicData(HogeBlazorDbContext context)
     {
         context.Users.AddRange(
-            new User(name: "管理者", email: "admin@example.com", plainPassword: "password", role: User.RoleType.Admin) { Id = 1 },
-            new User(name: "削除済みユーザー", email: "deleted@hogeblazor", plainPassword: "password", role: User.RoleType.Admin) { Id = 2, IsDel = true },
-            new User(name: "一般ユーザー", email: "user@hogeblazor", plainPassword: "password", role: User.RoleType.User) { Id = 3 },
-            new User(name: "ゲストユーザー", email: "guest@hogeblazor", plainPassword: "password", role: User.RoleType.Guest) { Id = 4 }
+            new User() { Id = 1, Name = "管理者", Email = "admin@example.com", PlainPassword = "password", Role = User.RoleType.Admin },
+            new User() { Id = 2, Name = "削除済みユーザー", Email = "deleted@hogeblazor", PlainPassword = "password", Role = User.RoleType.Admin, IsDel = true },
+            new User() { Id = 3, Name = "一般ユーザー", Email = "user@hogeblazor", PlainPassword = "password", Role = User.RoleType.User },
+            new User() { Id = 4, Name = "ゲストユーザー", Email = "guest@hogeblazor", PlainPassword = "password", Role = User.RoleType.Guest }
         );
         await context.SaveChangesAsync();
     }
@@ -247,7 +247,7 @@ public class UTUsersControllerTests : IDisposable
         // Arrange
         await ClearTable(_context);
         // Act
-        var data = new User(name: "ほげ太郎", email: "admin@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
+        var data = new User() { Name = "ほげ太郎", Email = "admin@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         ActionResult<UserDTO> result = await _controller.PostUser(data);
         // Assert
         var actionResult = Assert.IsType<ActionResult<UserDTO>>(result);
@@ -269,7 +269,7 @@ public class UTUsersControllerTests : IDisposable
         // Arrange
         await ClearTable(_context);
         // Act
-        var data = new User(name: "ほげ太郎", email: "admin@example.com", plainPassword: "password", role: User.RoleType.Admin) { Id = 1 };
+        var data = new User() { Id = 1, Name = "ほげ太郎", Email = "admin@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         await _controller.PostUser(data);
         ActionResult<UserDTO> result = await _controller.PostUser(data);    // 重複するデータをPOST
         // Assert
@@ -312,7 +312,8 @@ public class UTUsersControllerTests : IDisposable
         await ClearTable(_context);
         await AddBasicData(_context);
         // Act
-        ActionResult<int> result = await _controller.PutUser(1, name: "更新 次郎", email: "update@example.com", plainPassword: "updated", role: User.RoleType.Guest);
+        var updUser = new User() { Name = "更新 次郎", Email = "update@example.com", PlainPassword = "updated", Role = User.RoleType.Guest };
+        ActionResult<int> result = await _controller.PatchUser(1, updUser);
         // Assert
         var actionResult = Assert.IsType<ActionResult<int>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -327,7 +328,8 @@ public class UTUsersControllerTests : IDisposable
         await ClearTable(_context);
         await AddBasicData(_context);
         // Act
-        ActionResult result = await _controller.PutUser(100, name: "更新 次郎", email: "update@example.com", plainPassword: "updated", role: User.RoleType.Guest);
+        var updUser = new User() { Name = "更新 次郎", Email = "update@example.com", PlainPassword = "updated", Role = User.RoleType.Guest };
+        ActionResult result = await _controller.PatchUser(100, updUser);
         // Assert
         var notFoundResult = Assert.IsType<NotFoundResult>(result);
     }

@@ -5,6 +5,11 @@ using HogeBlazor.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 
 namespace HogeBlazor.Server.Controllers;
 
@@ -42,6 +47,7 @@ public class UsersController : ControllerBase
     /// https://docs.microsoft.com/ja-jp/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
     /// </summary>
     /// <returns></returns>
+    //[Authorize]
     [HttpGet]
     [Route(Const.API_BASE_PATH_V1 + "users")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDTO>))]
@@ -107,31 +113,23 @@ public class UsersController : ControllerBase
     /// ユーザーの更新
     /// </summary>
     /// <param name="id">更新するユーザーのID</param>
-    /// <param name="name">更新する名前。指定必須</param>
-    /// <param name="email">更新するメールアドレス。指定必須</param>
-    /// <param name="plainPassword">更新する平文パスワード。指定必須</param>
-    /// <param name="role">更新するロール。指定必須</param>
+    /// <param name="updUser">更新するユーザー情報。更新対象プロパティ：Name, Email, PlainPassword, Role</param>
     /// <returns>ユーザーID</returns>
-    [HttpPut]
+    [HttpPatch]
     [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> PutUser(
-        int id,
-        string name,
-        string email,
-        string plainPassword,
-        User.RoleType role)
+    public async Task<ActionResult> PatchUser(int id, [FromBody] User updUser)
     {
         var user = await _context.Users.FindAsync(id);
         if (user == null)
         {
             return NotFound();
         }
-        user.Name = name;
-        user.Email = email;
-        user.PlainPassword = plainPassword;
-        user.Role = role;
+        user.Name = updUser.Name;
+        user.Email = updUser.Email;
+        user.PlainPassword = updUser.PlainPassword;
+        user.Role = updUser.Role;
         int idUpdated = await _context.SaveChangesAsync();
         return Ok(idUpdated);
     }
@@ -161,6 +159,49 @@ public class UsersController : ControllerBase
         }
     }
 
+    [HttpPost]
+    [Route(Const.API_BASE_PATH_V1 + "users/login")]
+    public async Task<ActionResult<string>> Login([FromBody] AuthenticateRequest auth)
+    {
+        var query = _context.Users.AsQueryable();
+        var user = await query.Where(x => x.Email == auth.Email).FirstOrDefaultAsync<User>();
+        if (user == null) return Unauthorized();
+        if (user.Authenticate(auth.PlainPassword))
+        {
+            Console.WriteLine("未認証なのでJWTを生成して返す");
+            var claims = new[] {
+                new Claim($"{ClaimTypes.UserData}/user/id", "1"),
+                new Claim($"{ClaimTypes.UserData}/user/name", "ほげ 太郎"),
+                new Claim($"{ClaimTypes.UserData}/user/email", "admin@example.com"),
+                new Claim($"{ClaimTypes.UserData}/user/role", "0"),
+                //new Claim(ClaimTypes.Name, "sample"),
+            };
+
+            var keyBytes = new byte[64];
+            RandomNumberGenerator.Fill(keyBytes);   // TODO 環境変数から固定値を読み込みたい
+            var key = new SymmetricSecurityKey(keyBytes);
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var header = new JwtHeader(credentials);
+            var issuer = "http://hoge-blazor/";
+            var audience = "http://hoge-blazor/";
+            var now = DateTime.Now;
+            var payload = new JwtPayload(issuer, audience, claims, now.AddSeconds(-5), now.AddMinutes(1));
+            var token = new JwtSecurityToken(header, payload);
+
+            var handler = new JwtSecurityTokenHandler();
+            var tokenString = handler.WriteToken(token);
+
+            // TODO JWT tokenをCookieに設定する
+            var response = new TokenResponse() { Token = tokenString };
+            return Ok(response);
+        }
+        else
+        {
+            return Unauthorized();
+        }
+    }
+
     // [HttpPost]
     // [Route(Const.API_BASE_PATH_V1 + "hoge")]
     // public ActionResult Hoge(User user)
@@ -168,6 +209,10 @@ public class UsersController : ControllerBase
     //     return Ok();
     // }
 
+    private bool UserExists(int id)
+    {
+        return _context.Users.Any(e => e.Id == id);
+    }
     /// <summary>
     /// DBモデルからクライアント用モデルへの変換
     /// </summary>

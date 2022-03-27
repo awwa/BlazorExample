@@ -18,7 +18,7 @@ public class UserTests
     [Fact]
     public void ConstructorSetPropertyValue()
     {
-        var user = new User(name: "ほげ 太郎", email: "hoge@example.com", plainPassword: "password", role: User.RoleType.Admin) { Id = 1 };
+        var user = new User() { Id = 1, Name = "ほげ 太郎", Email = "hoge@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         Assert.Equal(1, user.Id);
         Assert.Equal("ほげ 太郎", user.Name);
         Assert.Equal("hoge@example.com", user.Email);
@@ -34,7 +34,7 @@ public class UserTests
     public void ConstructorCreateInstanceSuccessfully()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "hoge@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ太郎", Email = "hoge@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -49,7 +49,7 @@ public class UserTests
     public void ValidateNameRequired()
     {
         // Arrange
-        var user = new User(name: "", email: "hoge@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "", Email = "hoge@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -62,7 +62,7 @@ public class UserTests
     public void ValidateNameMaxLength()
     {
         // Arrange
-        var user = new User(name: new string('あ', 100), email: "hoge@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = new string('あ', 100), Email = "hoge@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -74,7 +74,7 @@ public class UserTests
     public void ValidateNameOverMaxLength()
     {
         // Arrange
-        var user = new User(name: new string('あ', 101), email: "hoge@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = new string('あ', 101), Email = "hoge@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -90,7 +90,7 @@ public class UserTests
     public void ValidateEmailRequired()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = "", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -103,7 +103,7 @@ public class UserTests
     public void ValidateEmailMaxLength()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: (new string('a', 88)) + "@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = (new string('a', 88)) + "@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -115,7 +115,7 @@ public class UserTests
     public void ValidateEmailOverMaxLength()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: (new string('a', 89)) + "@example.com", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = (new string('a', 89)) + "@example.com", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -128,7 +128,7 @@ public class UserTests
     public void ValidateEmailFormat()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "invalid format", plainPassword: "password", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = "invalid format", PlainPassword = "password", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -144,7 +144,7 @@ public class UserTests
     public void ValidatePlainPasswordRequired()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "admin@example.com", plainPassword: "", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = "admin@example.com", PlainPassword = "", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -157,7 +157,7 @@ public class UserTests
     public void ValidatePlainPasswordMaxLength()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "admin@example.com", plainPassword: new string('a', 100), role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = "admin@example.com", PlainPassword = new string('a', 100), Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -169,7 +169,7 @@ public class UserTests
     public void ValidatePlainPasswordOverMaxLength()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "admin@example.com", plainPassword: new string('a', 101), role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = "admin@example.com", PlainPassword = new string('a', 101), Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -182,7 +182,7 @@ public class UserTests
     public void ValidatePlainPasswordMinLength()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "admin@example.com", plainPassword: "12345678", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = "admin@example.com", PlainPassword = "12345678", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
@@ -194,7 +194,7 @@ public class UserTests
     public void ValidatePlainPasswordUnderMinLength()
     {
         // Arrange
-        var user = new User(name: "ほげ 太郎", email: "admin@example.com", plainPassword: "1234567", role: User.RoleType.Admin) { };
+        var user = new User() { Name = "ほげ 太郎", Email = "admin@example.com", PlainPassword = "1234567", Role = User.RoleType.Admin };
         var context = new ValidationContext(user, null, null);
         var result = new List<ValidationResult>();
         // Act
