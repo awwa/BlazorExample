@@ -47,7 +47,7 @@ public class UsersController : ControllerBase
     /// https://docs.microsoft.com/ja-jp/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
     /// </summary>
     /// <returns></returns>
-    //[Authorize]
+    [Authorize]
     [HttpGet]
     [Route(Const.API_BASE_PATH_V1 + "users")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDTO>))]
@@ -161,7 +161,7 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [Route(Const.API_BASE_PATH_V1 + "users/login")]
-    public async Task<ActionResult<string>> Login([FromBody] AuthenticateRequest auth)
+    public async Task<ActionResult<TokenResponse>> Login([FromBody] AuthenticateRequest auth)
     {
         var query = _context.Users.AsQueryable();
         var user = await query.Where(x => x.Email == auth.Email).FirstOrDefaultAsync<User>();
@@ -169,32 +169,9 @@ public class UsersController : ControllerBase
         if (user.Authenticate(auth.PlainPassword))
         {
             Console.WriteLine("未認証なのでJWTを生成して返す");
-            var claims = new[] {
-                new Claim($"{ClaimTypes.UserData}/user/id", "1"),
-                new Claim($"{ClaimTypes.UserData}/user/name", "ほげ 太郎"),
-                new Claim($"{ClaimTypes.UserData}/user/email", "admin@example.com"),
-                new Claim($"{ClaimTypes.UserData}/user/role", "0"),
-                //new Claim(ClaimTypes.Name, "sample"),
-            };
-
-            var keyBytes = new byte[64];
-            RandomNumberGenerator.Fill(keyBytes);   // TODO 環境変数から固定値を読み込みたい
-            var key = new SymmetricSecurityKey(keyBytes);
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var header = new JwtHeader(credentials);
-            var issuer = "http://hoge-blazor/";
-            var audience = "http://hoge-blazor/";
-            var now = DateTime.Now;
-            var payload = new JwtPayload(issuer, audience, claims, now.AddSeconds(-5), now.AddMinutes(1));
-            var token = new JwtSecurityToken(header, payload);
-
-            var handler = new JwtSecurityTokenHandler();
-            var tokenString = handler.WriteToken(token);
-
-            // TODO JWT tokenをCookieに設定する
-            var response = new TokenResponse() { Token = tokenString };
-            return Ok(response);
+            string token = JWTHelper.Encode(user);
+            var tokenResp = new TokenResponse() { Token = token };
+            return Ok(tokenResp);
         }
         else
         {

@@ -1,5 +1,11 @@
+// using System.Text.Encodings.Web;
+// using Microsoft.AspNetCore.Authentication;
+// using Microsoft.Extensions.Options;
+
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using HogeBlazor.Server.Helpers;
+using HogeBlazor.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 
@@ -12,37 +18,62 @@ class MyAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
     }
 
-    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        (bool ok, string name) tryGetApiKey(HttpContext context)
+        try
         {
-            if (!context.Request.Headers.TryGetValue("API_KEY", out var apiKey))
+            if (!this.Context.Request.Headers.TryGetValue("Authorization", out var bearerToken))
             {
-                return (false, "");
+                return await Task.FromResult(AuthenticateResult.Fail("fuga"));
             }
-
-            return apiKey.ToString() switch
+            var authVal = bearerToken.ToString().Split(' ');
+            if (authVal.Length != 2)
             {
-                "A" => (true, "a さん"),
-                "B" => (true, "b さん"),
-                _ => (false, ""),
-            };
+                return await Task.FromResult(AuthenticateResult.Fail("Authorizationヘッダ値のフォーマットが不正です。`Authorization: Bearer [token]`の形式で指定してください。"));
+            }
+            string token = authVal[1];
+            User user = JWTHelper.Decode(token);
+            var p = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                {
+                    new Claim("hoge", "fuga"),
+                },
+                "JWT")
+            );
+            return await Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(p, "Api")));
         }
-
-        var (ok, name) = tryGetApiKey(Context);
-
-        if (!ok)
+        catch (Exception ex)
         {
-            return Task.FromResult(AuthenticateResult.Fail("Invalid API Key"));
+            return await Task.FromResult(AuthenticateResult.Fail($"予期しない例外が発生しました。{ex.Message}"));
         }
+        //         (bool ok, string name) tryGetApiKey(HttpContext context)
+        //         {
+        //             if (!context.Request.Headers.TryGetValue("API_KEY", out var apiKey))
+        //             {
+        //                 return (false, "");
+        //             }
 
-        var p = new ClaimsPrincipal(new ClaimsIdentity(new[]
-        {
-        new Claim(ClaimTypes.Name, name),
-    }, "MyAuthType"));
+        //             return apiKey.ToString() switch
+        //             {
+        //                 "A" => (true, "a さん"),
+        //                 "B" => (true, "b さん"),
+        //                 _ => (false, ""),
+        //             };
+        //         }
 
-        return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(
-            p, "Api"
-        )));
+        //         var (ok, name) = tryGetApiKey(Context);
+
+        //         if (!ok)
+        //         {
+        //             return Task.FromResult(AuthenticateResult.Fail("Invalid API Key"));
+        //         }
+
+        //         var p = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        //         {
+        //     new Claim(ClaimTypes.Name, name),
+        // }, "MyAuthType"));
+
+        //         return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(
+        //             p, "Api"
+        //         )));
     }
 }

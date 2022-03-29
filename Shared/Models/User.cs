@@ -59,10 +59,7 @@ public class User
     /// ハッシュ化したパスワード
     /// </summary>
     /// <value></value>
-    public string HashedPassword
-    {
-        get; set;
-    }
+    public string HashedPassword { get; set; } = string.Empty;
 
     /// <summary>
     /// ロール
