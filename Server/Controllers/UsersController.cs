@@ -159,25 +159,25 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpPost]
-    [Route(Const.API_BASE_PATH_V1 + "users/login")]
-    public async Task<ActionResult<TokenResponse>> Login([FromBody] AuthenticateRequest auth)
-    {
-        var query = _context.Users.AsQueryable();
-        var user = await query.Where(x => x.Email == auth.Email).FirstOrDefaultAsync<User>();
-        if (user == null) return Unauthorized();
-        if (user.Authenticate(auth.PlainPassword))
-        {
-            Console.WriteLine("未認証なのでJWTを生成して返す");
-            string token = JWTHelper.Encode(user);
-            var tokenResp = new TokenResponse() { Token = token };
-            return Ok(tokenResp);
-        }
-        else
-        {
-            return Unauthorized();
-        }
-    }
+    // [HttpPost]
+    // [Route(Const.API_BASE_PATH_V1 + "users/login")]
+    // public async Task<ActionResult<TokenResponse>> Login([FromBody] AuthenticateRequest auth)
+    // {
+    //     var query = _context.Users.AsQueryable();
+    //     var user = await query.Where(x => x.Email == auth.Email).FirstOrDefaultAsync<User>();
+    //     if (user == null) return Unauthorized();
+    //     if (user.Authenticate(auth.PlainPassword))
+    //     {
+    //         Console.WriteLine("未認証なのでJWTを生成して返す");
+    //         string token = JWTHelper.Encode(user);
+    //         var tokenResp = new TokenResponse() { Token = token };
+    //         return Ok(tokenResp);
+    //     }
+    //     else
+    //     {
+    //         return Unauthorized();
+    //     }
+    // }
 
     // [HttpPost]
     // [Route(Const.API_BASE_PATH_V1 + "hoge")]
@@ -186,10 +186,10 @@ public class UsersController : ControllerBase
     //     return Ok();
     // }
 
-    private bool UserExists(int id)
-    {
-        return _context.Users.Any(e => e.Id == id);
-    }
+    // private bool UserExists(int id)
+    // {
+    //     return _context.Users.Any(e => e.Id == id);
+    // }
     /// <summary>
     /// DBモデルからクライアント用モデルへの変換
     /// </summary>
