@@ -75,30 +75,31 @@ Visual Studio Codeでプロジェクトを開きF5。
 # DBマイグレーション
 
 1. モデルの修正
-    ./Shared/Models/*.cs を編集
-2. マイグレーションの追加
     ```
     $ cd HogeBlazor/Server
+    ./Shared/Models/*.cs を編集
+    ```
+2. マイグレーションの追加
+    ```
     $ dotnet ef migrations add [マイグレーション名]
 3. マイグレーションの実行
     ```
-    $ cd HogeBlazor
-    $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj 
+    $ dotnet ef database update
     ```
 # DBマイグレーションのリセット
 開発を進めていて、マイグレーションをキレイにしたいときに実行する。
 1. データベースの削除
     ```
+    $ cd HogeBlazor/Server
     $ mysql -h 127.0.0.1 -uroot -p -e "drop database hoge_blazor;"
     ```
 
 2. マイグレーションファイルの削除
     ```
-    $ rm ./Servers/Migrations/*
+    $ rm ./Migrations/*
     ```
 3. マイグレーションの追加
     ```
-    $ cd HogeBlazor/Server
     $ dotnet ef migrations add InitialCreate
 4. マイグレーションの実行
     ```
@@ -122,9 +123,23 @@ Visual Studio Codeでプロジェクトを開きF5。
     成功!   -失敗:     0、合格:     1、スキップ:     0、合計:     1、期間: < 1 ms - /Users/wataru/github/blazor-example/HogeBlazor/Server.Test/bin/Debug/net6.0/Server.Test.dll (net6.0)
     ```
 
+    個別のテストプロジェクトフォルダ配下でテストを実行すると、テスト対象プロジェクトを絞り込める。
+
+    ```
+    $ cd ~/Server.Test
+    $ dotnet test
+    ```
+
+    さらに、`--filter`オプションでテスト対象関数やクラスを絞り込める。
+
+    ```
+    $ dotnet test --filter ClaimsToUserReturnsValidValue
+    ```
+
 # デプロイ手順
 mainブランチを更新。
 あとは`.github/workflows/deploy_ecs_aws.yml`に従ってAmazon ECSにデプロイが実行される。
+（余分な料金がかからないよう、普段はECSを削除してある）
 
 - 参考
     - [Amazon Elastic Container Serviceへのデプロイ](https://docs.github.com/ja/actions/deployment/deploying-to-your-cloud-provider/deploying-to-amazon-elastic-container-service)
@@ -191,8 +206,3 @@ mainブランチを更新。
     $ dotnet sln add Server.Test/Server.Test.csproj 
     $ dotnet sln add Shared.Test/Shared.Test.csproj 
     ```
-
-
-# TODO
-- マイグレーションと初期データ投入の実装
-- コンテナで動くMySQLにコンテナで動くWebAppから接続
