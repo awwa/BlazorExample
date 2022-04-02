@@ -39,8 +39,8 @@ public class User
     /// 平文のパスワード
     /// </summary>
     /// <value></value>
+    [NotMapped]
     [Required(ErrorMessage = "{0}を入力する必要があります。")]
-    // [PlainPassword]
     [StringLength(100, MinimumLength = 8, ErrorMessage = "{0}は文字数{2}から{1}の範囲内である必要があります。")]
     public string PlainPassword
     {
@@ -59,11 +59,7 @@ public class User
     /// ハッシュ化したパスワード
     /// </summary>
     /// <value></value>
-    [Column("Password")]
-    public string HashedPassword
-    {
-        get; set;
-    }
+    public string HashedPassword { get; set; } = string.Empty;
 
     /// <summary>
     /// ロール
@@ -106,6 +102,8 @@ public class User
         Guest
     }
 
+    // 独自のコンストラクタを作ってしまうと、EntityFrameworkがマイグレーションをする際にそれを使用してしまう。
+    // NotMappedなカラムを引数にできなくなるため、デフォルトコンストラクタを利用するよう独自のコンストラクタは削除した。
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -113,14 +111,14 @@ public class User
     /// <param name="email">メールアドレス</param>
     /// <param name="plainPassword">パスワード</param>
     /// <param name="role">ロール</param>
-    public User(string name, string email, string plainPassword, RoleType role)
-    {
-        this.Name = name;
-        this.Email = email;
-        this.PlainPassword = plainPassword;
-        this.HashedPassword = hash(plainPassword);
-        this.Role = role;
-    }
+    // public User(string name, string email, string plainPassword, RoleType role)
+    // {
+    //     this.Name = name;
+    //     this.Email = email;
+    //     this.PlainPassword = plainPassword;
+    //     this.HashedPassword = hash(plainPassword);
+    //     this.Role = role;
+    // }
 
     // public User(int id, string name, string email, RoleType role)
     // {
@@ -139,6 +137,11 @@ public class User
     public static string hash(string plain)
     {
         return BCrypt.Net.BCrypt.HashPassword(plain, workFactor: 5);
+    }
+
+    public bool Authenticate(string plainPassword)
+    {
+        return BCrypt.Net.BCrypt.Verify(plainPassword, this.HashedPassword);
     }
 
     // public class PlainPasswordAttribute : ValidationAttribute

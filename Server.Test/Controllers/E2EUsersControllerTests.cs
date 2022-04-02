@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System;
 using static HogeBlazor.Server.Controllers.UsersController;
+using System.Threading.Tasks;
 
 namespace HogeBlazor.Server.Test.Controllers;
 
@@ -32,13 +33,32 @@ public class E2EUsersControllerTests
         var _context = new HogeBlazorDbContext(options);
     }
 
-    [Fact]
-    public async void GetUserByQueryReturnsUserList()
+    private async Task<string> Login(string email, string plainPassword)
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?name=管理者&email=admin@hogeblazor&role=0");
+        var param = new Dictionary<string, object>()
+        {
+            ["email"] = email,
+            ["plainPassword"] = plainPassword,
+        };
+        var jsonString = System.Text.Json.JsonSerializer.Serialize(param);
+        var content = new StringContent(jsonString, Encoding.UTF8, @"application/json");
+        HttpResponseMessage responseLogin = await _client.PostAsync("/api/v1/auth/login", content);
+        var responseLoginBody = await responseLogin.Content.ReadAsStringAsync();
+        Assert.NotNull(responseLoginBody);
+        var token = JsonSerializer.Deserialize<TokenResponse>(responseLoginBody);
+        return token!.Token;
+    }
+
+    [Fact]
+    public async void GetUserByQueryReturnsUserListWithLogin()
+    {
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者&email=admin@hogeblazor&role=0");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        string responseBody = await response.Content.ReadAsStringAsync();
+        var responseBody = await response.Content.ReadAsStringAsync();
         Assert.NotNull(responseBody);
         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
         if (users != null)
@@ -52,9 +72,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsEmptyListIfNoExists()
+    public async void GetUserByQueryReturnsEmptyListIfNoExistsWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?name=存在しない");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=存在しない");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
@@ -71,9 +94,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsDTOObjectListForAll()
+    public async void GetUserByQueryReturnsDTOObjectListForAllWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
@@ -90,9 +116,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsDTOObjectListByName()
+    public async void GetUserByQueryReturnsDTOObjectListByNameWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?name=管理者");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
@@ -109,9 +138,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsDTOObjectListByEmail()
+    public async void GetUserByQueryReturnsDTOObjectListByEmailWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?email=user@hogeblazor");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?email=user@hogeblazor");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
@@ -128,9 +160,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsDTOObjectListByRole()
+    public async void GetUserByQueryReturnsDTOObjectListByRoleWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?role=2");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?role=2");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
@@ -147,9 +182,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsDTOObjectListByNameAndEmail()
+    public async void GetUserByQueryReturnsDTOObjectListByNameAndEmailWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?name=管理者&email=admin@hogeblazor");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者&email=admin@hogeblazor");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
@@ -166,9 +204,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsDTOObjectListByEmailAndRole()
+    public async void GetUserByQueryReturnsDTOObjectListByEmailAndRoleWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?email=admin@hogeblazor&role=0");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?email=admin@hogeblazor&role=0");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();
@@ -185,9 +226,12 @@ public class E2EUsersControllerTests
     }
 
     [Fact]
-    public async void GetUserByQueryReturnsDTOObjectListByNameAndRole()
+    public async void GetUserByQueryReturnsDTOObjectListByNameAndRoleWithLogin()
     {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/users/?name=管理者&role=0");
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者&role=0");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         string responseBody = await response.Content.ReadAsStringAsync();

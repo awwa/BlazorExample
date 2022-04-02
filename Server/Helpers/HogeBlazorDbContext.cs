@@ -32,43 +32,44 @@ public class HogeBlazorDbContext : DbContext
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
         // 初期データの投入
         modelBuilder.Entity<User>().HasData(
-            new User(name: "管理者", email: "admin@hogeblazor", plainPassword: "password", role: User.RoleType.Admin)
+            new User()
             {
-                Id = 1
+                Id = 1,
+                Name = "管理者",
+                Email = "admin@hogeblazor",
+                PlainPassword = "password",
+                Role = User.RoleType.Admin
             }
         );
         modelBuilder.Entity<User>().HasData(
-            new User(
-                name: "削除済みユーザー",
-                email: "deleted@hogeblazor",
-                plainPassword: "password",
-                role: User.RoleType.Admin
-            )
+            new User()
             {
                 Id = 2,
+                Name = "削除済みユーザー",
+                Email = "deleted@hogeblazor",
+                PlainPassword = "password",
+                Role = User.RoleType.Admin,
                 IsDel = true
             }
         );
         modelBuilder.Entity<User>().HasData(
-            new User(
-                name: "一般ユーザー",
-                email: "user@hogeblazor",
-                plainPassword: "password",
-                role: User.RoleType.User
-            )
+            new User()
             {
-                Id = 3
+                Id = 3,
+                Name = "一般ユーザー",
+                Email = "user@hogeblazor",
+                PlainPassword = "password",
+                Role = User.RoleType.User
             }
         );
         modelBuilder.Entity<User>().HasData(
-            new User(
-                name: "ゲストユーザー",
-                email: "guest@hogeblazor",
-                plainPassword: "password",
-                role: User.RoleType.Guest
-            )
+            new User()
             {
-                Id = 4
+                Id = 4,
+                Name = "ゲストユーザー",
+                Email = "guest@hogeblazor",
+                PlainPassword = "password",
+                Role = User.RoleType.Guest
             }
         );
     }

@@ -3,23 +3,69 @@ using System.Diagnostics;
 using Pomelo.EntityFrameworkCore.MySql;
 using HogeBlazor.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+builder.Services.AddControllersWithViews(options =>
+    {
+        // すべてのアクセスに対してjwtの認証保護を適用する
+        options.Filters.Add(
+            new AuthorizeFilter(
+                new AuthorizationPolicyBuilder(
+                    JwtBearerDefaults.AuthenticationScheme
+                ).RequireAuthenticatedUser().Build()
+            )
+        );
+    });
 
-//builder.Services.AddDbContext<HogeBlazorDbContext>();
+// ASP.NET jwtのログイン認証を実装する
+// https://zukucode.com/2021/04/aspnet-jwt-auth.html
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var secret = builder.Configuration.GetValue<string>("AuthSecret");
+        var issuer = builder.Configuration.GetValue<string>("Issuer");
+        var audience = builder.Configuration.GetValue<string>("Audience");
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            ClockSkew = TimeSpan.Zero
+        };
+        options.Events = new JwtBearerEvents()
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+                {
+                    // "X-Access-Tokenのcookieが存在する場合はこの値を認証トークンとして扱う
+                    context.Token = context.Request.Cookies["X-Access-Token"];
+                }
+                return Task.CompletedTask;
+            }
+        };
+    });
 
-// builder.Services.AddMvcCore();
-// builder.Services.AddMvc();
-builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddOpenApiDocument();
 
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .Build();
-builder.Configuration.AddConfiguration(configuration);
 string connectionString = builder.Configuration.GetConnectionString("HogeBlazorDatabase");
 builder.Services.AddDbContext<HogeBlazorDbContext>(
     options => options.UseMySql(connectionString: connectionString,
@@ -40,16 +86,19 @@ else
     // app.UseExceptionHandler("/Error");
 }
 
+app.UseHttpsRedirection();
+
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
 app.UseOpenApi();
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapRazorPages();
-app.MapControllers();
+app.MapDefaultControllerRoute();
 app.MapFallbackToFile("index.html");
-//app.UseMvc();
 
 app.Run();
 

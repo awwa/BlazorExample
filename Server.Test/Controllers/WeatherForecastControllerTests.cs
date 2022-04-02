@@ -22,13 +22,13 @@ public class WeatherForecastControllerTest
         _client = application.CreateClient();
     }
 
-    [Fact]
-    public async void Test2()
-    {
-        HttpResponseMessage response = await _client.GetAsync("/api/v1/WeatherForecast");
-        //response.EnsureSuccessStatusCode();
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        string responseBody = await response.Content.ReadAsStringAsync();
-        Debug.WriteLine(responseBody);
-    }
+    // [Fact]
+    // public async void Test2()
+    // {
+    //     HttpResponseMessage response = await _client.GetAsync("/api/v1/WeatherForecast");
+    //     //response.EnsureSuccessStatusCode();
+    //     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    //     string responseBody = await response.Content.ReadAsStringAsync();
+    //     Debug.WriteLine(responseBody);
+    // }
 }
