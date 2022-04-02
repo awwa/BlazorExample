@@ -73,14 +73,7 @@ public class AuthController : ControllerBase
     /// <returns></returns>
     private string GenerateToken(User user)
     {
-        var claims = new[] {
-            // 必要な認証情報を追加する
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim(ClaimTypes.Sid, user.Id.ToString())
-
-        };
+        List<Claim> claims = ClaimsHelper.UserToClaims(user);
         var secret = _configuration.GetValue<string>("AuthSecret");
         var issuer = _configuration.GetValue<string>("Issuer");
         var audience = _configuration.GetValue<string>("Audience");
@@ -88,7 +81,7 @@ public class AuthController : ControllerBase
         var token = new JwtSecurityToken(
             issuer,
             audience,
-            claims,
+            claims.ToArray<Claim>(),
             expires: DateTime.Now.AddMinutes(30),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
         );

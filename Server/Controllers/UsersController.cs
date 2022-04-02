@@ -49,12 +49,19 @@ public class UsersController : ControllerBase
     /// <returns></returns>
     [Authorize]
     [HttpGet]
-    [Route(Const.API_BASE_PATH_V1 + "users")]
+    [Route(Const.API_BASE_PATH_V1 + "[controller]")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDTO>))]
     public async Task<ActionResult<List<UserDTO>>> GetUserByQuery(
         [FromQuery] string? name = null, string? email = null, User.RoleType? role = null
     )
     {
+
+        // Console.WriteLine("***************");
+        // Console.WriteLine(Request.Cookies["X-Access-Token"]);
+        // ClaimsPrincipal hoge = HttpContext.User;
+        // Console.WriteLine(hoge.FindFirst(ClaimTypes.Name).Value);
+
+
         var exList = new List<Expression<Func<User, bool>>>();
         if (name != null) exList.Add(x => x.Name == name);
         if (email != null) exList.Add(x => x.Email == email);
@@ -74,7 +81,7 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <returns>該当データが見つかった場合：StatusOk+UserDTO、見つからなかった場合：StatusNotFound</returns>
     [HttpGet]
-    [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
+    [Route(Const.API_BASE_PATH_V1 + "[controller]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetUserById(int id)
@@ -94,7 +101,7 @@ public class UsersController : ControllerBase
     /// <param name="id">削除するユーザーのID</param>
     /// <returns>空</returns>
     [HttpDelete]
-    [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
+    [Route(Const.API_BASE_PATH_V1 + "[controller]/{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteUser(int id)
@@ -116,7 +123,7 @@ public class UsersController : ControllerBase
     /// <param name="updUser">更新するユーザー情報。更新対象プロパティ：Name, Email, PlainPassword, Role</param>
     /// <returns>ユーザーID</returns>
     [HttpPatch]
-    [Route(Const.API_BASE_PATH_V1 + "users/{id}")]
+    [Route(Const.API_BASE_PATH_V1 + "[controller]/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> PatchUser(int id, [FromBody] User updUser)
@@ -140,7 +147,7 @@ public class UsersController : ControllerBase
     /// <param name="user">追加するユーザー</param>
     /// <returns>更新後のユーザーデータ</returns>
     [HttpPost]
-    [Route(Const.API_BASE_PATH_V1 + "users")]
+    [Route(Const.API_BASE_PATH_V1 + "[controller]")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserDTO>> PostUser(User user)
