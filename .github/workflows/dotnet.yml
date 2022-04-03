@@ -22,6 +22,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Create DB image
-      run: docker-compose up -d mysql
+      run: docker-compose up -d
     - name: Test
       run: dotnet test --no-build --verbosity normal
