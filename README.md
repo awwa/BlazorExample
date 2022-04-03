@@ -1,6 +1,8 @@
 # 環境の構築
 
 - [Visual Studio Code](https://code.visualstudio.com/download)のインストール
+    - 拡張機能のインストール
+        - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
 - [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
 - EntityFramework Coreツールのインストール
     ```
@@ -13,6 +15,10 @@
 - OpenAPIツールのインストール
     ```
     $ dotnet tool install -g Microsoft.dotnet-openapi
+    ```
+- Amazon.Lambda.Templatesのインストール
+    ```
+    $ dotnet new -i Amazon.Lambda.Templates
     ```
 # ビルド手順
     1. git clone
@@ -205,4 +211,10 @@ mainブランチを更新。
     $ dotnet sln add Client.Test/Client.Test.csproj 
     $ dotnet sln add Server.Test/Server.Test.csproj 
     $ dotnet sln add Shared.Test/Shared.Test.csproj 
+    ```
+- AWS Lambda向けプロジェクトの作成
+    ```
+    $ dotnet new lambda.EmptyFunction --name HogeFunction
+    $ dotnet sln add HogeFunction/src/HogeFunction/HogeFunction.csproj
+    $ dotnet sln add HogeFunction/test/HogeFunction.Tests/HogeFunction.Tests.csproj
     ```
