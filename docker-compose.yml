@@ -7,6 +7,14 @@ services:
     container_name: "hoge-blazor-web-app"
     ports:
       - 80:80
+     links:
+      - mysql
+    entrypoint:
+      - dockerize
+      - -timeout
+      - 60s
+      - -wait
+      - tcp://mysql:3306
     command: [ "dotnet", "watch", "run" ]
   mysql:
     container_name: hoge-blazor-mysql
