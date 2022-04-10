@@ -25,7 +25,7 @@ public class E2EUsersControllerTests
         var application = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
-                builder.UseSetting("https_port", "5000");
+                builder.UseSetting("http_port", "5000");
             });
         _client = application.CreateClient();
 
@@ -42,9 +42,8 @@ public class E2EUsersControllerTests
         };
         var jsonString = System.Text.Json.JsonSerializer.Serialize(param);
         var content = new StringContent(jsonString, Encoding.UTF8, @"application/json");
-        HttpResponseMessage responseLogin = await _client.PostAsync("/api/v1/auth/login", content);
+        HttpResponseMessage responseLogin = await _client.PostAsync("/api/v1/Auth/login", content);
         var responseLoginBody = await responseLogin.Content.ReadAsStringAsync();
-        Assert.NotNull(responseLoginBody);
         var token = JsonSerializer.Deserialize<TokenResponse>(responseLoginBody);
         return token!.Token;
     }

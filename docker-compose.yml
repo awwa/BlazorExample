@@ -1,20 +1,16 @@
-version: "3.1"
+version: "3.9"
 services:
   webapp:
     build:
       context: .
       dockerfile: Docker/webapp/Dockerfile
     container_name: "hoge-blazor-web-app"
+    networks:
+      - appnet
     ports:
-      - 80:80
-     links:
+      - 5000:5000
+    links:
       - mysql
-    entrypoint:
-      - dockerize
-      - -timeout
-      - 60s
-      - -wait
-      - tcp://mysql:3306
     command: [ "dotnet", "watch", "run" ]
   mysql:
     container_name: hoge-blazor-mysql
@@ -22,7 +18,19 @@ services:
     build: ./Docker/mysql
     volumes:
       - ./Docker/mysql/db:/docker-entrypoint-initdb.d #初期データをマウントする場所
+    networks:
+      - appnet
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password #コンテナ内のMySQLを起動する際のパスワードを設定
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+networks:
+  appnet:
+    driver: bridge
+    ipam:
+      driver: default

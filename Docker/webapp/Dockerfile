@@ -2,25 +2,40 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
 
-# Prepare for waiting DB
-RUN apt-get update && apt-get install -y wget
-ENV DOCKERIZE_VERSION v0.6.1
-RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+RUN dotnet tool install -g Microsoft.dotnet-openapi
 
 # copy csproj and restore as distinct layers
 COPY Client/. ./Client/
+COPY Client.Test/. ./Client.Test/
 COPY Server/. ./Server/
+COPY Server.Test/. ./Server.Test/
 COPY Shared/. ./Shared/
-RUN dotnet restore ./Server/HogeBlazor.Server.csproj
+COPY Shared.Test/. ./Shared.Test/
+COPY HogeFunction/. ./HogeFunction/
+COPY OpenApi/. ./OpenApi/
+COPY HogeBlazor.sln ./
+# RUN dotnet restore ./Server/HogeBlazor.Server.csproj
+RUN dotnet build ./Server/HogeBlazor.Server.csproj
+
+# build API Client
+# RUN curl -fsSL https://deb.nodesource.com/setup_17.x | -E bash -
+# RUN apt-get install -y nodejs
+RUN apt update
+RUN apt install npm -y
+RUN npm install nswag -g
+RUN nswag run ./OpenApi/nswag.json
 
 # copy everything else and build app
 WORKDIR /source/Server
-RUN dotnet publish -c release -o /app --no-restore
+COPY Server/Settings/appsettings.Release.json /source/Server/appsettings.json
+RUN dotnet publish -c Release -o /app --no-restore
+# COPY Server/Settings/appsettings.Release.json /app/appsettings.json
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
-COPY --from=build /app ./
+# COPY --from=build /app ./
+# COPY --from=build /usr/local/bin/dockerize /usr/local/bin/
+ENV PATH $PATH:/root/.dotnet/tools
+RUN dotnet tool install --global dotnet-ef
 ENTRYPOINT ["dotnet", "HogeBlazor.Server.dll"]

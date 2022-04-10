@@ -151,6 +151,36 @@ mainブランチを更新。
     - [Amazon Elastic Container Serviceへのデプロイ](https://docs.github.com/ja/actions/deployment/deploying-to-your-cloud-provider/deploying-to-amazon-elastic-container-service)
     - [GitHub ActionsからECSとECRへのCI/CDを最小権限で実行したい](https://dev.classmethod.jp/articles/github-actions-ecs-ecr-minimum-iam-policy/)
 
+# 環境の説明
+- ローカル開発環境
+    - WebApp
+        - ホスト名：localhost
+        - 待受ポート：5000
+    - Database
+        - ホスト名：localhost
+        - 待受ポート：3306
+- GitHub Actionsテスト環境
+    - WebApp
+        - ホスト名：localhost
+        - 待受ポート：80
+    - Database
+        - ホスト名：mysql
+        - 待受ポート：3306
+- Amazon ECR
+    - WebApp
+        - ホスト名：aws.ecr.amazon.com
+        - 待受ポート：80
+    - Database
+        - ホスト名：aws.rds.amazon.com
+        - 待受ポート：3306
+- Amazon EC2
+    - WebApp
+        - ホスト名：aws.ec2.amazon.com
+        - 待受ポート：5000
+    - Database
+        - ホスト名：aws.rds.amazon.com
+        - 待受ポート：3306
+
 # プロジェクトの構築手順
 ゼロからプロジェクトを構築する手順をまとめた。
 リポジトリをクローンしたらこの手順は不要。

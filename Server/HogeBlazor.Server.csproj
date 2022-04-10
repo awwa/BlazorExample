@@ -33,4 +33,7 @@
     <ProjectReference Include="..\Shared\HogeBlazor.Shared.csproj" />
   </ItemGroup>
 
+  <Target Name="CopyStaging" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetDir)\Settings\appsettings.$(Configuration).json" DestinationFiles="$(TargetDir)\appsettings.json" SkipUnchangedFiles="false" />
+  </Target>
 </Project>

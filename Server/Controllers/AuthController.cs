@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace HogeBlazor.Server.Controllers;
 
@@ -42,16 +43,18 @@ public class AuthController : ControllerBase
         {
             var token = GenerateToken(user);
             var tokenResp = new TokenResponse() { Token = token };
+            string json = JsonSerializer.Serialize(tokenResp);
             // ASP.NET jwtの認証トークンをcookieで保持する方法
             // https://zukucode.com/2021/04/aspnet-jwt-cookie.html
             Response.Cookies.Append(
                 "X-Access-Token",
                 token,
                 new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Lax, Secure = true });
-            return Ok(tokenResp);
+            return Ok(json);
         }
         else
         {
+            Console.WriteLine("Unauthorized");
             return Unauthorized();
         }
     }
