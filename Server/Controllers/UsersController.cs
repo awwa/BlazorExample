@@ -55,13 +55,6 @@ public class UsersController : ControllerBase
         [FromQuery] string? name = null, string? email = null, User.RoleType? role = null
     )
     {
-
-        // Console.WriteLine("***************");
-        // Console.WriteLine(Request.Cookies["X-Access-Token"]);
-        // ClaimsPrincipal hoge = HttpContext.User;
-        // Console.WriteLine(hoge.FindFirst(ClaimTypes.Name).Value);
-
-
         var exList = new List<Expression<Func<User, bool>>>();
         if (name != null) exList.Add(x => x.Name == name);
         if (email != null) exList.Add(x => x.Email == email);

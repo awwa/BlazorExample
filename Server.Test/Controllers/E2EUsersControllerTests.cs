@@ -33,6 +33,12 @@ public class E2EUsersControllerTests
         var _context = new HogeBlazorDbContext(options);
     }
 
+    /// <summary>
+    /// ログイン
+    /// </summary>
+    /// <param name="email">メールアドレス</param>
+    /// <param name="plainPassword">パスワード</param>
+    /// <returns></returns>
     private async Task<string> Login(string email, string plainPassword)
     {
         var param = new Dictionary<string, object>()
@@ -244,6 +250,59 @@ public class E2EUsersControllerTests
         {
             Assert.False(users != null);
         }
+    }
+
+    [Fact]
+    public async void GetUserByQueryReturnsUnauthorizedWithoutLogin()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者&email=admin@hogeblazor&role=0");
+        var response = await _client.SendAsync(request);
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+    }
+
+    [Fact]
+    public async void GetUserByIdReturnsUserDTOWithLogin()
+    {
+        var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/1");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        var user = JsonSerializer.Deserialize<UserDTO>(responseBody);
+        if (user != null)
+        {
+            Assert.IsType<UserDTO>(user);
+        }
+        else
+        {
+            Assert.False(user != null);
+        }
+    }
+
+    [Fact]
+    public async void GetUserByIdReturnsUnauthorizedWithoutLogin()
+    {
+        // var token = await Login("admin@hogeblazor", "password");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/1");
+        // request.Headers.Add("Authorization", "Bearer " + token);
+        var response = await _client.SendAsync(request);
+        // response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        // var responseBody = await response.Content.ReadAsStringAsync();
+        // Assert.NotNull(responseBody);
+        // var user = JsonSerializer.Deserialize<UserDTO>(responseBody);
+        // if (user != null)
+        // {
+        //     Assert.IsType<UserDTO>(user);
+        // }
+        // else
+        // {
+        //     Assert.False(user != null);
+        // }
     }
 
     // Userモデルのアノテーションによる制限がAPIアクセス時にかかっていることは確認済み
