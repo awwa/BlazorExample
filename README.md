@@ -1,8 +1,14 @@
+# 前提条件
+- OS
+    - Linux or MacOS
+        - （Windowsでの起動は未確認）
+
 # 環境の構築
 
 - [Visual Studio Code](https://code.visualstudio.com/download)のインストール
     - 拡張機能のインストール
         - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+        - [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
 - [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
 - EntityFramework Coreツールのインストール
     ```
@@ -20,6 +26,7 @@
     ```
     $ dotnet new -i Amazon.Lambda.Templates
     ```
+- [Docker本体](https://docs.docker.com/get-docker/)のインストール
 # ビルド手順
     1. git clone
     ```
@@ -40,17 +47,18 @@
     ```
     5. データベースの構築
     ```
-    $ docker-compose build
-    $ docker-compose up -d mysql
+    $ docker compose build
+    $ docker compose up -d mysql
     ```
     6. データベース起動確認
+    mysqlの起動を確認する。
     ```
-    $ docker-compose logs mysql
+    $ docker compose logs mysql
     hoge-blazor-mysql | 2022-03-12T01:11:30.952203Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.28'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
     ```
     7. データベースの構築
     ```
-    $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj 
+    $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj
     ```
 
 # データベースの確認
@@ -63,7 +71,7 @@
     > desc Users;
     ```
 
-# デバッグ
+# VSCode上でのデバッグ実行
 Visual Studio Codeでプロジェクトを開きF5。
 
 # 開発用インスタンスの実行
