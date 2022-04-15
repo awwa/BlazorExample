@@ -16,5 +16,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Shared\HogeBlazor.Shared.csproj" />
   </ItemGroup>
-
 </Project>
