@@ -256,3 +256,6 @@ mainブランチを更新。
     $ dotnet sln add HogeFunction/src/HogeFunction/HogeFunction.csproj
     $ dotnet sln add HogeFunction/test/HogeFunction.Tests/HogeFunction.Tests.csproj
     ```
+
+# 参考情報
+- [AuthenticationStateProvider in Blazor WebAssembly](https://code-maze.com/authenticationstateprovider-blazor-webassembly/)

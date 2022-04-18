@@ -1,5 +1,7 @@
-﻿@page "/counter"
+﻿@page "/products"
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <AuthorizeView>
     <Authorized>
@@ -21,17 +23,8 @@
 @code {
     private int currentCount = 0;
 
-    [CascadingParameter]
-    public Task<AuthenticationState> AuthState { get; set; }
-
-    private async Task IncrementCount()
+    private void IncrementCount()
     {
-        var authState = await AuthState;
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-            currentCount++;
-        else
-            currentCount--;
+        currentCount++;
     }
 }
