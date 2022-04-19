@@ -14,14 +14,14 @@ public class WeatherForecastController : ControllerBase
     };
 
     // private readonly ILogger<WeatherForecastController> _logger;
-    private readonly HogeBlazorDbContext _context;
+    private readonly ProductContext _context;
 
     // public WeatherForecastController(ILogger<WeatherForecastController> logger)
     // {
     //     _logger = logger;
     // }
 
-    public WeatherForecastController(HogeBlazorDbContext context)
+    public WeatherForecastController(ProductContext context)
     {
         _context = context;
     }
@@ -30,7 +30,7 @@ public class WeatherForecastController : ControllerBase
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
         //_logger.LogInformation("Hoge Get");
-        await _context.Database.EnsureCreatedAsync();
+        // await _context.Database.EnsureCreatedAsync();
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {

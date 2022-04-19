@@ -14,63 +14,76 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using System.Configuration;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Services.AddControllersWithViews(options =>
-    {
-        // すべてのアクセスに対してjwtの認証保護を適用する
-        options.Filters.Add(
-            new AuthorizeFilter(
-                new AuthorizationPolicyBuilder(
-                    JwtBearerDefaults.AuthenticationScheme
-                ).RequireAuthenticatedUser().Build()
-            )
-        );
-    });
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ProductContext>();
+
+builder.Services.AddControllersWithViews();
+
+// builder.Services.AddControllersWithViews(options =>
+//     {
+//       // すべてのアクセスに対してjwtの認証保護を適用する
+//       options.Filters.Add(
+//           new AuthorizeFilter(
+//               new AuthorizationPolicyBuilder(
+//                   JwtBearerDefaults.AuthenticationScheme
+//               ).RequireAuthenticatedUser().Build()
+//           )
+//       );
+//     });
 
 // ASP.NET jwtのログイン認証を実装する
 // https://zukucode.com/2021/04/aspnet-jwt-auth.html
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        var secret = builder.Configuration.GetValue<string>("AuthSecret");
-        var issuer = builder.Configuration.GetValue<string>("Issuer");
-        var audience = builder.Configuration.GetValue<string>("Audience");
-        options.TokenValidationParameters = new TokenValidationParameters()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = issuer,
-            ValidAudience = audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-            ClockSkew = TimeSpan.Zero
-        };
-        options.Events = new JwtBearerEvents()
-        {
-            OnMessageReceived = context =>
-            {
-                if (context.Request.Cookies.ContainsKey("X-Access-Token"))
-                {
-                    // "X-Access-Tokenのcookieが存在する場合はこの値を認証トークンとして扱う
-                    context.Token = context.Request.Cookies["X-Access-Token"];
-                }
-                return Task.CompletedTask;
-            }
-        };
-    });
+// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//     .AddJwtBearer(options =>
+//     {
+//       var secret = builder.Configuration.GetValue<string>("AuthSecret");
+//       var issuer = builder.Configuration.GetValue<string>("Issuer");
+//       var audience = builder.Configuration.GetValue<string>("Audience");
+//       options.TokenValidationParameters = new TokenValidationParameters()
+//       {
+//         ValidateIssuer = true,
+//         ValidateAudience = true,
+//         ValidateLifetime = true,
+//         ValidateIssuerSigningKey = true,
+//         ValidIssuer = issuer,
+//         ValidAudience = audience,
+//         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+//         ClockSkew = TimeSpan.Zero
+//       };
+//       options.Events = new JwtBearerEvents()
+//       {
+//         OnMessageReceived = context =>
+//         {
+//           if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+//           {
+//                 // "X-Access-Tokenのcookieが存在する場合はこの値を認証トークンとして扱う
+//             context.Token = context.Request.Cookies["X-Access-Token"];
+//           }
+//           return Task.CompletedTask;
+//         }
+//       };
+//     });
 
 builder.Services.AddRazorPages();
 builder.Services.AddOpenApiDocument();
 
 string connectionString = builder.Configuration.GetConnectionString("HogeBlazorDatabase");
-builder.Services.AddDbContext<HogeBlazorDbContext>(
+// builder.Services.AddDbContext<HogeBlazorDbContext>(
+//     options => options.UseMySql(connectionString: connectionString,
+//             new MySqlServerVersion(new Version(8, 0, 28)))
+// );
+builder.Services.AddDbContext<ProductContext>(
     options => options.UseMySql(connectionString: connectionString,
             new MySqlServerVersion(new Version(8, 0, 28)))
 );
+
+// builder.Services.AddScoped<IProductHttpRepository, ProductHttpRepository>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 

@@ -29,8 +29,8 @@ public class E2EUsersControllerTests
             });
         _client = application.CreateClient();
 
-        var options = new DbContextOptions<HogeBlazorDbContext>();
-        var _context = new HogeBlazorDbContext(options);
+        // var options = new DbContextOptions<HogeBlazorDbContext>();
+        // var _context = new HogeBlazorDbContext(options);
     }
 
     /// <summary>
