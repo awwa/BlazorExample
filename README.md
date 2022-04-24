@@ -9,6 +9,11 @@
     - 拡張機能のインストール
         - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
         - [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+    - 推奨設定
+        - タブサイズ(Tab size: 4)
+        - 改行コード(EoL: \n)
+        - 空白文字の表示(Render Whitespace: boundary)
+        - ファイル保存時のフォーマット(Editor: Format On Save: true)
 - [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
 - EntityFramework Coreツールのインストール
     ```
@@ -259,3 +264,5 @@ mainブランチを更新。
 
 # 参考情報
 - [AuthenticationStateProvider in Blazor WebAssembly](https://code-maze.com/authenticationstateprovider-blazor-webassembly/)
+- [Blazor WebAssembly Registration Functionality with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-registration-aspnetcore-identity/)
+- [Blazor WebAssembly Authentication with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/)

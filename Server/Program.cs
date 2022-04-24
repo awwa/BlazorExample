@@ -15,12 +15,38 @@ using Microsoft.AspNetCore.Authorization;
 using System.Configuration;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using HogeBlazor.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ProductContext>();
+
+// Blazor WebAssembly Authentication with ASP.NET Core Identity
+// https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
+// var jwtSettings = Configuration.Get
+var jwtSettings = new JWTSettings();
+builder.Configuration.GetSection("JWTSettings").Bind(jwtSettings);
+
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        ValidIssuer = jwtSettings.ValidIssuer,
+        ValidAudience = jwtSettings.ValidAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecurityKey))
+    };
+});
 
 builder.Services.AddControllersWithViews();
 

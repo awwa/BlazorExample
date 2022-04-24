@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using HogeBlazor.Shared.Models;
 using HogeBlazor.Server.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HogeBlazor.Server.Controllers;
 
 [ApiController]
 [Route($"{Const.API_BASE_PATH_V1}[controller]")]
+[Authorize]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
