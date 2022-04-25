@@ -3,6 +3,7 @@ using System;
 using HogeBlazor.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HogeBlazor.Server.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    partial class ProductContextModelSnapshot : ModelSnapshot
+    [Migration("20220424053828_InitialRoleSeed")]
+    partial class InitialRoleSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,7 +129,72 @@ namespace HogeBlazor.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("HogeBlazor.Shared.Models.User2", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "e1079f5e-7a04-4b26-9c03-b001a6425cc8",
+                            ConcurrencyStamp = "726217f2-a58e-4fd1-b727-26fea3d3f3dd",
+                            Name = "Viewer",
+                            NormalizedName = "VIEWER"
+                        },
+                        new
+                        {
+                            Id = "51eb3b84-c5e2-496d-8a86-5baa26f245a1",
+                            ConcurrencyStamp = "934a692e-7d78-4e1b-ab04-b5fb3e9bde6f",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -169,13 +236,6 @@ namespace HogeBlazor.Server.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
@@ -196,71 +256,6 @@ namespace HogeBlazor.Server.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "a78340f9-c829-4a4a-b378-4c7c6f04b314",
-                            ConcurrencyStamp = "c5ceb352-1551-4a3f-93a0-53cd85ff9079",
-                            Name = "Viewer",
-                            NormalizedName = "VIEWER"
-                        },
-                        new
-                        {
-                            Id = "6b892aca-dc7c-44aa-9bb8-43ad0ed38f70",
-                            ConcurrencyStamp = "d83ddb90-38e3-4f90-9129-ae294d55a2ed",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -353,7 +348,7 @@ namespace HogeBlazor.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("HogeBlazor.Shared.Models.User2", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -362,7 +357,7 @@ namespace HogeBlazor.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("HogeBlazor.Shared.Models.User2", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -377,7 +372,7 @@ namespace HogeBlazor.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HogeBlazor.Shared.Models.User2", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -386,7 +381,7 @@ namespace HogeBlazor.Server.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("HogeBlazor.Shared.Models.User2", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

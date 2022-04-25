@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HogeBlazor.Server.Controllers;
 
-[ApiController]
 [Route($"{Const.API_BASE_PATH_V1}[controller]")]
-[Authorize]
+[ApiController]
+[Authorize(Roles = "Administrator")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
@@ -29,7 +29,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<WeatherForecast>> Get()
+    public IEnumerable<WeatherForecast> Get()
     {
         //_logger.LogInformation("Hoge Get");
         // await _context.Database.EnsureCreatedAsync();

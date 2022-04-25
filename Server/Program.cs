@@ -16,11 +16,13 @@ using System.Configuration;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using HogeBlazor.Server.Models;
+using HogeBlazor.Shared.Models;
+using HogeBlazor.Server.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<User2, IdentityRole>()
     .AddEntityFrameworkStores<ProductContext>();
 
 // Blazor WebAssembly Authentication with ASP.NET Core Identity
@@ -108,8 +110,10 @@ builder.Services.AddDbContext<ProductContext>(
             new MySqlServerVersion(new Version(8, 0, 28)))
 );
 
-// builder.Services.AddScoped<IProductHttpRepository, ProductHttpRepository>();
+//builder.Services.AddScoped<IProductHttpRepository, ProductHttpRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

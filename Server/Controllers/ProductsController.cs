@@ -1,0 +1,28 @@
+using HogeBlazor.Server.Helpers;
+using HogeBlazor.Server.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
+namespace HogeBlazor.Server.Controllers;
+
+[Route(Const.API_BASE_PATH_V1 + "[controller]")]
+[ApiController]
+[Authorize]
+public class ProductsController : ControllerBase
+{
+    private readonly IProductRepository _repo;
+
+    public ProductsController(IProductRepository repo)
+    {
+        _repo = repo;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var products = await _repo.GetProducts();
+        Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(products.MetaData));
+        return Ok(products);
+    }
+}

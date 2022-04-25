@@ -13,11 +13,11 @@ namespace HogeBlazor.Client.Pages
         private UserForAuthenticationDto _userForAuthentication = new UserForAuthenticationDto();
 
         [Inject]
-        public IAuthenticationService AuthenticationService { get; set; }
+        public IAuthenticationService AuthenticationService { get; set; } = default!;
         [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        public NavigationManager NavigationManager { get; set; } = default!;
         public bool ShowAuthError { get; set; }
-        public string Error { get; set; }
+        public string Error { get; set; } = default!;
 
         public async Task ExecuteLogin()
         {

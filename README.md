@@ -266,3 +266,5 @@ mainブランチを更新。
 - [AuthenticationStateProvider in Blazor WebAssembly](https://code-maze.com/authenticationstateprovider-blazor-webassembly/)
 - [Blazor WebAssembly Registration Functionality with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-registration-aspnetcore-identity/)
 - [Blazor WebAssembly Authentication with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/)
+- [Role-Based Authorization with Blazor WebAssembly](https://code-maze.com/blazor-webassembly-role-based-authorization/)
+- [Refresh Token with Blazor WebAssembly and ASP.NET Core Web API](https://code-maze.com/refresh-token-with-blazor-webassembly-and-asp-net-core-web-api/)
