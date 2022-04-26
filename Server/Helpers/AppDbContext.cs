@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HogeBlazor.Server.Helpers;
 
-public class ProductContext : IdentityDbContext<User2>
+public class AppDbContext : IdentityDbContext<User>
 {
-    public ProductContext(DbContextOptions options) : base(options)
+    public AppDbContext(DbContextOptions options) : base(options)
     {
     }
 

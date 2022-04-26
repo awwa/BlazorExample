@@ -1,24 +1,20 @@
 @page "/products"
 @using System.Security.Claims
+@using Helpers
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Administrator")]
 
-<div class="row">
-    <div class="col-md-5">
-        <!-- <Search OnSearchChanged="SarchChanged" /> -->
-    </div>
-    <div class="col-md-5">
-        <!-- <Sort OnSortChanged="SortChanged" /> -->
-    </div>
-    <div class="col-md-2">
-        <a href="/createProduct">Create Product</a>
-    </div>
-</div>
-<div class="row">
-    <!-- <ProductTable Products="ProductList" OnDeleted="DeleteProduct" /> -->
-</div>
-<div class="row">
-    <div class="col">
-        <!-- <Pagination MetaData="MetaData" Spread="2" SelectedPage="SelectedPage" /> -->
-    </div>
-</div>
+<RadzenDataList WrapItems="true" AllowPaging="true" Data="@ProductList" TItem="Product" PageSize="5"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Template Context="product">
+        <RadzenCard Style="width: 100%; padding: 0; overflow: hidden;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 p-3 product-title">
+                        @(product.Name)
+                    </div>
+                </div>
+            </div>
+        </RadzenCard>
+    </Template>
+</RadzenDataList>

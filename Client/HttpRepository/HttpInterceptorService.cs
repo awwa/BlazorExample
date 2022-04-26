@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Toolbelt.Blazor;
 
 namespace HogeBlazor.Client.HttpRepository;
@@ -17,6 +18,7 @@ public class HttpInterceptorService
 
     public async Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e)
     {
+        // TODO nullチェックを改善したい
         if (e == null) throw new ArgumentNullException();
         if (e.Request == null) throw new ArgumentNullException();
         if (e.Request.RequestUri == null) throw new ArgumentNullException();

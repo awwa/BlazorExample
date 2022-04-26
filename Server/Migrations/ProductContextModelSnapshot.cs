@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HogeBlazor.Server.Migrations
 {
-    [DbContext(typeof(ProductContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class ProductContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -22,8 +22,8 @@ using HogeBlazor.Server.Repository;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Services.AddIdentity<User2, IdentityRole>()
-    .AddEntityFrameworkStores<ProductContext>();
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 // Blazor WebAssembly Authentication with ASP.NET Core Identity
 // https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
@@ -105,7 +105,7 @@ string connectionString = builder.Configuration.GetConnectionString("HogeBlazorD
 //     options => options.UseMySql(connectionString: connectionString,
 //             new MySqlServerVersion(new Version(8, 0, 28)))
 // );
-builder.Services.AddDbContext<ProductContext>(
+builder.Services.AddDbContext<AppDbContext>(
     options => options.UseMySql(connectionString: connectionString,
             new MySqlServerVersion(new Version(8, 0, 28)))
 );

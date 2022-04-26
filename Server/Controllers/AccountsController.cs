@@ -11,21 +11,20 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace HogeBlazor.Server.Controllers;
 
+[Route($"{Const.API_BASE_PATH_V1}[controller]")]
 [ApiController]
 public class AccountsController : ControllerBase
 {
-    private readonly UserManager<User2> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly ITokenService _tokenService;
 
-    public AccountsController(UserManager<User2> userManager, ITokenService tokenService)
+    public AccountsController(UserManager<User> userManager, ITokenService tokenService)
     {
         _userManager = userManager;
         _tokenService = tokenService;
     }
 
-    // [Route("api/accounts")]
-    // [HttpPost("Registration")]
-    [Route(Const.API_BASE_PATH_V1 + "[controller]/register")]
+    [Route("register")]
     [HttpPost]
     public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
     {
@@ -34,7 +33,7 @@ public class AccountsController : ControllerBase
             return BadRequest();
         }
 
-        var user = new User2 { UserName = userForRegistration.Email, Email = userForRegistration.Email };
+        var user = new User { UserName = userForRegistration.Email, Email = userForRegistration.Email };
         var result = await _userManager.CreateAsync(user, userForRegistration.Password);
         if (!result.Succeeded)
         {
@@ -45,7 +44,7 @@ public class AccountsController : ControllerBase
         return StatusCode(201);
     }
 
-    [Route(Const.API_BASE_PATH_V1 + "[controller]/login")]
+    [Route("login")]
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] UserForAuthenticationDto userForAuthentication)
     {

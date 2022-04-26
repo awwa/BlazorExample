@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HogeBlazor.Server.Migrations
 {
-    [DbContext(typeof(ProductContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20220418150615_IdentityTablesCreation")]
     partial class IdentityTablesCreation
     {

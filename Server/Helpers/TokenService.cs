@@ -13,9 +13,9 @@ public class TokenService : ITokenService
 {
     private readonly IConfiguration _configuration;
     private readonly JWTSettings _jwtSettings = new JWTSettings();
-    private readonly UserManager<User2> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public TokenService(IConfiguration configuration, UserManager<User2> userManager)
+    public TokenService(IConfiguration configuration, UserManager<User> userManager)
     {
         _configuration = configuration;
         _configuration.GetSection("JwtSettings").Bind(_jwtSettings);
@@ -30,7 +30,7 @@ public class TokenService : ITokenService
         return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
     }
 
-    public async Task<List<Claim>> GetClaims(User2 user)
+    public async Task<List<Claim>> GetClaims(User user)
     {
         var claims = new List<Claim>
         {

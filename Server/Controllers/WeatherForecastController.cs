@@ -16,14 +16,14 @@ public class WeatherForecastController : ControllerBase
     };
 
     // private readonly ILogger<WeatherForecastController> _logger;
-    private readonly ProductContext _context;
+    private readonly AppDbContext _context;
 
     // public WeatherForecastController(ILogger<WeatherForecastController> logger)
     // {
     //     _logger = logger;
     // }
 
-    public WeatherForecastController(ProductContext context)
+    public WeatherForecastController(AppDbContext context)
     {
         _context = context;
     }

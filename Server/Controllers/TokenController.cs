@@ -7,21 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HogeBlazor.Server.Controllers;
 
-[Route(Const.API_BASE_PATH_V1 + "[controller]")]
+[Route($"{Const.API_BASE_PATH_V1}[controller]")]
 [ApiController]
 public class TokenController : ControllerBase
 {
-    private readonly UserManager<User2> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly ITokenService _tokenService;
 
-    public TokenController(UserManager<User2> userManager, ITokenService tokenService)
+    public TokenController(UserManager<User> userManager, ITokenService tokenService)
     {
         _userManager = userManager;
         _tokenService = tokenService;
     }
 
-    [HttpPost]
     [Route("refresh")]
+    [HttpPost]
     public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto tokenDto)
     {
         if (tokenDto is null)
