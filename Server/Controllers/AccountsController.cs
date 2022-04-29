@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using HogeBlazor.Server.Helpers;
 using HogeBlazor.Server.Models;
-using HogeBlazor.Shared.DTO;
+using HogeBlazor.Shared.Helpers;
 using HogeBlazor.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,27 +26,33 @@ public class AccountsController : ControllerBase
 
     [Route("register")]
     [HttpPost]
-    public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    public async Task<ActionResult<RegistrationResponseDto>> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
     {
-        if (userForRegistration is null || !ModelState.IsValid)
+        if (userForRegistration is null)
         {
-            return BadRequest();
+            var descriptor = new ValidationProblemDetails(new Dictionary<string, string[]> { { "default", new[] { "userForRegistration is null" } } });
+            return ValidationProblem(descriptor);
         }
-
         var user = new User { UserName = userForRegistration.Email, Email = userForRegistration.Email };
         var result = await _userManager.CreateAsync(user, userForRegistration.Password);
         if (!result.Succeeded)
         {
             var errors = result.Errors.Select(e => e.Description);
-            return BadRequest(new RegistrationResponseDto { Errors = errors });
+            var descriptor = new ValidationProblemDetails(new Dictionary<string, string[]> { { "default", errors.ToArray<string>() } });
+            return ValidationProblem(descriptor);
         }
+        // ユーザ登録時のデフォルトロール
         await _userManager.AddToRoleAsync(user, "Viewer");
-        return StatusCode(201);
+        return CreatedAtAction(nameof(RegisterUser), new RegistrationResponseDto());
     }
 
     [Route("login")]
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] UserForAuthenticationDto userForAuthentication)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AuthResponseDto))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(AuthResponseDto))]
+    public async Task<ActionResult<AuthResponseDto>> Login([FromBody] UserForAuthenticationDto userForAuthentication)
     {
         var user = await _userManager.FindByNameAsync(userForAuthentication.Email);
 

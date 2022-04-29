@@ -1,5 +1,4 @@
-using HogeBlazor.Client.HttpRepository;
-using HogeBlazor.Shared.DTO;
+using HogeBlazor.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -22,16 +21,15 @@ namespace HogeBlazor.Client.Pages
         public async Task ExecuteLogin()
         {
             ShowAuthError = false;
-
-            var result = await AuthenticationService.Login(_userForAuthentication);
-            if (!result.IsAuthSuccessful)
+            try
             {
-                Error = result.ErrorMessage;
-                ShowAuthError = true;
-            }
-            else
-            {
+                await AuthenticationService.Login(_userForAuthentication);
                 NavigationManager.NavigateTo("/");
+            }
+            catch (ApiException<AuthResponseDto> ex)
+            {
+                Error = ex.Result.ErrorMessage;
+                ShowAuthError = true;
             }
         }
     }

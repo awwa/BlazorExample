@@ -8,26 +8,26 @@ namespace HogeBlazor.Client.Test.Pages;
 /// </summary>
 public class CounterCSharpTests : TestContext
 {
-	[Fact]
-	public void CounterStartsAtZero()
-	{
-		// Arrange
-		var cut = RenderComponent<Counter>();
+    [Fact]
+    public void CounterStartsAtZero()
+    {
+        // Arrange
+        var cut = RenderComponent<Counter>();
 
-		// Assert that content of the paragraph shows counter at zero
-		cut.Find("p").MarkupMatches("<p role=\"status\">Current count: 0</p>");
-	}
+        // Assert that content of the paragraph shows counter at zero
+        cut.Find("p").MarkupMatches("<p role=\"status\">Current count: 0</p>");
+    }
 
-	[Fact]
-	public void ClickingButtonIncrementsCounter()
-	{
-		// Arrange
-		var cut = RenderComponent<Counter>();
+    [Fact]
+    public void ClickingButtonIncrementsCounter()
+    {
+        // Arrange
+        var cut = RenderComponent<Counter>();
 
-		// Act - click button to increment counter
-		cut.Find("button").Click();
+        // Act - click button to increment counter
+        cut.Find("button").Click();
 
-		// Assert that the counter was incremented
-		cut.Find("p").MarkupMatches("<p role=\"status\">Current count: 1</p>");
-	}
+        // Assert that the counter was incremented
+        cut.Find("p").MarkupMatches("<p role=\"status\">Current count: 1</p>");
+    }
 }

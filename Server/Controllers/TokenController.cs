@@ -1,6 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using HogeBlazor.Server.Helpers;
-using HogeBlazor.Shared.DTO;
+using HogeBlazor.Shared.Helpers;
 using HogeBlazor.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ public class TokenController : ControllerBase
 
     [Route("refresh")]
     [HttpPost]
-    public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto tokenDto)
+    public async Task<ActionResult<AuthResponseDto>> Refresh([FromBody] RefreshTokenDto tokenDto)
     {
         if (tokenDto is null)
         {

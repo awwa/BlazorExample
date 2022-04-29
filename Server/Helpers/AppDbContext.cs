@@ -1,4 +1,3 @@
-using HogeBlazor.Server.Configuration;
 using HogeBlazor.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,9 +14,12 @@ public class AppDbContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        // 初期データ投入
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new RoleConfiguration());
+        modelBuilder.ApplyConfiguration(new WeatherForecastConfiguration());
     }
 
     public DbSet<Product> Products { get; set; } = default!;
+    public DbSet<WeatherForecast> WeatherForecasts { get; set; } = default!;
 }

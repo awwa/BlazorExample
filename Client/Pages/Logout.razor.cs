@@ -1,4 +1,4 @@
-using HogeBlazor.Client.HttpRepository;
+using HogeBlazor.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 
 namespace HogeBlazor.Client.Pages;

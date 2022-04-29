@@ -1,5 +1,4 @@
-using HogeBlazor.Client.HttpRepository;
-using HogeBlazor.Shared.DTO;
+using HogeBlazor.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -17,21 +16,21 @@ namespace HogeBlazor.Client.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; } = default!;
         public bool ShowRegistrationErrors { get; set; }
-        public IEnumerable<string> Errors { get; set; } = default!;
+        public IEnumerable<string> Errors { get; set; } = new List<string>();
 
         public async Task Register()
         {
             ShowRegistrationErrors = false;
-
-            var result = await AuthenticationService.RegisterUser(_userForRegistration);
-            if (!result.IsSuccessfulRegistration)
+            try
             {
-                Errors = result.Errors;
-                ShowRegistrationErrors = true;
-            }
-            else
-            {
+                await AuthenticationService.RegisterUser(_userForRegistration);
                 NavigationManager.NavigateTo("/");
+            }
+            catch (ApiException<ValidationProblemDetails> ex)
+            {
+                var key = ex.Result.Errors.Keys.FirstOrDefault<string>("default");
+                Errors = ex.Result.Errors[key];
+                ShowRegistrationErrors = true;
             }
         }
     }

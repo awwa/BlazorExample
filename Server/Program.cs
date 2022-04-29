@@ -110,8 +110,12 @@ builder.Services.AddDbContext<AppDbContext>(
             new MySqlServerVersion(new Version(8, 0, 28)))
 );
 
+// ControllerのURLを小文字に変換
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 //builder.Services.AddScoped<IProductHttpRepository, ProductHttpRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
