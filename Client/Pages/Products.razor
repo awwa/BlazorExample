@@ -1,0 +1,20 @@
+@page "/products"
+@using System.Security.Claims
+@using Helpers
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Administrator")]
+
+<RadzenDataList WrapItems="true" AllowPaging="true" Data="@ProductList" TItem="Product" PageSize="5"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Template Context="product">
+        <RadzenCard Style="width: 100%; padding: 0; overflow: hidden;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 p-3 product-title">
+                        @(product.Name)
+                    </div>
+                </div>
+            </div>
+        </RadzenCard>
+    </Template>
+</RadzenDataList>
