@@ -2,9 +2,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Blazored.LocalStorage;
+using HogeBlazor.Client.Helpers;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace HogeBlazor.Client.Helpers;
+namespace HogeBlazor.Client.Services;
 
 public class AuthenticationService : IAuthenticationService
 {

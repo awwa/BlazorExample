@@ -1,4 +1,4 @@
-// using BlazorProducts.Server.Paging;
+using HogeBlazor.Server.Db;
 using HogeBlazor.Server.Helpers;
 using HogeBlazor.Shared.Models;
 using Microsoft.EntityFrameworkCore;

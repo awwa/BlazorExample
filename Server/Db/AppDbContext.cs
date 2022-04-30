@@ -1,9 +1,10 @@
+using HogeBlazor.Server.Db.Configurations;
 using HogeBlazor.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace HogeBlazor.Server.Helpers;
+namespace HogeBlazor.Server.Db;
 
 public class AppDbContext : IdentityDbContext<User>
 {

@@ -1,5 +1,7 @@
 
-namespace HogeBlazor.Client.Helpers;
+using HogeBlazor.Client.Helpers;
+
+namespace HogeBlazor.Client.Repositories;
 
 public class WeatherForecastHttpRepository : IWeatherForecastHttpRepository
 {

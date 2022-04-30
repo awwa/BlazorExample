@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace HogeBlazor.Server.Migrations
+namespace HogeBlazor.Server.Db.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -72,7 +73,8 @@ namespace HogeBlazor.Server.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Date = table.Column<LocalDate>(type: "date", nullable: false),
+                    Time = table.Column<LocalTime>(type: "time", nullable: false),
                     TemperatureC = table.Column<int>(type: "integer", nullable: false),
                     Summary = table.Column<string>(type: "text", nullable: true)
                 },
@@ -192,8 +194,8 @@ namespace HogeBlazor.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0dbd283a-68c1-4370-9458-5d6ee409bdd1", "bcfadc36-ff2d-4831-99af-c881c8d0c5a4", "Administrator", "ADMINISTRATOR" },
-                    { "5d7a2b8c-6026-4d9a-aabf-c0f95b0fea9d", "3e401ec8-3cef-43a8-8182-7a2af1916233", "Viewer", "VIEWER" }
+                    { "48535ff7-5454-4d04-aedd-26e655f5db40", "7d597c34-da4a-4995-b32d-ed92ac8641ff", "Viewer", "VIEWER" },
+                    { "d3e77ce4-4358-49bc-b478-493ea1d541f6", "4841bc9a-93e4-49e6-8e78-d4ac4e8e7e02", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -215,14 +217,14 @@ namespace HogeBlazor.Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "WeatherForecasts",
-                columns: new[] { "Id", "Date", "Summary", "TemperatureC" },
+                columns: new[] { "Id", "Date", "Summary", "TemperatureC", "Time" },
                 values: new object[,]
                 {
-                    { 1, new DateOnly(2022, 5, 18), "雨", 15 },
-                    { 2, new DateOnly(2022, 5, 19), "晴れのち曇", 18 },
-                    { 3, new DateOnly(2022, 5, 20), "晴", 22 },
-                    { 4, new DateOnly(2022, 5, 21), "台風", 26 },
-                    { 5, new DateOnly(2022, 5, 22), "曇", 21 }
+                    { 1, new NodaTime.LocalDate(2022, 5, 18), "雨", 15, new NodaTime.LocalTime(12, 34, 56) },
+                    { 2, new NodaTime.LocalDate(2022, 5, 18), "晴れのち曇", 18, new NodaTime.LocalTime(12, 34, 56) },
+                    { 3, new NodaTime.LocalDate(2022, 5, 18), "晴", 22, new NodaTime.LocalTime(12, 34, 56) },
+                    { 4, new NodaTime.LocalDate(2022, 5, 18), "台風", 26, new NodaTime.LocalTime(12, 34, 56) },
+                    { 5, new NodaTime.LocalDate(2022, 5, 18), "曇", 21, new NodaTime.LocalTime(12, 34, 56) }
                 });
 
             migrationBuilder.CreateIndex(

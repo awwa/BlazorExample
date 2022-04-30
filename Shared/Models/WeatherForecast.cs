@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using NodaTime;
 
 namespace HogeBlazor.Shared.Models;
 
 public class WeatherForecast
 {
     public int Id { get; set; }
-    public DateOnly Date { get; set; }
+    public LocalDate Date { get; set; }
+    public LocalTime Time { get; set; }
 
     public int TemperatureC { get; set; }
 

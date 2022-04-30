@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Toolbelt.Blazor;
 
-namespace HogeBlazor.Client.Helpers;
+namespace HogeBlazor.Client.Services;
 
 public class HttpInterceptorService
 {

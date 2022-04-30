@@ -7,6 +7,8 @@ using Blazored.LocalStorage;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using HogeBlazor.Client.Helpers;
+using HogeBlazor.Client.Repositories;
+using HogeBlazor.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

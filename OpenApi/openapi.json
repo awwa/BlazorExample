@@ -407,6 +407,10 @@
             "type": "string",
             "format": "date"
           },
+          "time": {
+            "type": "string",
+            "format": "time"
+          },
           "temperatureC": {
             "type": "integer",
             "format": "int32"

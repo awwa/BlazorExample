@@ -19,6 +19,10 @@ using HogeBlazor.Server.Models;
 using HogeBlazor.Shared.Models;
 using HogeBlazor.Server.Repository;
 using Npgsql;
+using NodaTime.Serialization.JsonNet;
+using Microsoft.AspNetCore.Mvc;
+using NodaTime;
+using HogeBlazor.Server.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -28,7 +32,6 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 // Blazor WebAssembly Authentication with ASP.NET Core Identity
 // https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
-// var jwtSettings = Configuration.Get
 var jwtSettings = new JWTSettings();
 builder.Configuration.GetSection("JWTSettings").Bind(jwtSettings);
 
@@ -51,7 +54,9 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 
-builder.Services.AddControllersWithViews();
+// NodaTimeのLocalDate、LocalTime型をJsonシリアライズする際に"YYYY-MM-DD", "HH:MM:SS"フォーマットに変換する設定
+builder.Services.AddControllersWithViews()
+.AddNewtonsoftJson(s => s.SerializerSettings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb));
 
 // builder.Services.AddControllersWithViews(options =>
 //     {
@@ -110,7 +115,7 @@ builder.Services.AddOpenApiDocument();
 // Postgresを使う場合
 string npgsqlConnString = builder.Configuration.GetConnectionString("PostgresDatabase");
 builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseNpgsql(connectionString: npgsqlConnString)
+    options => options.UseNpgsql(connectionString: npgsqlConnString, sql => sql.UseNodaTime())
 );
 
 // ControllerのURLを小文字に変換

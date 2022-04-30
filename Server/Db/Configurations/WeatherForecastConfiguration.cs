@@ -1,8 +1,9 @@
 using HogeBlazor.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NodaTime;
 
-namespace HogeBlazor.Server.Helpers;
+namespace HogeBlazor.Server.Db.Configurations;
 
 public class WeatherForecastConfiguration : IEntityTypeConfiguration<WeatherForecast>
 {
@@ -13,35 +14,40 @@ public class WeatherForecastConfiguration : IEntityTypeConfiguration<WeatherFore
             new WeatherForecast
             {
                 Id = 1,
-                Date = DateOnly.Parse("2022-05-18"),
+                Date = new LocalDate(2022, 5, 18),
+                Time = new LocalTime(12, 34, 56),
                 TemperatureC = 15,
                 Summary = "雨",
             },
             new WeatherForecast
             {
                 Id = 2,
-                Date = DateOnly.Parse("2022-05-19"),
+                Date = new LocalDate(2022, 5, 18),
+                Time = new LocalTime(12, 34, 56),
                 TemperatureC = 18,
                 Summary = "晴れのち曇",
             },
             new WeatherForecast
             {
                 Id = 3,
-                Date = DateOnly.Parse("2022-05-20"),
+                Date = new LocalDate(2022, 5, 18),
+                Time = new LocalTime(12, 34, 56),
                 TemperatureC = 22,
                 Summary = "晴",
             },
             new WeatherForecast
             {
                 Id = 4,
-                Date = DateOnly.Parse("2022-05-21"),
+                Date = new LocalDate(2022, 5, 18),
+                Time = new LocalTime(12, 34, 56),
                 TemperatureC = 26,
                 Summary = "台風",
             },
             new WeatherForecast
             {
                 Id = 5,
-                Date = DateOnly.Parse("2022-05-22"),
+                Date = new LocalDate(2022, 5, 18),
+                Time = new LocalTime(12, 34, 56),
                 TemperatureC = 21,
                 Summary = "曇",
             }

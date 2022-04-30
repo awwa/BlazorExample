@@ -21,14 +21,16 @@
 最初はなるべくシンプルなフォルダ構成にするが、開発が進んで肥大化してきたら適当にフォルダを分ける。
 
 ### Client
-コードビハインド(razor.cs)やCSSの構成は未定。プロジェクトの拡大を見越してある程度の構造化を検討する必要あり。
+コードビハインド(*.razor.cs)やCSS(*.razor.css)の構成計画は未定。最初はなるべくシンプルな構成にしたいが、プロジェクトの拡大を見越してある程度の構造化を検討してもよさそう。
 
 |  フォルダ  |  説明  |
 | ---- | ---- |
-|  Helpers  |  画面に依存しない共通処理  |
-|  Pages  |  個別の画面実装  |
+|  Helpers  |  カテゴライズしていない共通処理  |
+|  Pages  |  独立した画面の実装  |
 |  Properties  |  VSCode用の起動設定(現状設定はしてあるが期待通り動いていないはず)  |
-|  Shared  |  画面が依存する共通部品、レイアウト  |
+|  Repositories  |  主に画面とAPIアクセスの間を取り持つクラス群。画面はRepositoryクラスを介してAPIにアクセスする。データアクセスの提供をメイン機能に持つものをRepositoryと呼称。  |
+|  Services  |  主に画面とAPIアクセスの間を取り持つクラス群。構造はRepositoryと同じ。機能提供をメインにしたものをServiceと呼称。  |
+|  Shared  |  画面内の共通部品およびレイアウト  |
 |  wwwroot  |  Web関連のリソース  |
 
 ### Client.Test
@@ -48,11 +50,13 @@ Clientプロジェクトに実装を追加したタイミングでテストも�
 |  フォルダ  |  説明  |
 | ---- | ---- |
 |  Controllers  |  コントローラ実装。APIを追加・変更する場合、このフォルダ配下のファイルを修正する。  |
+|  Db  |  DB関連実装。DbContext、マイグレーション、Seed(Configuration)を含む。  |
 |  Helpers  |  コントローラに依存しない共通処理、DBアクセス実装など  |
 |  Migrations  |  マイグレーション関連ファイル。基本的にEntityFrameworkのマイグレーション機能により自動生成する。  |
 |  Models  |  Serverでのみ参照するモデルファイルを格納  |
 |  Pages  |  テンプレートを元にプロジェクト作成時に存在したフォルダ。精査して不要であれば削除を検討  |
-|  Properties  |  VSCode用の起動設定(こちらは期待通り動くはず)  |
+|  Properties  |  VSCode用の起動設定(Clientプロジェクト配下の設定と違ってこちらは期待通り動くはず)  |
+|  Repositories  |  DbContext経由でDBにアクセスする機能を提供するクラス群。ControllerはRepositoryクラス経由でDBにアクセスする  |
 
 ### Server.Test
 基本的にテスト対象プロジェクトと同じフォルダ構成にする。
@@ -338,3 +342,7 @@ mainブランチを更新。
 - [Blazor WebAssembly Authentication with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/)
 - [Role-Based Authorization with Blazor WebAssembly](https://code-maze.com/blazor-webassembly-role-based-authorization/)
 - [Refresh Token with Blazor WebAssembly and ASP.NET Core Web API](https://code-maze.com/refresh-token-with-blazor-webassembly-and-asp-net-core-web-api/)
+
+## TODO
+- 認証機能を入れたことにより、Client.Testが通らなくなっているので修正したい
+- `Client/Helpers/ApiClient.cs`や`OpenApi/openapi.json`などの自動生成されるファイルはGit管理から外しておきたい（ビルド時に確実に更新されるのであれば外さなくても良いが）

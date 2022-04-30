@@ -4,11 +4,12 @@ using HogeBlazor.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace HogeBlazor.Server.Migrations
+namespace HogeBlazor.Server.Db.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -209,7 +210,7 @@ namespace HogeBlazor.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("Date")
+                    b.Property<LocalDate>("Date")
                         .HasColumnType("date");
 
                     b.Property<string>("Summary")
@@ -217,6 +218,9 @@ namespace HogeBlazor.Server.Migrations
 
                     b.Property<int>("TemperatureC")
                         .HasColumnType("integer");
+
+                    b.Property<LocalTime>("Time")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
@@ -226,37 +230,42 @@ namespace HogeBlazor.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateOnly(2022, 5, 18),
+                            Date = new NodaTime.LocalDate(2022, 5, 18),
                             Summary = "雨",
-                            TemperatureC = 15
+                            TemperatureC = 15,
+                            Time = new NodaTime.LocalTime(12, 34, 56)
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateOnly(2022, 5, 19),
+                            Date = new NodaTime.LocalDate(2022, 5, 18),
                             Summary = "晴れのち曇",
-                            TemperatureC = 18
+                            TemperatureC = 18,
+                            Time = new NodaTime.LocalTime(12, 34, 56)
                         },
                         new
                         {
                             Id = 3,
-                            Date = new DateOnly(2022, 5, 20),
+                            Date = new NodaTime.LocalDate(2022, 5, 18),
                             Summary = "晴",
-                            TemperatureC = 22
+                            TemperatureC = 22,
+                            Time = new NodaTime.LocalTime(12, 34, 56)
                         },
                         new
                         {
                             Id = 4,
-                            Date = new DateOnly(2022, 5, 21),
+                            Date = new NodaTime.LocalDate(2022, 5, 18),
                             Summary = "台風",
-                            TemperatureC = 26
+                            TemperatureC = 26,
+                            Time = new NodaTime.LocalTime(12, 34, 56)
                         },
                         new
                         {
                             Id = 5,
-                            Date = new DateOnly(2022, 5, 22),
+                            Date = new NodaTime.LocalDate(2022, 5, 18),
                             Summary = "曇",
-                            TemperatureC = 21
+                            TemperatureC = 21,
+                            Time = new NodaTime.LocalTime(12, 34, 56)
                         });
                 });
 
@@ -288,15 +297,15 @@ namespace HogeBlazor.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5d7a2b8c-6026-4d9a-aabf-c0f95b0fea9d",
-                            ConcurrencyStamp = "3e401ec8-3cef-43a8-8182-7a2af1916233",
+                            Id = "48535ff7-5454-4d04-aedd-26e655f5db40",
+                            ConcurrencyStamp = "7d597c34-da4a-4995-b32d-ed92ac8641ff",
                             Name = "Viewer",
                             NormalizedName = "VIEWER"
                         },
                         new
                         {
-                            Id = "0dbd283a-68c1-4370-9458-5d6ee409bdd1",
-                            ConcurrencyStamp = "bcfadc36-ff2d-4831-99af-c881c8d0c5a4",
+                            Id = "d3e77ce4-4358-49bc-b478-493ea1d541f6",
+                            ConcurrencyStamp = "4841bc9a-93e4-49e6-8e78-d4ac4e8e7e02",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

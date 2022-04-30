@@ -1,4 +1,6 @@
-namespace HogeBlazor.Client.Helpers;
+using HogeBlazor.Client.Helpers;
+
+namespace HogeBlazor.Client.Services;
 
 public interface IAuthenticationService
 {

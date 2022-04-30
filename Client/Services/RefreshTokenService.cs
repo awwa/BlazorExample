@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace HogeBlazor.Client.Helpers;
+namespace HogeBlazor.Client.Services;
 
 public class RefreshTokenService
 {
