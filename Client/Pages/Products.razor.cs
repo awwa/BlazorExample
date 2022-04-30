@@ -1,8 +1,5 @@
-using System.Security.Claims;
 using HogeBlazor.Client.Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace HogeBlazor.Client.Pages;
 public partial class Products : IDisposable

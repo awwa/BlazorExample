@@ -1,10 +1,80 @@
-# 前提条件
+# HogeBlazor
+.NET 6ベースのWebアプリケーションサンプルプロジェクト。
+
+## ソリューション構成
+
+|  フォルダ  |  説明  |
+| ---- | ---- |
+|  .aws  |  AWS関連設定を格納  |
+|  .github  |  GitHub関連設定を格納  |
+|  Client  |  Blazor WebAssemblyプロジェクト  |
+|  Client.Test  |  Clientプロジェクトのテスト  |
+|  Docker  |  Dockerおよび関連設定ファイルを格納  |
+|  HogeFunction  |  AWS Lambdaプロジェクト  |
+|  OpenApi  |  NSwagおよびOpenApi関連設定ファイルを格納  |
+|  Server  |  ASP.NET Coreプロジェクト  |
+|  Server.Test  |  Serverプロジェクトのテスト  |
+|  Shared  |  共通ライブラリプロジェクト  |
+|  Shared.Test  |  Sharedプロジェクトのテスト  |
+
+## プロジェクト構成
+最初はなるべくシンプルなフォルダ構成にするが、開発が進んで肥大化してきたら適当にフォルダを分ける。
+
+### Client
+コードビハインド(razor.cs)やCSSの構成は未定。プロジェクトの拡大を見越してある程度の構造化を検討する必要あり。
+
+|  フォルダ  |  説明  |
+| ---- | ---- |
+|  Helpers  |  画面に依存しない共通処理  |
+|  Pages  |  個別の画面実装  |
+|  Properties  |  VSCode用の起動設定(現状設定はしてあるが期待通り動いていないはず)  |
+|  Shared  |  画面が依存する共通部品、レイアウト  |
+|  wwwroot  |  Web関連のリソース  |
+
+### Client.Test
+基本的にテスト対象プロジェクトと同じフォルダ構成にする。
+Clientプロジェクトに実装を追加したタイミングでテストも実装する。
+
+### HogeFunction
+`Amazon.Lambda.Templates`で作成したテンプレートプロジェクトをベースにする。
+
+|  フォルダ  |  説明  |
+| ---- | ---- |
+|  src/HogeFunction  |  機能実装  |
+|  test/HogeFunction.Tests  |  HogeFunctionのテスト  |
+
+### Server
+
+|  フォルダ  |  説明  |
+| ---- | ---- |
+|  Controllers  |  コントローラ実装。APIを追加・変更する場合、このフォルダ配下のファイルを修正する。  |
+|  Helpers  |  コントローラに依存しない共通処理、DBアクセス実装など  |
+|  Migrations  |  マイグレーション関連ファイル。基本的にEntityFrameworkのマイグレーション機能により自動生成する。  |
+|  Models  |  Serverでのみ参照するモデルファイルを格納  |
+|  Pages  |  テンプレートを元にプロジェクト作成時に存在したフォルダ。精査して不要であれば削除を検討  |
+|  Properties  |  VSCode用の起動設定(こちらは期待通り動くはず)  |
+
+### Server.Test
+基本的にテスト対象プロジェクトと同じフォルダ構成にする。
+Serverプロジェクトに実装を追加したタイミングでテストも実装する。
+
+### Shared
+
+|  フォルダ  |  説明  |
+| ---- | ---- |
+|  Helpers  |  DBモデルクラス以外の雑多な実装(Dtoクラスはフォルダ分けしてもいいかもしれない)  |
+|  Models  |  DBモデルクラス実装  |
+
+### Shared.Test
+基本的にテスト対象プロジェクトと同じフォルダ構成にする。
+Sharedプロジェクトに実装を追加したタイミングでテストも実装する。
+
+## 開発環境の前提条件
 - OS
     - Linux or MacOS
         - （Windowsでの起動は未確認）
 
-# 環境の構築
-
+## 開発環境の構築
 - [Visual Studio Code](https://code.visualstudio.com/download)のインストール
     - 拡張機能のインストール
         - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
@@ -28,11 +98,13 @@
     $ dotnet tool install -g Microsoft.dotnet-openapi
     ```
 - Amazon.Lambda.Templatesのインストール
+    Lambdaプロジェクトを作成する場合推奨
     ```
     $ dotnet new -i Amazon.Lambda.Templates
     ```
 - [Docker本体](https://docs.docker.com/get-docker/)のインストール
-# ビルド手順
+
+## ビルド手順
     1. git clone
     ```
     $ git clone https://github.com/awwa/blazor-example.git
@@ -43,6 +115,7 @@
     $ dotnet build ./Server/HogeBlazor.Server.csproj
     ```
     3. ServerのControllerからApiクライアントのビルド
+    以下のコマンドを実行することで`~/Client/Helpers/ApiClient.cs`を最新の状態に更新する。
     ```
     $ nswag run ./OpenApi/nswag.json
     ```
@@ -66,7 +139,7 @@
     $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj
     ```
 
-# データベースの確認
+## データベースの確認
 - MySQL
     ```
     $ mysql -h 127.0.0.1 -uroot -p
@@ -76,59 +149,56 @@
     > desc Users;
     ```
 
-# VSCode上でのデバッグ実行
-Visual Studio Codeでプロジェクトを開きF5。
+## デバッグ実行
+### VSCode上でのデバッグ実行
+VSCodeでプロジェクトを開きF5。
 
-# 開発用インスタンスの実行
+### コマンドラインで開発用インスタンスの実行
 - Client
     ```
-    $ cd HogeBlazor/Client
+    $ cd ./Client
     $ dotnet run
     ```
 
 - Server
     ```
-    $ cd HogeBlazor/Server
+    $ cd ./Server
     $ dotnet run
     ```
-# DBマイグレーション
+## DBマイグレーション
 
 1. モデルの修正
-    ```
-    $ cd HogeBlazor/Server
     ./Shared/Models/*.cs を編集
-    ```
 2. マイグレーションの追加
     ```
+    $ cd ./Server
     $ dotnet ef migrations add [マイグレーション名]
 3. マイグレーションの実行
     ```
     $ dotnet ef database update
     ```
-# DBマイグレーションのリセット
+## DBマイグレーションのリセット
 開発を進めていて、マイグレーションをキレイにしたいときに実行する。
 1. データベースの削除
     ```
-    $ cd HogeBlazor/Server
     $ mysql -h 127.0.0.1 -uroot -p -e "drop database hoge_blazor;"
     ```
 
 2. マイグレーションファイルの削除
     ```
-    $ rm ./Migrations/*
+    $ rm ./Server/Migrations/*
     ```
 3. マイグレーションの追加
     ```
+    $ cd ./Server
     $ dotnet ef migrations add InitialCreate
 4. マイグレーションの実行
     ```
     $ dotnet ef database update
     ```
 
-# テスト実行
-
+## テスト実行
     ```
-    $ cd ~/HogeBlazor
     $ dotnet test
     ```
 
@@ -145,7 +215,7 @@ Visual Studio Codeでプロジェクトを開きF5。
     個別のテストプロジェクトフォルダ配下でテストを実行すると、テスト対象プロジェクトを絞り込める。
 
     ```
-    $ cd ~/Server.Test
+    $ cd ./Server.Test
     $ dotnet test
     ```
 
@@ -155,7 +225,7 @@ Visual Studio Codeでプロジェクトを開きF5。
     $ dotnet test --filter ClaimsToUserReturnsValidValue
     ```
 
-# デプロイ手順
+## デプロイ手順
 mainブランチを更新。
 あとは`.github/workflows/deploy_ecs_aws.yml`に従ってAmazon ECSにデプロイが実行される。
 （余分な料金がかからないよう、普段はECSを削除してある）
@@ -164,7 +234,7 @@ mainブランチを更新。
     - [Amazon Elastic Container Serviceへのデプロイ](https://docs.github.com/ja/actions/deployment/deploying-to-your-cloud-provider/deploying-to-amazon-elastic-container-service)
     - [GitHub ActionsからECSとECRへのCI/CDを最小権限で実行したい](https://dev.classmethod.jp/articles/github-actions-ecs-ecr-minimum-iam-policy/)
 
-# 環境の説明
+## 環境の説明
 - ローカル開発環境
     - WebApp
         - ホスト名：localhost
@@ -194,7 +264,7 @@ mainブランチを更新。
         - ホスト名：aws.rds.amazon.com
         - 待受ポート：3306
 
-# プロジェクトの構築手順
+## プロジェクトの構築手順
 ゼロからプロジェクトを構築する手順をまとめた。
 リポジトリをクローンしたらこの手順は不要。
 
@@ -218,14 +288,14 @@ mainブランチを更新。
 - 最初の動作確認
     - Clientの動作確認
     ```
-    $ cd ~/HogeBlazor/Client
+    $ cd ./HogeBlazor/Client
     $ dotnet run
     ```
     コンソール上に表示されたhttp://localhost:{ポート番号}にブラウザからアクセスして「Hello, world!」が表示されたらOK。
     例：`http://localhost:5000/`
     - Serverの動作確認
     ```
-    $ cd ~/HogeBlazor/Server
+    $ cd ./HogeBlazor/Server
     $ dotnet run
     ```
     コンソール上に表示されたURLにControllerのパス付きでアクセスしてJSON配列が返ってきたらOK。
@@ -234,14 +304,14 @@ mainブランチを更新。
 - .gitignoreの追加
     gitリポジトリで不要なファイルを管理しないよう.gitignoreを追加する。
     ```
-    $ cd ~/HogeBlazor
+    $ cd ./HogeBlazor
     $ dotnet new gitignore
     ```
 
 - テストプロジェクトの作成
     Server, Client, Sharedそれぞれ用のテストプロジェクトを追加してテスト対象プロジェクトと関連付ける。
     ```
-    $ cd ~/HogeBlazor
+    $ cd ./HogeBlazor
     # テストプロジェクトの生成
     $ dotnet new bunit --framework xunit -o Client.Test # Client用
     $ dotnet new xunit -o Server.Test                   # Server用
@@ -262,7 +332,7 @@ mainブランチを更新。
     $ dotnet sln add HogeFunction/test/HogeFunction.Tests/HogeFunction.Tests.csproj
     ```
 
-# 参考情報
+## 参考情報
 - [AuthenticationStateProvider in Blazor WebAssembly](https://code-maze.com/authenticationstateprovider-blazor-webassembly/)
 - [Blazor WebAssembly Registration Functionality with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-registration-aspnetcore-identity/)
 - [Blazor WebAssembly Authentication with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/)
