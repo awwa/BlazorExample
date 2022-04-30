@@ -13,35 +13,35 @@ public class WeatherForecastConfiguration : IEntityTypeConfiguration<WeatherFore
             new WeatherForecast
             {
                 Id = 1,
-                Date = DateTime.Parse("2022-05-18"),
+                Date = DateOnly.Parse("2022-05-18"),
                 TemperatureC = 15,
                 Summary = "雨",
             },
             new WeatherForecast
             {
                 Id = 2,
-                Date = DateTime.Parse("2022-05-19"),
+                Date = DateOnly.Parse("2022-05-19"),
                 TemperatureC = 18,
                 Summary = "晴れのち曇",
             },
             new WeatherForecast
             {
                 Id = 3,
-                Date = DateTime.Parse("2022-05-20"),
+                Date = DateOnly.Parse("2022-05-20"),
                 TemperatureC = 22,
                 Summary = "晴",
             },
             new WeatherForecast
             {
                 Id = 4,
-                Date = DateTime.Parse("2022-05-21"),
+                Date = DateOnly.Parse("2022-05-21"),
                 TemperatureC = 26,
                 Summary = "台風",
             },
             new WeatherForecast
             {
                 Id = 5,
-                Date = DateTime.Parse("2022-05-22"),
+                Date = DateOnly.Parse("2022-05-22"),
                 TemperatureC = 21,
                 Summary = "曇",
             }

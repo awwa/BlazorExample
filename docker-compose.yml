@@ -29,6 +29,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  postgres:
+    container_name: hoge-blazor-postgres
+    hostname: hoge-blazor-postgres
+    build: ./Docker/postgres
+    networks:
+      - appnet
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
 networks:
   appnet:
     driver: bridge

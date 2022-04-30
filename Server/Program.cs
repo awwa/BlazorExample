@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using HogeBlazor.Server.Models;
 using HogeBlazor.Shared.Models;
 using HogeBlazor.Server.Repository;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -100,20 +101,21 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddOpenApiDocument();
 
-string connectionString = builder.Configuration.GetConnectionString("HogeBlazorDatabase");
-// builder.Services.AddDbContext<HogeBlazorDbContext>(
+// MySQLを使う場合
+// string connectionString = builder.Configuration.GetConnectionString("HogeBlazorDatabase");
+// builder.Services.AddDbContext<AppDbContext>(
 //     options => options.UseMySql(connectionString: connectionString,
 //             new MySqlServerVersion(new Version(8, 0, 28)))
 // );
+// Postgresを使う場合
+string npgsqlConnString = builder.Configuration.GetConnectionString("PostgresDatabase");
 builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseMySql(connectionString: connectionString,
-            new MySqlServerVersion(new Version(8, 0, 28)))
+    options => options.UseNpgsql(connectionString: npgsqlConnString)
 );
 
 // ControllerのURLを小文字に変換
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-//builder.Services.AddScoped<IProductHttpRepository, ProductHttpRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();

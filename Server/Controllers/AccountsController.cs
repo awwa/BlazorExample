@@ -65,7 +65,7 @@ public class AccountsController : ControllerBase
         var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
         user.RefreshToken = _tokenService.GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7).ToUniversalTime();
 
         await _userManager.UpdateAsync(user);
 
