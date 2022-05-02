@@ -1,7 +1,7 @@
 // using BlazorProducts.Server.Paging;
 using HogeBlazor.Shared.Models;
 
-namespace HogeBlazor.Server.Repository;
+namespace HogeBlazor.Server.Repositories;
 
 public interface IProductRepository
 {

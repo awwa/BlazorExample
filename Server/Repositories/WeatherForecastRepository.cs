@@ -2,7 +2,7 @@ using HogeBlazor.Server.Db;
 using HogeBlazor.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HogeBlazor.Server.Repository;
+namespace HogeBlazor.Server.Repositories;
 
 public class WeatherForecastRepository : IWeatherForecastRepository
 {

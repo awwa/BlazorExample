@@ -18,10 +18,10 @@
 |  Shared.Test  |  Sharedプロジェクトのテスト  |
 
 ## プロジェクト構成
-最初はなるべくシンプルなフォルダ構成にするが、開発が進んで肥大化してきたら適当にフォルダを分ける。
+最初はなるべくシンプルなフォルダ構成にするが、DRY原則に従って開発が進むに従って構造化する。
 
 ### Client
-コードビハインド(*.razor.cs)やCSS(*.razor.css)の構成計画は未定。最初はなるべくシンプルな構成にしたいが、プロジェクトの拡大を見越してある程度の構造化を検討してもよさそう。
+コードビハインド(*.razor.cs)やCSS(*.razor.css)の構成計画は未定。
 
 |  フォルダ  |  説明  |
 | ---- | ---- |
@@ -50,13 +50,13 @@ Clientプロジェクトに実装を追加したタイミングでテストも�
 |  フォルダ  |  説明  |
 | ---- | ---- |
 |  Controllers  |  コントローラ実装。APIを追加・変更する場合、このフォルダ配下のファイルを修正する。  |
-|  Db  |  DB関連実装。DbContext、マイグレーション、Seed(Configuration)を含む。  |
+|  Db  |  DB関連実装。DbContext、EntityFrameworkが自動生成するMigrations、Seed(Configurations)を含む。  |
 |  Helpers  |  コントローラに依存しない共通処理、DBアクセス実装など  |
-|  Migrations  |  マイグレーション関連ファイル。基本的にEntityFrameworkのマイグレーション機能により自動生成する。  |
 |  Models  |  Serverでのみ参照するモデルファイルを格納  |
 |  Pages  |  テンプレートを元にプロジェクト作成時に存在したフォルダ。精査して不要であれば削除を検討  |
 |  Properties  |  VSCode用の起動設定(Clientプロジェクト配下の設定と違ってこちらは期待通り動くはず)  |
 |  Repositories  |  DbContext経由でDBにアクセスする機能を提供するクラス群。ControllerはRepositoryクラス経由でDBにアクセスする  |
+|  Settings  |  構成ごとの設定ファイル  |
 
 ### Server.Test
 基本的にテスト対象プロジェクトと同じフォルダ構成にする。
@@ -77,9 +77,11 @@ Sharedプロジェクトに実装を追加したタイミングでテストも�
 - OS
     - Linux or MacOS
         - （Windowsでの起動は未確認）
+    - Node.js(npm)
+        - nvmの利用を推奨
 
 ## 開発環境の構築
-- [Visual Studio Code](https://code.visualstudio.com/download)のインストール
+1. [Visual Studio Code](https://code.visualstudio.com/download)のインストール
     - 拡張機能のインストール
         - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
         - [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
@@ -88,72 +90,86 @@ Sharedプロジェクトに実装を追加したタイミングでテストも�
         - 改行コード(EoL: \n)
         - 空白文字の表示(Render Whitespace: boundary)
         - ファイル保存時のフォーマット(Editor: Format On Save: true)
-- [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
-- EntityFramework Coreツールのインストール
+2. [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
+3. EntityFramework Coreツールのインストール  
+    dotnetコマンドでEFCoreを利用するために必要。
     ```
     $ dotnet tool install --global dotnet-ef
     ```
-- OpenAPI関連ツールのインストール
+4. OpenAPI関連ツールのインストール  
+    `ApiClient.cs`生成のために必要。
     ```
     $ npm install nswag -g
     ```
-- OpenAPIツールのインストール
+5. OpenAPIツールのインストール  
+    TODO インストール理由を記載する。
     ```
-    $ dotnet tool install -g Microsoft.dotnet-openapi
+    $ dotnet tool install --global Microsoft.dotnet-openapi
     ```
-- Amazon.Lambda.Templatesのインストール
-    Lambdaプロジェクトを作成する場合推奨
+6. Amazon.Lambda.Templatesのインストール  
+    Lambdaプロジェクトを作成する場合インストールを推奨。
     ```
     $ dotnet new -i Amazon.Lambda.Templates
     ```
-- [Docker本体](https://docs.docker.com/get-docker/)のインストール
+7. [Docker本体](https://docs.docker.com/get-docker/)のインストール  
+    環境構築にDockerを利用する場合に必要。各コンポーネント(dbやwebappなど)をOS上で直接実行する場合は不要。Docker Desktopのライセンスに注意。
+8. [pgAdmin](https://www.pgadmin.org/)   
+    UI経由でDBにアクセスする場合インストール。
 
 ## ビルド手順
-    1. git clone
+1. git clone  
+    開発環境上にソースコードを取得する。
     ```
     $ git clone https://github.com/awwa/blazor-example.git
     $ cd HogeBlazor
     ```
-    2. Serverのビルド
+2. Serverのビルド
     ```
     $ dotnet build ./Server/HogeBlazor.Server.csproj
     ```
-    3. ServerのControllerからApiクライアントのビルド
-    以下のコマンドを実行することで`~/Client/Helpers/ApiClient.cs`を最新の状態に更新する。
+3. ServerのControllerからApiクライアントのビルド  
     ```
     $ nswag run ./OpenApi/nswag.json
     ```
-    4. ソリューション全体のビルド
+    このコマンドを実行することで、以下のファイルを最新の状態に更新する。
+    - `~/Client/Helpers/ApiClient.cs`
+    - `~/OpenApi/openapi.json`
+4. ソリューション全体のビルド
     ```
     $ dotnet build
     ```
-    5. データベースの構築
+5. データベースの構築と起動
     ```
-    $ docker compose build
-    $ docker compose up -d mysql
+    $ docker compose build postgres
+    $ docker compose up -d postgres
     ```
-    6. データベース起動確認
-    mysqlの起動を確認する。
+6. データベース起動確認
+    postgresの起動を確認する
     ```
-    $ docker compose logs mysql
-    hoge-blazor-mysql | 2022-03-12T01:11:30.952203Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.28'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+    $ docker compose logs postgres
+    hoge-blazor-postgres  | 2022-05-02 01:40:45.324 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+    hoge-blazor-postgres  | 2022-05-02 01:40:45.324 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+    hoge-blazor-postgres  | 2022-05-02 01:40:45.327 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+    hoge-blazor-postgres  | 2022-05-02 01:40:45.332 UTC [27] LOG:  database system was shut down at 2022-05-02 01:40:39 UTC
+    hoge-blazor-postgres  | 2022-05-02 01:40:45.340 UTC [1] LOG:  database system is ready to accept connections
     ```
-    7. データベースの構築
+7. データベースの構築
     ```
     $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj
     ```
 
-## データベースの確認
-- MySQL
+## デバッグ
+### データベース接続
+- postgres
     ```
-    $ mysql -h 127.0.0.1 -uroot -p
-    > show database;
-    > use hoge_blazor;
-    > show tables;
-    > desc Users;
+    $ docker compose exec postgres bash
+    # psql -U postgres
+    postgres=# \l
+    postgres=# \c hoge_blazor
+    postgres=# \d
+    postgres=# \d "Products"
     ```
 
-## デバッグ実行
 ### VSCode上でのデバッグ実行
 VSCodeでプロジェクトを開きF5。
 
@@ -176,26 +192,27 @@ VSCodeでプロジェクトを開きF5。
 2. マイグレーションの追加
     ```
     $ cd ./Server
-    $ dotnet ef migrations add [マイグレーション名]
+    $ dotnet ef migrations add [マイグレーション名] -o ./Db/Migrations
 3. マイグレーションの実行
     ```
     $ dotnet ef database update
     ```
 ## DBマイグレーションのリセット
-開発を進めていて、マイグレーションをキレイにしたいときに実行する。
+開発を進めていて、マイグレーションをイチからやり直したいときに実行する。
 1. データベースの削除
     ```
-    $ mysql -h 127.0.0.1 -uroot -p -e "drop database hoge_blazor;"
+    $ docker compose exec postgres bash
+    # psql -U postgres -c 'drop database hoge_blazor'
     ```
 
 2. マイグレーションファイルの削除
     ```
-    $ rm ./Server/Migrations/*
+    $ rm ./Server/Db/Migrations/*
     ```
 3. マイグレーションの追加
     ```
     $ cd ./Server
-    $ dotnet ef migrations add InitialCreate
+    $ dotnet ef migrations add InitialCreate -o ./Db/Migrations
 4. マイグレーションの実行
     ```
     $ dotnet ef database update

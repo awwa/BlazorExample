@@ -17,7 +17,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using HogeBlazor.Server.Models;
 using HogeBlazor.Shared.Models;
-using HogeBlazor.Server.Repository;
+using HogeBlazor.Server.Repositories;
 using Npgsql;
 using NodaTime.Serialization.JsonNet;
 using Microsoft.AspNetCore.Mvc;

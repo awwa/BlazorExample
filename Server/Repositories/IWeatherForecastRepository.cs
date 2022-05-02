@@ -1,6 +1,6 @@
 using HogeBlazor.Shared.Models;
 
-namespace HogeBlazor.Server.Repository;
+namespace HogeBlazor.Server.Repositories;
 
 public interface IWeatherForecastRepository
 {

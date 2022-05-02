@@ -291,6 +291,10 @@
           "instance": {
             "type": "string",
             "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {}
           }
         }
       },

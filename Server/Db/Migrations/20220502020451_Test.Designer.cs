@@ -3,6 +3,7 @@ using System;
 using HogeBlazor.Server.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HogeBlazor.Server.Db.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220502020451_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,15 +299,15 @@ namespace HogeBlazor.Server.Db.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "873ab360-3daa-429d-b74b-e33f6b64fbf9",
-                            ConcurrencyStamp = "054609f1-db9a-40ff-9903-c8e5fe39fcb0",
+                            Id = "617bb7f9-087d-42f1-9173-17d68cf54719",
+                            ConcurrencyStamp = "0ec2e517-05c7-4f9c-9f40-4517dbcfb01a",
                             Name = "Viewer",
                             NormalizedName = "VIEWER"
                         },
                         new
                         {
-                            Id = "eff5c347-1236-47e5-9dc9-4b824bc672cd",
-                            ConcurrencyStamp = "7479cf62-98c9-4ea5-8390-97e2c6847a55",
+                            Id = "3e244ceb-f35e-445b-8f8a-ac1d8a35d017",
+                            ConcurrencyStamp = "a2898ca4-183f-4486-a9bb-81dc4ed5cde4",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
