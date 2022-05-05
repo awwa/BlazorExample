@@ -10,29 +10,33 @@ services:
     ports:
       - 80:80
     links:
-      - mysql
+      - postgres
+      # - mysql
     command: [ "dotnet", "watch", "run" ]
-  mysql:
-    container_name: hoge-blazor-mysql
-    hostname: hoge-blazor-mysql
-    build: ./Docker/mysql
-    volumes:
-      - ./Docker/mysql/db:/docker-entrypoint-initdb.d #初期データをマウントする場所
-    networks:
-      - appnet
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: password #コンテナ内のMySQLを起動する際のパスワードを設定
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # mysql:
+  #   container_name: hoge-blazor-mysql
+  #   hostname: hoge-blazor-mysql
+  #   build: ./Docker/mysql
+  #   volumes:
+  #     - ./Docker/mysql/db:/docker-entrypoint-initdb.d #初期データをマウントする場所
+  #   networks:
+  #     - appnet
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password #コンテナ内のMySQLを起動する際のパスワードを設定
+  #   healthcheck:
+  #     test: [ "CMD", "mysqladmin", "ping" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
   postgres:
     container_name: hoge-blazor-postgres
     hostname: hoge-blazor-postgres
     build: ./Docker/postgres
+    volumes:
+      - ./Docker/postgres/data:/var/lib/postgresql/data
+      - ./Docker/postgres/init:/docker-entrypoint-initdb.d
     networks:
       - appnet
     ports:
@@ -40,6 +44,13 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
 networks:
   appnet:
     driver: bridge

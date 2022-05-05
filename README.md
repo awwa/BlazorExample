@@ -139,27 +139,34 @@ Sharedプロジェクトに実装を追加したタイミングでテストも�
     $ dotnet build
     ```
 5. データベースの構築と起動
+    `up` することで`Docker/init/init-user-db.sh`スクリプトが実行され、DBの初期設定が完了する。
     ```
     $ docker compose build postgres
     $ docker compose up -d postgres
     ```
 6. データベース起動確認
-    postgresの起動を確認する
+    DBの初期設定完了まで少し時間がかかるので、起動を確認する。
     ```
     $ docker compose logs postgres
-    hoge-blazor-postgres  | 2022-05-02 01:40:45.324 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
-    hoge-blazor-postgres  | 2022-05-02 01:40:45.324 UTC [1] LOG:  listening on IPv6 address "::", port 5432
-    hoge-blazor-postgres  | 2022-05-02 01:40:45.327 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
-    hoge-blazor-postgres  | 2022-05-02 01:40:45.332 UTC [27] LOG:  database system was shut down at 2022-05-02 01:40:39 UTC
-    hoge-blazor-postgres  | 2022-05-02 01:40:45.340 UTC [1] LOG:  database system is ready to accept connections
+    :
+    サーバは停止しました
+    PostgreSQL init process complete; ready for start up.
+    2022-05-05 16:02:29.291 UTC [1] LOG: PostgreSQL 13.6 (Debian 13.6-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit を起動しています
+    2022-05-05 16:02:29.292 UTC [1] LOG: IPv4アドレス"0.0.0.0"、ポート5432で待ち受けています
+    2022-05-05 16:02:29.292 UTC [1] LOG: IPv6アドレス"::"、ポート5432で待ち受けています
+    2022-05-05 16:02:29.304 UTC [1] LOG: Unixソケット"/var/run/postgresql/.s.PGSQL.5432"で待ち受けています
+    2022-05-05 16:02:29.351 UTC [96] LOG: データベースシステムは 2022-05-05 16:02:29 UTC にシャットダウンしました
+    2022-05-05 16:02:29.399 UTC [1] LOG: データベースシステムの接続受け付け準備が整いました
     ```
 7. データベースの構築
+    マイグレーションを実行する。これにより`hoge_blazor`DBが作成され、アプリケーション起動の準備が完了する。
     ```
     $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj
     ```
 
 ## デバッグ
 ### データベース接続
+必要に応じてDBに接続する。
 - postgres
     ```
     $ docker compose exec postgres bash
