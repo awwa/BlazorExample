@@ -18,17 +18,19 @@
 |  Shared.Test  |  Sharedプロジェクトのテスト  |
 
 ## プロジェクト構成
-最初はなるべくシンプルなフォルダ構成にするが、開発が進んで肥大化してきたら適当にフォルダを分ける。
+最初はなるべくシンプルなフォルダ構成にするが、DRY原則に従って開発が進むに従って構造化する。
 
 ### Client
-コードビハインド(razor.cs)やCSSの構成は未定。プロジェクトの拡大を見越してある程度の構造化を検討する必要あり。
+コードビハインド(*.razor.cs)やCSS(*.razor.css)の構成計画は未定。
 
 |  フォルダ  |  説明  |
 | ---- | ---- |
-|  Helpers  |  画面に依存しない共通処理  |
-|  Pages  |  個別の画面実装  |
+|  Helpers  |  カテゴライズしていない共通処理  |
+|  Pages  |  独立した画面の実装  |
 |  Properties  |  VSCode用の起動設定(現状設定はしてあるが期待通り動いていないはず)  |
-|  Shared  |  画面が依存する共通部品、レイアウト  |
+|  Repositories  |  主に画面とAPIアクセスの間を取り持つクラス群。画面はRepositoryクラスを介してAPIにアクセスする。データアクセスの提供をメイン機能に持つものをRepositoryと呼称。  |
+|  Services  |  主に画面とAPIアクセスの間を取り持つクラス群。構造はRepositoryと同じ。機能提供をメインにしたものをServiceと呼称。  |
+|  Shared  |  画面内の共通部品およびレイアウト  |
 |  wwwroot  |  Web関連のリソース  |
 
 ### Client.Test
@@ -48,11 +50,13 @@ Clientプロジェクトに実装を追加したタイミングでテストも�
 |  フォルダ  |  説明  |
 | ---- | ---- |
 |  Controllers  |  コントローラ実装。APIを追加・変更する場合、このフォルダ配下のファイルを修正する。  |
+|  Db  |  DB関連実装。DbContext、EntityFrameworkが自動生成するMigrations、Seed(Configurations)を含む。  |
 |  Helpers  |  コントローラに依存しない共通処理、DBアクセス実装など  |
-|  Migrations  |  マイグレーション関連ファイル。基本的にEntityFrameworkのマイグレーション機能により自動生成する。  |
 |  Models  |  Serverでのみ参照するモデルファイルを格納  |
 |  Pages  |  テンプレートを元にプロジェクト作成時に存在したフォルダ。精査して不要であれば削除を検討  |
-|  Properties  |  VSCode用の起動設定(こちらは期待通り動くはず)  |
+|  Properties  |  VSCode用の起動設定(Clientプロジェクト配下の設定と違ってこちらは期待通り動くはず)  |
+|  Repositories  |  DbContext経由でDBにアクセスする機能を提供するクラス群。ControllerはRepositoryクラス経由でDBにアクセスする  |
+|  Settings  |  構成ごとの設定ファイル  |
 
 ### Server.Test
 基本的にテスト対象プロジェクトと同じフォルダ構成にする。
@@ -73,9 +77,11 @@ Sharedプロジェクトに実装を追加したタイミングでテストも�
 - OS
     - Linux or MacOS
         - （Windowsでの起動は未確認）
+    - Node.js(npm)
+        - nvmの利用を推奨
 
 ## 開発環境の構築
-- [Visual Studio Code](https://code.visualstudio.com/download)のインストール
+1. [Visual Studio Code](https://code.visualstudio.com/download)のインストール
     - 拡張機能のインストール
         - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
         - [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
@@ -84,72 +90,93 @@ Sharedプロジェクトに実装を追加したタイミングでテストも�
         - 改行コード(EoL: \n)
         - 空白文字の表示(Render Whitespace: boundary)
         - ファイル保存時のフォーマット(Editor: Format On Save: true)
-- [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
-- EntityFramework Coreツールのインストール
+2. [.NET SDK 6.0](https://dotnet.microsoft.com/en-us/download)のインストール
+3. EntityFramework Coreツールのインストール  
+    dotnetコマンドでEFCoreを利用するために必要。
     ```
     $ dotnet tool install --global dotnet-ef
     ```
-- OpenAPI関連ツールのインストール
+4. OpenAPI関連ツールのインストール  
+    `ApiClient.cs`生成のために必要。
     ```
     $ npm install nswag -g
     ```
-- OpenAPIツールのインストール
+5. OpenAPIツールのインストール  
+    TODO インストール理由を記載する。
     ```
-    $ dotnet tool install -g Microsoft.dotnet-openapi
+    $ dotnet tool install --global Microsoft.dotnet-openapi
     ```
-- Amazon.Lambda.Templatesのインストール
-    Lambdaプロジェクトを作成する場合推奨
+6. Amazon.Lambda.Templatesのインストール  
+    Lambdaプロジェクトを作成する場合インストールを推奨。
     ```
     $ dotnet new -i Amazon.Lambda.Templates
     ```
-- [Docker本体](https://docs.docker.com/get-docker/)のインストール
+7. [Docker本体](https://docs.docker.com/get-docker/)のインストール  
+    環境構築にDockerを利用する場合に必要。各コンポーネント(dbやwebappなど)をOS上で直接実行する場合は不要。Docker Desktopのライセンスに注意。
+8. [pgAdmin](https://www.pgadmin.org/)   
+    UI経由でDBにアクセスする場合インストール。
 
 ## ビルド手順
-    1. git clone
+1. git clone  
+    開発環境上にソースコードを取得する。
     ```
     $ git clone https://github.com/awwa/blazor-example.git
     $ cd HogeBlazor
     ```
-    2. Serverのビルド
+2. Serverのビルド
     ```
     $ dotnet build ./Server/HogeBlazor.Server.csproj
     ```
-    3. ServerのControllerからApiクライアントのビルド
-    以下のコマンドを実行することで`~/Client/Helpers/ApiClient.cs`を最新の状態に更新する。
+3. ServerのControllerからApiクライアントのビルド  
     ```
     $ nswag run ./OpenApi/nswag.json
     ```
-    4. ソリューション全体のビルド
+    このコマンドを実行することで、以下のファイルを最新の状態に更新する。
+    - `~/Client/Helpers/ApiClient.cs`
+    - `~/OpenApi/openapi.json`
+4. ソリューション全体のビルド
     ```
     $ dotnet build
     ```
-    5. データベースの構築
+5. データベースの構築と起動
+    `up` することで`Docker/init/init-user-db.sh`スクリプトが実行され、DBの初期設定が完了する。
     ```
-    $ docker compose build
-    $ docker compose up -d mysql
+    $ docker compose build postgres
+    $ docker compose up -d postgres
     ```
-    6. データベース起動確認
-    mysqlの起動を確認する。
+6. データベース起動確認
+    DBの初期設定完了まで少し時間がかかるので、起動を確認する。
     ```
-    $ docker compose logs mysql
-    hoge-blazor-mysql | 2022-03-12T01:11:30.952203Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.28'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+    $ docker compose logs postgres
+    :
+    サーバは停止しました
+    PostgreSQL init process complete; ready for start up.
+    2022-05-05 16:02:29.291 UTC [1] LOG: PostgreSQL 13.6 (Debian 13.6-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit を起動しています
+    2022-05-05 16:02:29.292 UTC [1] LOG: IPv4アドレス"0.0.0.0"、ポート5432で待ち受けています
+    2022-05-05 16:02:29.292 UTC [1] LOG: IPv6アドレス"::"、ポート5432で待ち受けています
+    2022-05-05 16:02:29.304 UTC [1] LOG: Unixソケット"/var/run/postgresql/.s.PGSQL.5432"で待ち受けています
+    2022-05-05 16:02:29.351 UTC [96] LOG: データベースシステムは 2022-05-05 16:02:29 UTC にシャットダウンしました
+    2022-05-05 16:02:29.399 UTC [1] LOG: データベースシステムの接続受け付け準備が整いました
     ```
-    7. データベースの構築
+7. データベースの構築
+    マイグレーションを実行する。これにより`hoge_blazor`DBが作成され、アプリケーション起動の準備が完了する。
     ```
     $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj
     ```
 
-## データベースの確認
-- MySQL
+## デバッグ
+### データベース接続
+必要に応じてDBに接続する。
+- postgres
     ```
-    $ mysql -h 127.0.0.1 -uroot -p
-    > show database;
-    > use hoge_blazor;
-    > show tables;
-    > desc Users;
+    $ docker compose exec postgres bash
+    # psql -U postgres
+    postgres=# \l
+    postgres=# \c hoge_blazor
+    postgres=# \d
+    postgres=# \d "Products"
     ```
 
-## デバッグ実行
 ### VSCode上でのデバッグ実行
 VSCodeでプロジェクトを開きF5。
 
@@ -172,26 +199,27 @@ VSCodeでプロジェクトを開きF5。
 2. マイグレーションの追加
     ```
     $ cd ./Server
-    $ dotnet ef migrations add [マイグレーション名]
+    $ dotnet ef migrations add [マイグレーション名] -o ./Db/Migrations
 3. マイグレーションの実行
     ```
     $ dotnet ef database update
     ```
 ## DBマイグレーションのリセット
-開発を進めていて、マイグレーションをキレイにしたいときに実行する。
+開発を進めていて、マイグレーションをイチからやり直したいときに実行する。
 1. データベースの削除
     ```
-    $ mysql -h 127.0.0.1 -uroot -p -e "drop database hoge_blazor;"
+    $ docker compose exec postgres bash
+    # psql -U postgres -c 'drop database hoge_blazor'
     ```
 
 2. マイグレーションファイルの削除
     ```
-    $ rm ./Server/Migrations/*
+    $ rm ./Server/Db/Migrations/*
     ```
 3. マイグレーションの追加
     ```
     $ cd ./Server
-    $ dotnet ef migrations add InitialCreate
+    $ dotnet ef migrations add InitialCreate -o ./Db/Migrations
 4. マイグレーションの実行
     ```
     $ dotnet ef database update
@@ -338,3 +366,7 @@ mainブランチを更新。
 - [Blazor WebAssembly Authentication with ASP.NET Core Identity](https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/)
 - [Role-Based Authorization with Blazor WebAssembly](https://code-maze.com/blazor-webassembly-role-based-authorization/)
 - [Refresh Token with Blazor WebAssembly and ASP.NET Core Web API](https://code-maze.com/refresh-token-with-blazor-webassembly-and-asp-net-core-web-api/)
+
+## TODO
+- 認証機能を入れたことにより、Client.Testが通らなくなっているので修正したい
+- `Client/Helpers/ApiClient.cs`や`OpenApi/openapi.json`などの自動生成されるファイルはGit管理から外しておきたい（ビルド時に確実に更新されるのであれば外さなくても良いが）

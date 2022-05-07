@@ -35,7 +35,7 @@ public class AccountsController : ControllerBase
             var descriptor = new ValidationProblemDetails(new Dictionary<string, string[]> { { "default", new[] { "userForRegistration is null" } } });
             return ValidationProblem(descriptor);
         }
-        var user = new User { UserName = userForRegistration.Email, Email = userForRegistration.Email };
+        var user = new User { UserName = userForRegistration.Email, Email = userForRegistration.Email, RefreshTokenExpiryTime = DateTime.UtcNow };
         var result = await _userManager.CreateAsync(user, userForRegistration.Password);
         if (!result.Succeeded)
         {
@@ -44,7 +44,7 @@ public class AccountsController : ControllerBase
             return ValidationProblem(descriptor);
         }
         // ユーザ登録時のデフォルトロール
-        await _userManager.AddToRoleAsync(user, "Viewer");
+        await _userManager.AddToRoleAsync(user, "Administrator");
         return CreatedAtAction(nameof(RegisterUser), new RegistrationResponseDto());
     }
 
@@ -65,7 +65,7 @@ public class AccountsController : ControllerBase
         var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
         user.RefreshToken = _tokenService.GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7).ToUniversalTime();
 
         await _userManager.UpdateAsync(user);
 
