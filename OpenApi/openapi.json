@@ -291,6 +291,10 @@
           "instance": {
             "type": "string",
             "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {}
           }
         }
       },
@@ -405,7 +409,11 @@
           },
           "date": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
+          },
+          "time": {
+            "type": "string",
+            "format": "time"
           },
           "temperatureC": {
             "type": "integer",

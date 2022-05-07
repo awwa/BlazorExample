@@ -1,5 +1,5 @@
 using HogeBlazor.Server.Helpers;
-using HogeBlazor.Server.Repository;
+using HogeBlazor.Server.Repositories;
 using HogeBlazor.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

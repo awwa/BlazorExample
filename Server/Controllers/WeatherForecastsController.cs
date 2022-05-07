@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using HogeBlazor.Shared.Models;
 using HogeBlazor.Server.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using HogeBlazor.Server.Repository;
+using HogeBlazor.Server.Repositories;
 
 namespace HogeBlazor.Server.Controllers;
 
