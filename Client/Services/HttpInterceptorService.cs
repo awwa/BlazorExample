@@ -3,7 +3,7 @@ using Toolbelt.Blazor;
 
 namespace HogeBlazor.Client.Services;
 
-public class HttpInterceptorService : IHttpInterceptorService
+public class HttpInterceptorService
 {
     private readonly HttpClientInterceptor _interceptor;
     private readonly RefreshTokenService _refreshTokenService;

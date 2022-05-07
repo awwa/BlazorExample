@@ -21,6 +21,6 @@ public class BaseTestContext : TestContext
         this.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
         this.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         this.Services.AddScoped<RefreshTokenService>();
-        this.Services.AddScoped<IHttpInterceptorService, HttpInterceptorService>();
+        this.Services.AddScoped<HttpInterceptorService>();
     }
 }

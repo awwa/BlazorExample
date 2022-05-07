@@ -29,6 +29,6 @@ builder.Services.AddScoped<IWeatherForecastHttpRepository, WeatherForecastHttpRe
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<RefreshTokenService>();
-builder.Services.AddScoped<IHttpInterceptorService, HttpInterceptorService>();
+builder.Services.AddScoped<HttpInterceptorService>();
 
 await builder.Build().RunAsync();
