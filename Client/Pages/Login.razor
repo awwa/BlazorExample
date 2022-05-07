@@ -3,7 +3,7 @@
 
 @if (ShowAuthError)
 {
-    <div class="alert alert-danger" role="alert">
+    <div id="error" class="alert alert-danger" role="alert">
     <p>@Error</p>
 </div>
 }
@@ -14,7 +14,7 @@
         <label for="email" class="col-md-2 col-form-label">Email:</label>
         <div class="col-md-10">
             <InputText id="email" class="form-control" @bind-Value="_userForAuthentication.Email" />
-            <ValidationMessage For="@(() => _userForAuthentication.Email)" />
+            <ValidationMessage id="error-email" For="@(() => _userForAuthentication.Email)" />
         </div>
     </div>
 
@@ -23,7 +23,7 @@
         <div class="col-md-10">
             <InputText type="password" id="password" class="form-control"
                 @bind-Value="_userForAuthentication.Password" />
-            <ValidationMessage For="@(() => _userForAuthentication.Password)" />
+            <ValidationMessage id="error-password" For="@(() => _userForAuthentication.Password)" />
         </div>
     </div>
 
