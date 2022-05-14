@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HogeBlazor.Server.Db.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220511150254_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220514135348_V1")]
+    partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,13 +42,13 @@ namespace HogeBlazor.Server.Db.Migrations
                         .HasColumnType("text")
                         .HasComment("ブレーキ形式後");
 
-                    b.Property<Instant>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("作成日時");
 
-                    b.Property<Instant?>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasComment("削除日時");
 
@@ -75,13 +75,13 @@ namespace HogeBlazor.Server.Db.Migrations
                         .HasColumnType("text")
                         .HasComment("メーカー名");
 
-                    b.Property<LocalDate?>("ModelChangeFull")
-                        .HasColumnType("date")
-                        .HasComment("フルモデルチェンジ時期(日本)");
+                    b.Property<string>("ModelChangeFull")
+                        .HasColumnType("text")
+                        .HasComment("フルモデルチェンジ時期(日本)[yyyy-mm-dd]");
 
-                    b.Property<LocalDate?>("ModelChangeLast")
-                        .HasColumnType("date")
-                        .HasComment("最終モデルチェンジ時期(日本)");
+                    b.Property<string>("ModelChangeLast")
+                        .HasColumnType("text")
+                        .HasComment("最終モデルチェンジ時期(日本)[yyyy-mm-dd]");
 
                     b.Property<string>("ModelCode")
                         .IsRequired()
@@ -113,7 +113,7 @@ namespace HogeBlazor.Server.Db.Migrations
                         .HasColumnType("text")
                         .HasComment("サスペンション形式後");
 
-                    b.Property<Instant>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()")
@@ -133,14 +133,14 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 1,
                             BrakeFront = "ベンチレーテッドディスク",
                             BrakeRear = "ディスク",
-                            CreatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DriveSystem = 4,
                             FuelEfficiency = new[] { "ミラーサイクルエンジン", "アイドリングストップ機構", "筒内直接噴射", "可変バルブタイミング", "気筒休止", "充電制御", "ロックアップ機構付トルクコンバーター", "電動パワーステアリング" },
                             GradeName = "25S Proactive",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/8/85/2017_Mazda_CX-5_%28KF%29_Maxx_2WD_wagon_%282018-11-02%29_01.jpg",
                             MakerName = "マツダ",
-                            ModelChangeFull = new NodaTime.LocalDate(2016, 12, 15),
-                            ModelChangeLast = new NodaTime.LocalDate(2018, 1, 1),
+                            ModelChangeFull = "2016-12-15",
+                            ModelChangeLast = "2018-01-01",
                             ModelCode = "6BA-KF5P",
                             ModelName = "CX-5",
                             PowerTrain = 0,
@@ -148,7 +148,7 @@ namespace HogeBlazor.Server.Db.Migrations
                             Steering = "ラック&ピニオン式",
                             SuspensionFront = "マクファーソンストラット式",
                             SuspensionRear = "マルチリンク式",
-                            UpdatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Url = "https://www.mazda.co.jp/cars/cx-5/"
                         },
                         new
@@ -156,21 +156,21 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 2,
                             BrakeFront = "ベンチレーテッドディスク",
                             BrakeRear = "ディスク",
-                            CreatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DriveSystem = 4,
                             FuelEfficiency = new[] { "ハイブリッドシステム", "アイドリングストップ装置", "可変バルブタイミング", "電動パワーステアリング", "充電制御", "電気式無段変速機" },
                             GradeName = "HYBRID G-X E-Four",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/8/8a/Toyota_COROLLA_TOURING_HYBRID_W%C3%97B_2WD_%286AA-ZWE211W-AWXSB%29_front.jpg",
                             MakerName = "トヨタ",
-                            ModelChangeFull = new NodaTime.LocalDate(2019, 9, 17),
-                            ModelChangeLast = new NodaTime.LocalDate(2021, 11, 15),
+                            ModelChangeFull = "2019-09-17",
+                            ModelChangeLast = "2021-11-15",
                             ModelCode = "6AA-ZWE214W-AWXNB",
                             ModelName = "カローラツーリング",
                             PowerTrain = 1,
                             Price = 2678500,
                             SuspensionFront = "マクファーソンストラット式コイルスプリング",
                             SuspensionRear = "ダブルウィッシュボーン式コイルスプリング",
-                            UpdatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Url = "https://toyota.jp/corollatouring/"
                         },
                         new
@@ -178,14 +178,14 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 3,
                             BrakeFront = "油圧式ベンチレーテッドディスク",
                             BrakeRear = "油圧式ベンチレーテッドディスク",
-                            CreatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DriveSystem = 4,
                             FuelEfficiency = new[] { "ハイブリッドシステム", "直噴エンジン", "可変バルブタイミング", "アイドリングストップ装置", "電動パワーステアリング" },
                             GradeName = "Type S",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/ea/2019_Honda_NSX_3.5_CAA-NC1_%2820190722%29_01.jpg",
                             MakerName = "ホンダ",
-                            ModelChangeFull = new NodaTime.LocalDate(2017, 2, 27),
-                            ModelChangeLast = new NodaTime.LocalDate(2021, 8, 30),
+                            ModelChangeFull = "2017-02-27",
+                            ModelChangeLast = "2021-08-30",
                             ModelCode = "5AA-NC1",
                             ModelName = "NSX",
                             PowerTrain = 2,
@@ -193,7 +193,7 @@ namespace HogeBlazor.Server.Db.Migrations
                             Steering = "ラック&ピニオン式(電動パワーステアリング仕様)",
                             SuspensionFront = "ダブルウィッシュボーン式",
                             SuspensionRear = "ウィッシュボーン式",
-                            UpdatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Url = "https://www.honda.co.jp/NSX/types/"
                         },
                         new
@@ -201,14 +201,14 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 4,
                             BrakeFront = "油圧式ベンチレーテッドディスク",
                             BrakeRear = "油圧式ディスク",
-                            CreatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DriveSystem = 2,
                             FuelEfficiency = new[] { "電動パワーステアリング" },
                             GradeName = "Honda e Advance",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/9/9e/Honda_e_Advance_%28ZAA-ZC7%29_front.jpg",
                             MakerName = "ホンダ",
-                            ModelChangeFull = new NodaTime.LocalDate(2020, 8, 27),
-                            ModelChangeLast = new NodaTime.LocalDate(2020, 8, 27),
+                            ModelChangeFull = "2020-08-27",
+                            ModelChangeLast = "2020-08-27",
                             ModelCode = "ZAA-ZC7",
                             ModelName = "Honda e",
                             PowerTrain = 5,
@@ -216,7 +216,7 @@ namespace HogeBlazor.Server.Db.Migrations
                             Steering = "ラック&ピニオン式",
                             SuspensionFront = "マクファーソン式",
                             SuspensionRear = "マクファーソン式",
-                            UpdatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Url = "https://www.honda.co.jp/honda-e/"
                         },
                         new
@@ -224,14 +224,14 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 5,
                             BrakeFront = "ベンチレーテッドディスク式",
                             BrakeRear = "リーディングトレーリング式",
-                            CreatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DriveSystem = 4,
                             FuelEfficiency = new[] { "ハイブリッドシステム", "アイドリングストップ装置", "可変バルブタイミング", "ミラーサイクル", "電動パワーステアリング" },
                             GradeName = "X FOUR",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/0/0a/Nissan_Note_e-POWER_%28E13%29%2C_2021%2C_front-left.jpg",
                             MakerName = "日産",
-                            ModelChangeFull = new NodaTime.LocalDate(2020, 11, 24),
-                            ModelChangeLast = new NodaTime.LocalDate(2021, 11, 4),
+                            ModelChangeFull = "2020-11-24",
+                            ModelChangeLast = "2021-11-04",
                             ModelCode = "6AA-SNE13",
                             ModelName = "ノート",
                             PowerTrain = 3,
@@ -239,7 +239,7 @@ namespace HogeBlazor.Server.Db.Migrations
                             Steering = "ラック&ピニオン式",
                             SuspensionFront = "独立懸架ストラット式",
                             SuspensionRear = "トーションビーム式",
-                            UpdatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Url = "https://www3.nissan.co.jp/vehicles/new/note.html"
                         },
                         new
@@ -247,13 +247,13 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 6,
                             BrakeFront = "ベンチレーテッドディスク",
                             BrakeRear = "ベンチレーテッドディスク",
-                            CreatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DriveSystem = 4,
                             FuelEfficiency = new[] { "筒内直接噴射", "電子制御式燃料噴射", "高圧噴射(コモンレール・ダイレクト・インジェクション・システム)", "過給機(可変ジオメトリー・ターボチャージャー)", "充電制御(ブレーキ・エネルギー回生システム)", "アイドリング・ストップ装置(エンジン・オート・スタート/ストップ)", "電動パワーステアリング" },
                             GradeName = "320d xDriveツーリング Standard",
                             MakerName = "BMW",
-                            ModelChangeFull = new NodaTime.LocalDate(2019, 9, 26),
-                            ModelChangeLast = new NodaTime.LocalDate(2019, 9, 26),
+                            ModelChangeFull = "2019-09-26",
+                            ModelChangeLast = "2019-09-26",
                             ModelCode = "3DA-6L20",
                             ModelName = "3シリーズツーリング",
                             PowerTrain = 0,
@@ -261,7 +261,7 @@ namespace HogeBlazor.Server.Db.Migrations
                             Steering = "ラック&ピニオン式、単速感応式パワー・ステアリング",
                             SuspensionFront = "ダブル・ジョイント・スプリング・ストラット式、コイルスプリング",
                             SuspensionRear = "5リンク式、コイル・スプリング",
-                            UpdatedAt = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Url = "https://www.bmw.co.jp/ja/all-models/3-series/touring/2019/bmw-3-series-touring-inspire.html"
                         });
                 });
@@ -540,15 +540,15 @@ namespace HogeBlazor.Server.Db.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "dea42f26-4236-4f0f-b0e4-401726b43db3",
-                            ConcurrencyStamp = "96a7c34e-4c37-441d-8bc5-eb83d48f4f87",
+                            Id = "d971df93-6b6e-4623-bca5-d89ed44b5207",
+                            ConcurrencyStamp = "4b4268c7-9744-408b-b040-c641df12485a",
                             Name = "Viewer",
                             NormalizedName = "VIEWER"
                         },
                         new
                         {
-                            Id = "434d352d-3cf3-466b-813c-a685b466ffa7",
-                            ConcurrencyStamp = "3a189fc0-ade7-4a06-959b-c8ffefa44883",
+                            Id = "c3af2775-4f6b-47e0-808b-72350b46fa5a",
+                            ConcurrencyStamp = "de330a13-24a4-4187-a175-f25790c434b5",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

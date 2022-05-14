@@ -9,13 +9,13 @@ public class Car
     public int Id { get; set; }
 
     [Comment("削除日時")]
-    public Instant? DeletedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
 
     [Comment("作成日時")]
-    public Instant CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     [Comment("更新日時")]
-    public Instant UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 
     [Comment("メーカー名")]
     public string MakerName { get; set; } = string.Empty;
@@ -38,11 +38,11 @@ public class Car
     [Comment("イメージURL")]
     public string? ImageUrl { get; set; }
 
-    [Comment("フルモデルチェンジ時期(日本)")]
-    public LocalDate? ModelChangeFull { get; set; }
+    [Comment("フルモデルチェンジ時期(日本)[yyyy-mm-dd]")]
+    public string? ModelChangeFull { get; set; }
 
-    [Comment("最終モデルチェンジ時期(日本)")]
-    public LocalDate? ModelChangeLast { get; set; }
+    [Comment("最終モデルチェンジ時期(日本)[yyyy-mm-dd]")]
+    public string? ModelChangeLast { get; set; }
 
     [Comment("車体")]
     public Body Body { get; set; } = default!;

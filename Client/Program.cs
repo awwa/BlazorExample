@@ -24,6 +24,7 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddHttpClientInterceptor();
+builder.Services.AddScoped<ICarHttpRepository, CarHttpRepository>();
 builder.Services.AddScoped<IProductHttpRepository, ProductHttpRepository>();
 builder.Services.AddScoped<IWeatherForecastHttpRepository, WeatherForecastHttpRepository>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
