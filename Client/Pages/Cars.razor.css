@@ -1,0 +1,24 @@
+.flex-container {
+    display: flex;
+}
+
+.flex-item {
+    flex-basis: 100%;
+}
+
+.image-wrap{
+    position: relative;
+    overflow: hidden;
+    padding-top: 60%;
+    margin: 10px 5px;
+}
+
+.image-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 160px;
+    height: 80px;
+    object-fit: cover;
+}
