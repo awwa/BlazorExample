@@ -13,7 +13,7 @@
     margin: 10px 5px;
 }
 
-.image-img {
+::deep .image-img {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -21,4 +21,8 @@
     width: 160px;
     height: 80px;
     object-fit: cover;
+}
+
+::deep .hoge {
+    background-color: brown;
 }

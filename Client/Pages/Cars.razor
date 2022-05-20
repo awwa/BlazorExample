@@ -5,31 +5,31 @@
 @* @using Microsoft.AspNetCore.Authorization *@
 @* @attribute [Authorize(Roles = "Administrator")] *@
 
-<RadzenDataGrid Data="@CarList" TItem="Car">
-    <Columns>
-        <RadzenDataGridColumn TItem="Car" Property="MakerName">
-            <Template Context="car">
-                <div class="flex-container">
-                    <div class="flex-item">
-                        <div class="image-wrap">
-                            <RadzenImage
-                                Style="position: absolute;    top: 50%;    left: 50%;    transform: translate(-50%,-50%);    width: 160px;    height: 80px;    object-fit: cover;"
-                                Path="@car.ImageUrl" />
-                            <RadzenImage Class="image-img" Path="@car.ImageUrl" />
+<div>
+    <RadzenLabel Text="ほげ" class="hoge" />
+    <RadzenDataGrid Data="@CarList" TItem="Car">
+        <Columns>
+            <RadzenDataGridColumn TItem="Car" Property="MakerName">
+                <Template Context="car">
+                    <div class="flex-container">
+                        <div class="flex-item">
+                            <div class="image-wrap">
+                                <RadzenImage class="image-img" Path="@car.ImageUrl" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </Template>
-        </RadzenDataGridColumn>
+                </Template>
+            </RadzenDataGridColumn>
 
-        <RadzenDataGridColumn TItem="Car" Property="MakerName" Title="@TitleMakerName" />
-        <RadzenDataGridColumn TItem="Car" Property="ModelName" Title="@TitleModelName" />
-        <RadzenDataGridColumn TItem="Car" Property="GradeName" Title="@TitleGradeName" />
-        <RadzenDataGridColumn TItem="Car" Property="ModelCode" Title="@TitleModelCode" />
-        <RadzenDataGridColumn TItem="Car" Property="Price" Title="@TitlePrice" />
-        <RadzenDataGridColumn TItem="Car" Property="ModelChangeFull" Title="@TitleModelChangeFull" />
-    </Columns>
-</RadzenDataGrid>
+            <RadzenDataGridColumn TItem="Car" Property="MakerName" Title="@TitleMakerName" />
+            <RadzenDataGridColumn TItem="Car" Property="ModelName" Title="@TitleModelName" />
+            <RadzenDataGridColumn TItem="Car" Property="GradeName" Title="@TitleGradeName" />
+            <RadzenDataGridColumn TItem="Car" Property="ModelCode" Title="@TitleModelCode" />
+            <RadzenDataGridColumn TItem="Car" Property="Price" Title="@TitlePrice" />
+            <RadzenDataGridColumn TItem="Car" Property="ModelChangeFull" Title="@TitleModelChangeFull" />
+        </Columns>
+    </RadzenDataGrid>
+</div>
 
 @* <RadzenDataList WrapItems="true" AllowPaging="true" Data="@CarList" TItem="Car" PageSize="5"
     PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
