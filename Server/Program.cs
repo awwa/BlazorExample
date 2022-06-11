@@ -56,7 +56,11 @@ builder.Services.AddAuthentication(opt =>
 
 // NodaTimeのLocalDate、LocalTime型をJsonシリアライズする際に"YYYY-MM-DD", "HH:MM:SS"フォーマットに変換する設定
 builder.Services.AddControllersWithViews()
-.AddNewtonsoftJson(s => s.SerializerSettings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb));
+//.AddNewtonsoftJson(s => s.SerializerSettings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb))
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+});
 
 // builder.Services.AddControllersWithViews(options =>
 //     {
@@ -123,6 +127,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 

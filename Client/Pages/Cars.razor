@@ -1,0 +1,47 @@
+@page "/cars"
+@* @using System.Security.Claims *@
+@using Helpers
+@* @using using HogeBlazor.Shared.Models *@
+@* @using Microsoft.AspNetCore.Authorization *@
+@* @attribute [Authorize(Roles = "Administrator")] *@
+
+<div>
+    <RadzenLabel Text="ほげ" class="hoge" />
+    <RadzenDataGrid Data="@CarList" TItem="Car">
+        <Columns>
+            <RadzenDataGridColumn TItem="Car" Property="MakerName">
+                <Template Context="car">
+                    <div class="flex-container">
+                        <div class="flex-item">
+                            <div class="image-wrap">
+                                <RadzenImage class="image-img" Path="@car.ImageUrl" />
+                            </div>
+                        </div>
+                    </div>
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Car" Property="MakerName" Title="@TitleMakerName" />
+            <RadzenDataGridColumn TItem="Car" Property="ModelName" Title="@TitleModelName" />
+            <RadzenDataGridColumn TItem="Car" Property="GradeName" Title="@TitleGradeName" />
+            <RadzenDataGridColumn TItem="Car" Property="ModelCode" Title="@TitleModelCode" />
+            <RadzenDataGridColumn TItem="Car" Property="Price" Title="@TitlePrice" />
+            <RadzenDataGridColumn TItem="Car" Property="ModelChangeFull" Title="@TitleModelChangeFull" />
+        </Columns>
+    </RadzenDataGrid>
+</div>
+
+@* <RadzenDataList WrapItems="true" AllowPaging="true" Data="@CarList" TItem="Car" PageSize="5"
+    PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+    <Template Context="car">
+    <!-- <RadzenCard Style="width: 100%; padding: 0; overflow: hidden;"> -->
+    <div class="container">
+    <div class="row">
+    <div class="col-lg-3 p-3 product-title">
+    @(car.MakerName)
+    </div>
+    </div>
+    </div>
+    <!-- </RadzenCard> -->
+    </Template>
+    </RadzenDataList> *@

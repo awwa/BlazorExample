@@ -90,6 +90,304 @@
         }
       }
     },
+    "/api/v1/cars/{id}": {
+      "get": {
+        "tags": [
+          "Cars"
+        ],
+        "operationId": "Cars_Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cars": {
+      "get": {
+        "tags": [
+          "Cars"
+        ],
+        "operationId": "Cars_GetCars",
+        "parameters": [
+          {
+            "name": "MakerName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PriceLower",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PriceUpper",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PowerTrain",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PowerTrain"
+                }
+              ]
+            },
+            "x-position": 4
+          },
+          {
+            "name": "DriveSystem",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DriveSystem"
+                }
+              ]
+            },
+            "x-position": 5
+          },
+          {
+            "name": "BodyType",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BodyType"
+                }
+              ]
+            },
+            "x-position": 6
+          },
+          {
+            "name": "LengthLower",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 7
+          },
+          {
+            "name": "LengthUpper",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 8
+          },
+          {
+            "name": "WidthLower",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 9
+          },
+          {
+            "name": "WidthUpper",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 10
+          },
+          {
+            "name": "HeightLower",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 11
+          },
+          {
+            "name": "HeightUpper",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 12
+          },
+          {
+            "name": "WeightUpper",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 13
+          },
+          {
+            "name": "DoorNumLower",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 14
+          },
+          {
+            "name": "RidingCap",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 15
+          },
+          {
+            "name": "FcrWltcLower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 16
+          },
+          {
+            "name": "FcrJc08Lower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 17
+          },
+          {
+            "name": "MpcWltcLower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 18
+          },
+          {
+            "name": "EcrWltcLower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 19
+          },
+          {
+            "name": "EcrJc08Lower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 20
+          },
+          {
+            "name": "MpcJc08Lower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 21
+          },
+          {
+            "name": "FuelType",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/FuelType"
+                }
+              ]
+            },
+            "x-position": 22
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/error-development": {
       "get": {
         "tags": [
@@ -291,10 +589,6 @@
           "instance": {
             "type": "string",
             "nullable": true
-          },
-          "extensions": {
-            "type": "object",
-            "additionalProperties": {}
           }
         }
       },
@@ -356,6 +650,699 @@
             "minLength": 1
           }
         }
+      },
+      "Car": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "makerName": {
+            "type": "string"
+          },
+          "modelName": {
+            "type": "string"
+          },
+          "gradeName": {
+            "type": "string"
+          },
+          "modelCode": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "modelChangeFull": {
+            "type": "string",
+            "nullable": true
+          },
+          "modelChangeLast": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "$ref": "#/components/schemas/Body"
+          },
+          "interior": {
+            "$ref": "#/components/schemas/Interior"
+          },
+          "performance": {
+            "$ref": "#/components/schemas/Performance"
+          },
+          "powerTrain": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PowerTrain"
+              }
+            ]
+          },
+          "driveSystem": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DriveSystem"
+              }
+            ]
+          },
+          "engine": {
+            "$ref": "#/components/schemas/Engine"
+          },
+          "motorX": {
+            "$ref": "#/components/schemas/Motor"
+          },
+          "motorY": {
+            "$ref": "#/components/schemas/Motor"
+          },
+          "battery": {
+            "$ref": "#/components/schemas/Battery"
+          },
+          "steering": {
+            "type": "string",
+            "nullable": true
+          },
+          "suspensionFront": {
+            "type": "string",
+            "nullable": true
+          },
+          "suspensionRear": {
+            "type": "string",
+            "nullable": true
+          },
+          "brakeFront": {
+            "type": "string",
+            "nullable": true
+          },
+          "brakeRear": {
+            "type": "string",
+            "nullable": true
+          },
+          "tireFront": {
+            "$ref": "#/components/schemas/Tire"
+          },
+          "tireRear": {
+            "$ref": "#/components/schemas/Tire"
+          },
+          "transmission": {
+            "$ref": "#/components/schemas/Transmission"
+          },
+          "fuelEfficiency": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Body": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BodyType"
+              }
+            ]
+          },
+          "length": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "wheelBase": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "treadFront": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "treadRear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "minRoadClearance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "weight": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "doorNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "BodyType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "SEDAN",
+          "HATCHBACK",
+          "CROSS_COUNTRY",
+          "MINI_VAN",
+          "ONEBOX_WAGON",
+          "K",
+          "COUPE",
+          "STATION_WAGON",
+          "SUV",
+          "ONEBOX_VAN",
+          "K_OPEN",
+          "K_ONEBOX_WAGON",
+          "OPEN",
+          "VAN",
+          "K_VAN",
+          "K_ONEBOX_VAN",
+          "PICKUP_TRUCK"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "Interior": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "length": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "luggageCap": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ridingCap": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "Performance": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "minTurningRadius": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "fcrWltc": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "fcrWltcL": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "fcrWltcM": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "fcrWltcH": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "fcrWltcExh": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "fcrJc08": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "mpcWltc": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "ecrWltc": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "ecrWltcL": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "ecrWltcM": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "ecrWltcH": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "ecrWltcExh": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "ecrJc08": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "mpcJc08": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "PowerTrain": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "ICE",
+          "StrHV",
+          "MldHV",
+          "SerHV",
+          "PHEV",
+          "BEV",
+          "RexEV",
+          "FCEV"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "DriveSystem": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "FF",
+          "FR",
+          "RR",
+          "MR",
+          "AWD"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "Engine": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "cylinderNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "cylinderLayout": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CylinderLayout"
+              }
+            ]
+          },
+          "valveSystem": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ValveSystem"
+              }
+            ]
+          },
+          "displacement": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "bore": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "stroke": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "compressionRatio": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "maxOutput": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "maxOutputLowerRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxOutputUpperRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxTorque": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "maxTorqueLowerRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxTorqueUpperRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fuelSystem": {
+            "type": "string",
+            "nullable": true
+          },
+          "fuelType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FuelType"
+              }
+            ]
+          },
+          "fuelTankCap": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "CylinderLayout": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "I",
+          "V",
+          "B",
+          "W"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "ValveSystem": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "SV",
+          "OHV",
+          "SOHC",
+          "DOHC"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "FuelType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "DIESEL",
+          "REGULAR",
+          "PREMIUM",
+          "LPG",
+          "BIO",
+          "HYDROGEN"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "Motor": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "purpose": {
+            "type": "string",
+            "nullable": true
+          },
+          "ratedOutput": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "maxOutput": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "maxOutputLowerRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxOutputUpperRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxTorque": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "maxTorqueLowerRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxTorqueUpperRpm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "Battery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "voltage": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "capacity": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "Tire": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sectionWidth": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "aspectRatio": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "wheelDiameter": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "Transmission": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TransmissionType"
+              }
+            ]
+          },
+          "gearRatiosFront": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          "gearRatioRear": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "reductionRatioFront": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "reductionRatioRear": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "TransmissionType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "AT",
+          "DCT",
+          "AMT",
+          "MT",
+          "CVT",
+          "PG"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
       },
       "Product": {
         "type": "object",
