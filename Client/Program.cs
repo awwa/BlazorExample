@@ -25,8 +25,6 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddHttpClientInterceptor();
 builder.Services.AddScoped<ICarHttpRepository, CarHttpRepository>();
-builder.Services.AddScoped<IProductHttpRepository, ProductHttpRepository>();
-builder.Services.AddScoped<IWeatherForecastHttpRepository, WeatherForecastHttpRepository>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<RefreshTokenService>();

@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using HogeBlazor.Server.Models;
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Models.Db;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 

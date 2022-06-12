@@ -1,8 +1,6 @@
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using NodaTime;
 
-namespace HogeBlazor.Shared.Models;
+namespace HogeBlazor.Shared.Models.Db;
 
 public class Car
 {

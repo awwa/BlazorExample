@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using HogeBlazor.Server.Helpers;
-using HogeBlazor.Shared.Helpers;
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Models.Db;
+using HogeBlazor.Shared.Models.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

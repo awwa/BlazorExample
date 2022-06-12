@@ -1,7 +1,6 @@
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Models.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NodaTime;
 
 namespace HogeBlazor.Server.Db.Configurations;
 

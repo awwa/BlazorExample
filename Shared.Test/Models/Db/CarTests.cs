@@ -1,15 +1,8 @@
-// using Xunit;
-// using HogeBlazor.Shared.Models;
-// using System;
-// using System.ComponentModel.DataAnnotations;
-// using System.Collections.Generic;
-// using System.Linq;
-
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Models.Db;
 using Xunit;
+using System.Text.Json;
 
 namespace HogeBlazor.Shared.Test.Models;
 
@@ -148,6 +141,8 @@ public class CarTests
         };
         var json = JsonSerializer.Serialize<Car>(original);
         var deserialized = JsonSerializer.Deserialize<Car>(json);
+        Assert.NotNull(deserialized);
+        if (deserialized == null) return;
         Assert.Equal(original.MakerName, deserialized.MakerName);
         Assert.Equal(original.DeletedAt, deserialized.DeletedAt);
         Assert.Equal(original.ModelChangeFull, deserialized.ModelChangeFull);

@@ -1,4 +1,4 @@
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Models.Db;
 using Microsoft.AspNetCore.Mvc;
 using static HogeBlazor.Server.Repositories.CarRepository;
 

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HogeBlazor.Shared.Helpers;
+namespace HogeBlazor.Shared.Models.Dto;
 
 public class UserForAuthenticationDto
 {
