@@ -97,15 +97,15 @@ public class CarRepository : ICarRepository
         /// <summary>
         /// パワートレイン
         /// </summary>
-        public PowerTrain? PowerTrain { get; set; }
+        public string? PowerTrain { get; set; }
         /// <summary>
         /// 駆動方式
         /// </summary>
-        public DriveSystem? DriveSystem { get; set; }
+        public string? DriveSystem { get; set; }
         /// <summary>
         /// ボディタイプ
         /// </summary>
-        public BodyType? BodyType { get; set; }
+        public string? BodyType { get; set; }
         /// <summary>
         /// 全長(mm)下限
         /// </summary>
@@ -174,6 +174,6 @@ public class CarRepository : ICarRepository
         /// <summary>
         /// 使用燃料種類
         /// </summary>
-        public FuelType? FuelType { get; set; }
+        public string? FuelType { get; set; }
     }
 }

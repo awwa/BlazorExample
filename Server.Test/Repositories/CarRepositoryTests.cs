@@ -7,6 +7,7 @@ using Npgsql;
 using static HogeBlazor.Server.Repositories.CarRepository;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using HogeBlazor.Shared.Models.Db;
 
 namespace HogeBlazor.Server.Test.Repositories;
 
@@ -61,7 +62,7 @@ public class CarRepositoryTest
     {
         var p = new CarParameters()
         {
-            BodyType = Shared.Models.Db.BodyType.HATCHBACK,
+            BodyType = BodyType.HATCHBACK,
         };
         var cars = await Repository.GetCars(p);
         Assert.Equal(2, cars.Count);
@@ -73,7 +74,7 @@ public class CarRepositoryTest
         var p = new CarParameters()
         {
             MakerNames = new List<string> { "マツダ" },
-            BodyType = Shared.Models.Db.BodyType.SUV,
+            BodyType = BodyType.SUV,
         };
         var cars = await Repository.GetCars(p);
         Assert.Single(cars);
@@ -120,9 +121,9 @@ public class CarRepositoryTest
             MakerNames = new List<string> { "マツダ" },
             PriceLower = 3000000,
             PriceUpper = 3200000,
-            PowerTrain = Shared.Models.Db.PowerTrain.ICE,
-            DriveSystem = Shared.Models.Db.DriveSystem.AWD,
-            BodyType = Shared.Models.Db.BodyType.SUV,
+            PowerTrain = PowerTrain.ICE,
+            DriveSystem = DriveSystem.AWD,
+            BodyType = BodyType.SUV,
             LengthLower = 4545,
             LengthUpper = 4545,
             WidthLower = 1840,
@@ -139,7 +140,7 @@ public class CarRepositoryTest
             //EcrWltcLower
             //EcrJc08Lower
             //MpcJc08Lower
-            FuelType = Shared.Models.Db.FuelType.REGULAR,
+            FuelType = FuelType.REGULAR,
         };
         var cars = await Repository.GetCars(p);
         Assert.Single(cars);
