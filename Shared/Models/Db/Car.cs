@@ -347,6 +347,9 @@ public class Transmission
     public float? ReductionRatioRear { get; set; }
 }
 
+/// <summary>
+/// ボディタイプ
+/// </summary>
 public class BodyType
 {
     [Comment("セダン")]
@@ -385,6 +388,9 @@ public class BodyType
     public const string PICKUP_TRUCK = "PICKUP_TRUCK";
 }
 
+/// <summary>
+/// パワートレイン
+/// </summary>
 public class PowerTrain
 {
     [Comment("エンジン車")]
@@ -405,6 +411,9 @@ public class PowerTrain
     public const string FCEV = "FCEV";
 }
 
+/// <summary>
+/// 駆動方式
+/// </summary>
 public class DriveSystem
 {
     public const string FF = "FF";
@@ -414,8 +423,9 @@ public class DriveSystem
     public const string AWD = "AWD";
 }
 
-
-
+/// <summary>
+/// シリンダーレイアウト
+/// </summary>
 public class CylinderLayout
 {
     [Comment("直列")]
@@ -428,6 +438,9 @@ public class CylinderLayout
     public const string W = "W";
 }
 
+/// <summary>
+/// バルブ構造
+/// </summary>
 public class ValveSystem
 {
     public const string SV = "SV";
@@ -436,13 +449,16 @@ public class ValveSystem
     public const string DOHC = "DOHC";
 }
 
+/// <summary>
+/// 使用燃料種類
+/// </summary>
 public class FuelType
 {
     [Comment("軽油")]
     public const string DIESEL = "DIESEL";
-    [Comment("無縁レギュラーガソリン")]
+    [Comment("無鉛レギュラーガソリン")]
     public const string REGULAR = "REGULAR";
-    [Comment("無縁プレミアムガソリン")]
+    [Comment("無鉛プレミアムガソリン")]
     public const string PREMIUM = "PREMIUM";
     [Comment("LPG")]
     public const string LPG = "LPG";
@@ -452,6 +468,9 @@ public class FuelType
     public const string HYDROGEN = "HYDROGEN";
 }
 
+/// <summary>
+/// トランスミッション種類
+/// </summary>
 public class TransmissionType
 {
     [Comment("AT")]
