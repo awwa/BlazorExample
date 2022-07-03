@@ -1,6 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Models.Db;
 using Microsoft.IdentityModel.Tokens;
 
 namespace HogeBlazor.Server.Helpers;

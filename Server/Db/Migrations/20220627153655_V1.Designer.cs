@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -13,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HogeBlazor.Server.Db.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220514135348_V1")]
+    [Migration("20220627153655_V1")]
     partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +24,7 @@ namespace HogeBlazor.Server.Db.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HogeBlazor.Shared.Models.Car", b =>
+            modelBuilder.Entity("HogeBlazor.Shared.Models.Db.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,8 +51,8 @@ namespace HogeBlazor.Server.Db.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasComment("削除日時");
 
-                    b.Property<int?>("DriveSystem")
-                        .HasColumnType("integer")
+                    b.Property<string>("DriveSystem")
+                        .HasColumnType("text")
                         .HasComment("駆動方式(FF/FR/RR/MR/AWD)");
 
                     b.Property<string[]>("FuelEfficiency")
@@ -93,8 +92,8 @@ namespace HogeBlazor.Server.Db.Migrations
                         .HasColumnType("text")
                         .HasComment("モデル名");
 
-                    b.Property<int?>("PowerTrain")
-                        .HasColumnType("integer")
+                    b.Property<string>("PowerTrain")
+                        .HasColumnType("text")
                         .HasComment("パワートレイン(ICE/StrHV/MldHV/SerHV/PHEV/BEV/RexEV/FCEV)");
 
                     b.Property<int?>("Price")
@@ -133,8 +132,8 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 1,
                             BrakeFront = "ベンチレーテッドディスク",
                             BrakeRear = "ディスク",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DriveSystem = 4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DriveSystem = "AWD",
                             FuelEfficiency = new[] { "ミラーサイクルエンジン", "アイドリングストップ機構", "筒内直接噴射", "可変バルブタイミング", "気筒休止", "充電制御", "ロックアップ機構付トルクコンバーター", "電動パワーステアリング" },
                             GradeName = "25S Proactive",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/8/85/2017_Mazda_CX-5_%28KF%29_Maxx_2WD_wagon_%282018-11-02%29_01.jpg",
@@ -143,12 +142,12 @@ namespace HogeBlazor.Server.Db.Migrations
                             ModelChangeLast = "2018-01-01",
                             ModelCode = "6BA-KF5P",
                             ModelName = "CX-5",
-                            PowerTrain = 0,
+                            PowerTrain = "ICE",
                             Price = 3140500,
                             Steering = "ラック&ピニオン式",
                             SuspensionFront = "マクファーソンストラット式",
                             SuspensionRear = "マルチリンク式",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Url = "https://www.mazda.co.jp/cars/cx-5/"
                         },
                         new
@@ -156,8 +155,8 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 2,
                             BrakeFront = "ベンチレーテッドディスク",
                             BrakeRear = "ディスク",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DriveSystem = 4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DriveSystem = "AWD",
                             FuelEfficiency = new[] { "ハイブリッドシステム", "アイドリングストップ装置", "可変バルブタイミング", "電動パワーステアリング", "充電制御", "電気式無段変速機" },
                             GradeName = "HYBRID G-X E-Four",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/8/8a/Toyota_COROLLA_TOURING_HYBRID_W%C3%97B_2WD_%286AA-ZWE211W-AWXSB%29_front.jpg",
@@ -166,11 +165,11 @@ namespace HogeBlazor.Server.Db.Migrations
                             ModelChangeLast = "2021-11-15",
                             ModelCode = "6AA-ZWE214W-AWXNB",
                             ModelName = "カローラツーリング",
-                            PowerTrain = 1,
+                            PowerTrain = "StrHV",
                             Price = 2678500,
                             SuspensionFront = "マクファーソンストラット式コイルスプリング",
                             SuspensionRear = "ダブルウィッシュボーン式コイルスプリング",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Url = "https://toyota.jp/corollatouring/"
                         },
                         new
@@ -178,8 +177,8 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 3,
                             BrakeFront = "油圧式ベンチレーテッドディスク",
                             BrakeRear = "油圧式ベンチレーテッドディスク",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DriveSystem = 4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DriveSystem = "AWD",
                             FuelEfficiency = new[] { "ハイブリッドシステム", "直噴エンジン", "可変バルブタイミング", "アイドリングストップ装置", "電動パワーステアリング" },
                             GradeName = "Type S",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/ea/2019_Honda_NSX_3.5_CAA-NC1_%2820190722%29_01.jpg",
@@ -188,12 +187,12 @@ namespace HogeBlazor.Server.Db.Migrations
                             ModelChangeLast = "2021-08-30",
                             ModelCode = "5AA-NC1",
                             ModelName = "NSX",
-                            PowerTrain = 2,
+                            PowerTrain = "MldHV",
                             Price = 27940000,
                             Steering = "ラック&ピニオン式(電動パワーステアリング仕様)",
                             SuspensionFront = "ダブルウィッシュボーン式",
                             SuspensionRear = "ウィッシュボーン式",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Url = "https://www.honda.co.jp/NSX/types/"
                         },
                         new
@@ -201,8 +200,8 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 4,
                             BrakeFront = "油圧式ベンチレーテッドディスク",
                             BrakeRear = "油圧式ディスク",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DriveSystem = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DriveSystem = "RR",
                             FuelEfficiency = new[] { "電動パワーステアリング" },
                             GradeName = "Honda e Advance",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/9/9e/Honda_e_Advance_%28ZAA-ZC7%29_front.jpg",
@@ -211,12 +210,12 @@ namespace HogeBlazor.Server.Db.Migrations
                             ModelChangeLast = "2020-08-27",
                             ModelCode = "ZAA-ZC7",
                             ModelName = "Honda e",
-                            PowerTrain = 5,
+                            PowerTrain = "BEV",
                             Price = 4950000,
                             Steering = "ラック&ピニオン式",
                             SuspensionFront = "マクファーソン式",
                             SuspensionRear = "マクファーソン式",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Url = "https://www.honda.co.jp/honda-e/"
                         },
                         new
@@ -224,8 +223,8 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 5,
                             BrakeFront = "ベンチレーテッドディスク式",
                             BrakeRear = "リーディングトレーリング式",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DriveSystem = 4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DriveSystem = "AWD",
                             FuelEfficiency = new[] { "ハイブリッドシステム", "アイドリングストップ装置", "可変バルブタイミング", "ミラーサイクル", "電動パワーステアリング" },
                             GradeName = "X FOUR",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/0/0a/Nissan_Note_e-POWER_%28E13%29%2C_2021%2C_front-left.jpg",
@@ -234,12 +233,12 @@ namespace HogeBlazor.Server.Db.Migrations
                             ModelChangeLast = "2021-11-04",
                             ModelCode = "6AA-SNE13",
                             ModelName = "ノート",
-                            PowerTrain = 3,
+                            PowerTrain = "SerHV",
                             Price = 2445300,
                             Steering = "ラック&ピニオン式",
                             SuspensionFront = "独立懸架ストラット式",
                             SuspensionRear = "トーションビーム式",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Url = "https://www3.nissan.co.jp/vehicles/new/note.html"
                         },
                         new
@@ -247,8 +246,8 @@ namespace HogeBlazor.Server.Db.Migrations
                             Id = 6,
                             BrakeFront = "ベンチレーテッドディスク",
                             BrakeRear = "ベンチレーテッドディスク",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DriveSystem = 4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DriveSystem = "AWD",
                             FuelEfficiency = new[] { "筒内直接噴射", "電子制御式燃料噴射", "高圧噴射(コモンレール・ダイレクト・インジェクション・システム)", "過給機(可変ジオメトリー・ターボチャージャー)", "充電制御(ブレーキ・エネルギー回生システム)", "アイドリング・ストップ装置(エンジン・オート・スタート/ストップ)", "電動パワーステアリング" },
                             GradeName = "320d xDriveツーリング Standard",
                             MakerName = "BMW",
@@ -256,125 +255,17 @@ namespace HogeBlazor.Server.Db.Migrations
                             ModelChangeLast = "2019-09-26",
                             ModelCode = "3DA-6L20",
                             ModelName = "3シリーズツーリング",
-                            PowerTrain = 0,
+                            PowerTrain = "ICE",
                             Price = 6340000,
                             Steering = "ラック&ピニオン式、単速感応式パワー・ステアリング",
                             SuspensionFront = "ダブル・ジョイント・スプリング・ストラット式、コイルスプリング",
                             SuspensionRear = "5リンク式、コイル・スプリング",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Url = "https://www.bmw.co.jp/ja/all-models/3-series/touring/2019/bmw-3-series-touring-inspire.html"
                         });
                 });
 
-            modelBuilder.Entity("HogeBlazor.Shared.Models.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Supplier")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("0102f709-1dd7-40de-af3d-23598c6bbd1f"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1062161969.4889/mug,travel,x1000,center-pad,1000x1000,f8f8f8.u2.jpg",
-                            Name = "Travel Mug",
-                            Price = 11.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("ac7de2dc-049c-4328-ab06-6cde3ebe8aa7"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1063377597.4889/ur,mug_lifestyle,square,1000x1000.u2.jpg",
-                            Name = "Classic Mug",
-                            Price = 22.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("d26384cb-64b9-4aca-acb0-4ebb8fc53ba2"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1063364659.4889/ra,vneck,x1900,101010:01c5ca27c6,front-c,160,70,1000,1000-bg,f8f8f8.u2.jpg",
-                            Name = "Code Maze Logo T-Shirt",
-                            Price = 20.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("b47d4c3c-3e29-49b9-b6be-28e5ee4625be"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1063364659.4889/ssrco,mhoodie,mens,101010:01c5ca27c6,front,square_three_quarter,x1000-bg,f8f8f8.1u2.jpg",
-                            Name = "Pullover Hoodie",
-                            Price = 30.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("54b2f952-b63e-4cad-8b38-c09955fe4c62"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1063364659.4889/ssrco,mhoodiez,mens,101010:01c5ca27c6,front,square_three_quarter,1000x1000-bg,f8f8f8.u2.jpg",
-                            Name = "Fitted Scoop T-Shirt",
-                            Price = 40.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("83e0aa87-158f-4e5f-a8f7-e5a98d13e3a5"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1063364659.4889/ra,fitted_scoop,x2000,101010:01c5ca27c6,front-c,160,143,1000,1000-bg,f8f8f8.u2.jpg",
-                            Name = "Zipped Hoodie",
-                            Price = 55.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("488aaa0e-aa7e-4820-b4e9-5715f0e5186e"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1062161956.4889/icr,iphone_11_soft,back,a,x1000-pad,1000x1000,f8f8f8.u2.jpg",
-                            Name = "iPhone Case & Cover",
-                            Price = 25.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("4e693871-788d-4db4-89e5-dd7678db975e"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1062161956.4889/icr,samsung_galaxy_s10_snap,back,a,x1000-pad,1000x1000,f8f8f8.1u2.jpg",
-                            Name = "Case & Skin for Samsung Galaxy",
-                            Price = 35.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("2d3c2abe-85ec-4d1e-9fef-9b4bfea5f459"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1063329780.4889/mwo,x1000,ipad_2_snap-pad,1000x1000,f8f8f8.u2.jpg",
-                            Name = "iPad Case & Skin",
-                            Price = 45.0,
-                            Supplier = "Code Maze"
-                        },
-                        new
-                        {
-                            Id = new Guid("d1f22836-6342-480a-be2f-035eeb010fd0"),
-                            ImageUrl = "https://ih1.redbubble.net/image.1062161997.4889/clkc,bamboo,white,1000x1000-bg,f8f8f8.u2.jpg",
-                            Name = "Wall Clock",
-                            Price = 25.0,
-                            Supplier = "Code Maze"
-                        });
-                });
-
-            modelBuilder.Entity("HogeBlazor.Shared.Models.User", b =>
+            modelBuilder.Entity("HogeBlazor.Shared.Models.Db.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -445,73 +336,6 @@ namespace HogeBlazor.Server.Db.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("HogeBlazor.Shared.Models.WeatherForecast", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<LocalDate>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Summary")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TemperatureC")
-                        .HasColumnType("integer");
-
-                    b.Property<LocalTime>("Time")
-                        .HasColumnType("time");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("WeatherForecasts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new NodaTime.LocalDate(2022, 5, 18),
-                            Summary = "雨",
-                            TemperatureC = 15,
-                            Time = new NodaTime.LocalTime(12, 34, 56)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new NodaTime.LocalDate(2022, 5, 18),
-                            Summary = "晴れのち曇",
-                            TemperatureC = 18,
-                            Time = new NodaTime.LocalTime(12, 34, 56)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Date = new NodaTime.LocalDate(2022, 5, 18),
-                            Summary = "晴",
-                            TemperatureC = 22,
-                            Time = new NodaTime.LocalTime(12, 34, 56)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Date = new NodaTime.LocalDate(2022, 5, 18),
-                            Summary = "台風",
-                            TemperatureC = 26,
-                            Time = new NodaTime.LocalTime(12, 34, 56)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Date = new NodaTime.LocalDate(2022, 5, 18),
-                            Summary = "曇",
-                            TemperatureC = 21,
-                            Time = new NodaTime.LocalTime(12, 34, 56)
-                        });
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -540,15 +364,15 @@ namespace HogeBlazor.Server.Db.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d971df93-6b6e-4623-bca5-d89ed44b5207",
-                            ConcurrencyStamp = "4b4268c7-9744-408b-b040-c641df12485a",
+                            Id = "b98a792a-c354-4cf8-a232-f076be2a1832",
+                            ConcurrencyStamp = "a34b516c-3443-4b19-aeb1-5b0679066e89",
                             Name = "Viewer",
                             NormalizedName = "VIEWER"
                         },
                         new
                         {
-                            Id = "c3af2775-4f6b-47e0-808b-72350b46fa5a",
-                            ConcurrencyStamp = "de330a13-24a4-4187-a175-f25790c434b5",
+                            Id = "fb4bca48-afb1-4652-bfb4-f986b9ceb961",
+                            ConcurrencyStamp = "d836f022-0bcf-4d76-be6c-23034c3843f1",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -660,9 +484,9 @@ namespace HogeBlazor.Server.Db.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HogeBlazor.Shared.Models.Car", b =>
+            modelBuilder.Entity("HogeBlazor.Shared.Models.Db.Car", b =>
                 {
-                    b.OwnsOne("HogeBlazor.Shared.Models.Battery", "Battery", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Battery", "Battery", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -718,7 +542,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Body", "Body", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Body", "Body", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -747,8 +571,8 @@ namespace HogeBlazor.Server.Db.Migrations
                                 .HasColumnType("integer")
                                 .HasComment("トレッド後(mm)");
 
-                            b1.Property<int?>("Type")
-                                .HasColumnType("integer")
+                            b1.Property<string>("Type")
+                                .HasColumnType("text")
                                 .HasComment("ボディタイプ");
 
                             b1.Property<int?>("Weight")
@@ -780,7 +604,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MinRoadClearance = 210,
                                     TreadFront = 1595,
                                     TreadRear = 1595,
-                                    Type = 8,
+                                    Type = "SUV",
                                     Weight = 1620,
                                     WheelBase = 2700,
                                     Width = 1840
@@ -794,7 +618,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MinRoadClearance = 130,
                                     TreadFront = 1530,
                                     TreadRear = 1540,
-                                    Type = 7,
+                                    Type = "STATION_WAGON",
                                     Weight = 1410,
                                     WheelBase = 2640,
                                     Width = 1745
@@ -808,7 +632,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MinRoadClearance = 110,
                                     TreadFront = 1665,
                                     TreadRear = 1635,
-                                    Type = 6,
+                                    Type = "COUPE",
                                     Weight = 1790,
                                     WheelBase = 2630,
                                     Width = 1940
@@ -822,7 +646,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MinRoadClearance = 145,
                                     TreadFront = 1510,
                                     TreadRear = 1505,
-                                    Type = 1,
+                                    Type = "HATCHBACK",
                                     Weight = 1540,
                                     WheelBase = 2530,
                                     Width = 1750
@@ -836,7 +660,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MinRoadClearance = 125,
                                     TreadFront = 1490,
                                     TreadRear = 1490,
-                                    Type = 1,
+                                    Type = "HATCHBACK",
                                     Weight = 1340,
                                     WheelBase = 2580,
                                     Width = 1695
@@ -850,14 +674,14 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MinRoadClearance = 135,
                                     TreadFront = 1575,
                                     TreadRear = 1590,
-                                    Type = 7,
+                                    Type = "STATION_WAGON",
                                     Weight = 1730,
                                     WheelBase = 2850,
                                     Width = 1825
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Motor", "MotorX", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Motor", "MotorX", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -961,7 +785,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Motor", "MotorY", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Motor", "MotorY", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -1051,7 +875,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Tire", "TireFront", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Tire", "TireFront", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -1120,7 +944,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Tire", "TireRear", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Tire", "TireRear", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -1189,7 +1013,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Engine", "Engine", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Engine", "Engine", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -1206,8 +1030,8 @@ namespace HogeBlazor.Server.Db.Migrations
                                 .HasColumnType("real")
                                 .HasComment("圧縮比");
 
-                            b1.Property<int?>("CylinderLayout")
-                                .HasColumnType("integer")
+                            b1.Property<string>("CylinderLayout")
+                                .HasColumnType("text")
                                 .HasComment("シリンダーレイアウト(I/V/B/W)");
 
                             b1.Property<int?>("CylinderNum")
@@ -1226,8 +1050,8 @@ namespace HogeBlazor.Server.Db.Migrations
                                 .HasColumnType("integer")
                                 .HasComment("燃料タンク容量(L)");
 
-                            b1.Property<int?>("FuelType")
-                                .HasColumnType("integer")
+                            b1.Property<string>("FuelType")
+                                .HasColumnType("text")
                                 .HasComment("使用燃料種類(軽油/無鉛レギュラーガソリン/無鉛プレミアムガソリン)");
 
                             b1.Property<float?>("MaxOutput")
@@ -1262,8 +1086,8 @@ namespace HogeBlazor.Server.Db.Migrations
                                 .HasColumnType("text")
                                 .HasComment("エンジン種類");
 
-                            b1.Property<int?>("ValveSystem")
-                                .HasColumnType("integer")
+                            b1.Property<string>("ValveSystem")
+                                .HasColumnType("text")
                                 .HasComment("バルブ構造(SV/OHV/SOHC/DOHC)");
 
                             b1.HasKey("CarId");
@@ -1280,12 +1104,12 @@ namespace HogeBlazor.Server.Db.Migrations
                                     Bore = 89f,
                                     Code = "PY-RPS",
                                     CompressionRatio = 13f,
-                                    CylinderLayout = 0,
+                                    CylinderLayout = "I",
                                     CylinderNum = 4,
                                     Displacement = 2.488f,
                                     FuelSystem = "DI",
                                     FuelTankCap = 58,
-                                    FuelType = 1,
+                                    FuelType = "REGULAR",
                                     MaxOutput = 138f,
                                     MaxOutputLowerRpm = 6000,
                                     MaxOutputUpperRpm = 6000,
@@ -1294,19 +1118,19 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MaxTorqueUpperRpm = 4000,
                                     Stroke = 100f,
                                     Type = "水冷直列4気筒DOHC16バルブ",
-                                    ValveSystem = 3
+                                    ValveSystem = "DOHC"
                                 },
                                 new
                                 {
                                     CarId = 2,
                                     Bore = 80.5f,
                                     Code = "2ZR-FXE",
-                                    CylinderLayout = 0,
+                                    CylinderLayout = "I",
                                     CylinderNum = 4,
                                     Displacement = 1.797f,
                                     FuelSystem = "電子制御式燃料噴射装置(EFI)",
                                     FuelTankCap = 43,
-                                    FuelType = 1,
+                                    FuelType = "REGULAR",
                                     MaxOutput = 72f,
                                     MaxOutputLowerRpm = 5200,
                                     MaxOutputUpperRpm = 5200,
@@ -1315,7 +1139,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MaxTorqueUpperRpm = 3600,
                                     Stroke = 88.3f,
                                     Type = "直列4気筒 DOHC 16バルブ VVT-i ミラーサイクル",
-                                    ValveSystem = 3
+                                    ValveSystem = "DOHC"
                                 },
                                 new
                                 {
@@ -1323,12 +1147,12 @@ namespace HogeBlazor.Server.Db.Migrations
                                     Bore = 91f,
                                     Code = "JNC",
                                     CompressionRatio = 10f,
-                                    CylinderLayout = 1,
+                                    CylinderLayout = "V",
                                     CylinderNum = 6,
                                     Displacement = 3.492f,
                                     FuelSystem = "電子制御燃料噴射式(ホンダ PGM-FI)",
                                     FuelTankCap = 59,
-                                    FuelType = 2,
+                                    FuelType = "PREMIUM",
                                     MaxOutput = 389f,
                                     MaxOutputLowerRpm = 6500,
                                     MaxOutputUpperRpm = 6850,
@@ -1337,7 +1161,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MaxTorqueUpperRpm = 6000,
                                     Stroke = 89.5f,
                                     Type = "水冷V型6気筒縦置",
-                                    ValveSystem = 3
+                                    ValveSystem = "DOHC"
                                 },
                                 new
                                 {
@@ -1345,12 +1169,12 @@ namespace HogeBlazor.Server.Db.Migrations
                                     Bore = 78f,
                                     Code = "HR12DE",
                                     CompressionRatio = 12f,
-                                    CylinderLayout = 0,
+                                    CylinderLayout = "I",
                                     CylinderNum = 3,
                                     Displacement = 1.198f,
                                     FuelSystem = "ニッサンEGI(ECCS)電子制御燃料噴射装置",
                                     FuelTankCap = 36,
-                                    FuelType = 1,
+                                    FuelType = "REGULAR",
                                     MaxOutput = 60f,
                                     MaxOutputLowerRpm = 6000,
                                     MaxOutputUpperRpm = 6000,
@@ -1359,18 +1183,18 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MaxTorqueUpperRpm = 4800,
                                     Stroke = 83.6f,
                                     Type = "DOHC水冷直列3気筒",
-                                    ValveSystem = 3
+                                    ValveSystem = "DOHC"
                                 },
                                 new
                                 {
                                     CarId = 6,
                                     Code = "B47D20B",
-                                    CylinderLayout = 0,
+                                    CylinderLayout = "I",
                                     CylinderNum = 4,
                                     Displacement = 1.995f,
                                     FuelSystem = "デジタル・ディーゼル・エレクトロニクス(DDE/電子燃料噴射装置)",
                                     FuelTankCap = 59,
-                                    FuelType = 0,
+                                    FuelType = "DIESEL",
                                     MaxOutput = 140f,
                                     MaxOutputLowerRpm = 4000,
                                     MaxOutputUpperRpm = 4000,
@@ -1378,11 +1202,11 @@ namespace HogeBlazor.Server.Db.Migrations
                                     MaxTorqueLowerRpm = 1750,
                                     MaxTorqueUpperRpm = 2500,
                                     Type = "直列4気筒DOHCディーゼル",
-                                    ValveSystem = 3
+                                    ValveSystem = "DOHC"
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Interior", "Interior", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Interior", "Interior", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -1460,7 +1284,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Performance", "Performance", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Performance", "Performance", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -1596,7 +1420,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                 });
                         });
 
-                    b.OwnsOne("HogeBlazor.Shared.Models.Transmission", "Transmission", b1 =>
+                    b.OwnsOne("HogeBlazor.Shared.Models.Db.Transmission", "Transmission", b1 =>
                         {
                             b1.Property<int>("CarId")
                                 .HasColumnType("integer");
@@ -1617,8 +1441,8 @@ namespace HogeBlazor.Server.Db.Migrations
                                 .HasColumnType("real")
                                 .HasComment("減速比リア");
 
-                            b1.Property<int?>("Type")
-                                .HasColumnType("integer")
+                            b1.Property<string>("Type")
+                                .HasColumnType("text")
                                 .HasComment("種類(AT/DCT/AMT/MT/CVT)");
 
                             b1.HasKey("CarId");
@@ -1636,14 +1460,14 @@ namespace HogeBlazor.Server.Db.Migrations
                                     GearRatiosFront = new[] { 3.552f, 2.022f, 1.452f, 1f, 0.708f, 0.599f },
                                     ReductionRatioFront = 4.624f,
                                     ReductionRatioRear = 2.928f,
-                                    Type = 0
+                                    Type = "AT"
                                 },
                                 new
                                 {
                                     CarId = 2,
                                     ReductionRatioFront = 2.834f,
                                     ReductionRatioRear = 10.487f,
-                                    Type = 5
+                                    Type = "PG"
                                 },
                                 new
                                 {
@@ -1651,7 +1475,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     GearRatiosFront = new[] { 3.838f, 2.433f, 1.777f, 1.427f, 1.211f, 1.038f, 0.88f, 0.747f, 0.633f },
                                     ReductionRatioFront = 10.382f,
                                     ReductionRatioRear = 3.583f,
-                                    Type = 1
+                                    Type = "DCT"
                                 },
                                 new
                                 {
@@ -1669,7 +1493,7 @@ namespace HogeBlazor.Server.Db.Migrations
                                     CarId = 6,
                                     GearRatiosFront = new[] { 5.25f, 3.36f, 2.172f, 1.72f, 1.316f, 1f, 0.822f, 0.64f },
                                     ReductionRatioFront = 2.813f,
-                                    Type = 0
+                                    Type = "AT"
                                 });
                         });
 
@@ -1715,7 +1539,7 @@ namespace HogeBlazor.Server.Db.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("HogeBlazor.Shared.Models.User", null)
+                    b.HasOne("HogeBlazor.Shared.Models.Db.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1724,7 +1548,7 @@ namespace HogeBlazor.Server.Db.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("HogeBlazor.Shared.Models.User", null)
+                    b.HasOne("HogeBlazor.Shared.Models.Db.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1739,7 +1563,7 @@ namespace HogeBlazor.Server.Db.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HogeBlazor.Shared.Models.User", null)
+                    b.HasOne("HogeBlazor.Shared.Models.Db.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1748,7 +1572,7 @@ namespace HogeBlazor.Server.Db.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("HogeBlazor.Shared.Models.User", null)
+                    b.HasOne("HogeBlazor.Shared.Models.Db.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

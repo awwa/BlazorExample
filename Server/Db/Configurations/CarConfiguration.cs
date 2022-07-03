@@ -1,7 +1,6 @@
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Shared.Models.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NodaTime;
 
 namespace HogeBlazor.Server.Db.Configurations;
 
@@ -9,17 +8,11 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
 {
     public void Configure(EntityTypeBuilder<Car> builder)
     {
-        ConfigureCx5(builder);
-        ConfigureCorolla(builder);
-        ConfigureNsx(builder);
-        ConfigureHondaE(builder);
-        ConfigureNote(builder);
-        ConfigureThree(builder);
     }
 
-    private void ConfigureCx5(EntityTypeBuilder<Car> builder)
+    public static Car Cx5()
     {
-        builder.HasData(new Car
+        return new Car
         {
             Id = 1,
             MakerName = "マツダ",
@@ -48,12 +41,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 "充電制御",
                 "ロックアップ機構付トルクコンバーター",
                 "電動パワーステアリング",
-            }
-        });
-        builder.OwnsOne(e => e.Body).HasData(
-            new
+            },
+            Body = new Body
             {
-                CarId = 1,
                 Type = BodyType.SUV,
                 Length = 4545,
                 Width = 1840,
@@ -64,26 +54,20 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MinRoadClearance = 210,
                 Weight = 1620,
                 DoorNum = 4,
-            }
-        );
-        // MotorX: Motor{},
-        // MotorY: Motor{},
-        // Battery: Battery{},
-        builder.OwnsOne(e => e.Interior).HasData(
-            new
+            },
+            // MotorX: Motor{},
+            // MotorY: Motor{},
+            // Battery: Battery{},
+            Interior = new Interior
             {
-                CarId = 1,
                 Length = 1890,
                 Width = 1540,
                 Height = 1265,
                 // LuggageCap
                 RidingCap = 5,
-            }
-        );
-        builder.OwnsOne(e => e.Performance).HasData(
-            new
+            },
+            Performance = new Performance
             {
-                CarId = 1,
                 MinTurningRadius = 5.5f,
                 FcrWltc = 13.0f,
                 FcrWltcL = 10.2f,
@@ -99,12 +83,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 // EcrWltcExh
                 // EcrJc08
                 // MpcJc08
-            }
-        );
-        builder.OwnsOne(e => e.Engine).HasData(
-            new
+            },
+            Engine = new Engine
             {
-                CarId = 1,
                 Code = "PY-RPS",
                 Type = "水冷直列4気筒DOHC16バルブ",
                 CylinderNum = 4,
@@ -123,30 +104,21 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 FuelSystem = "DI",
                 FuelType = FuelType.REGULAR,
                 FuelTankCap = 58,
-            }
-        );
-        builder.OwnsOne(e => e.TireFront).HasData(
-            new
+            },
+            TireFront = new Tire
             {
-                CarId = 1,
                 SectionWidth = 225,
                 AspectRatio = 55,
                 WheelDiameter = 19,
-            }
-        );
-        builder.OwnsOne(e => e.TireRear).HasData(
-            new
+            },
+            TireRear = new Tire
             {
-                CarId = 1,
                 SectionWidth = 225,
                 AspectRatio = 55,
                 WheelDiameter = 19,
-            }
-        );
-        builder.OwnsOne(e => e.Transmission).HasData(
-            new
+            },
+            Transmission = new Transmission
             {
-                CarId = 1,
                 Type = TransmissionType.AT,
                 GearRatiosFront = new float[]
                     {
@@ -165,12 +137,12 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 ReductionRatioFront = 4.624f,
                 ReductionRatioRear = 2.928f,
             }
-        );
+        };
     }
 
-    private void ConfigureCorolla(EntityTypeBuilder<Car> builder)
+    public static Car Corolla()
     {
-        builder.HasData(new Car
+        return new Car
         {
             Id = 2,
             MakerName = "トヨタ",
@@ -197,11 +169,8 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 "充電制御",
                 "電気式無段変速機",
             },
-        });
-        builder.OwnsOne(e => e.Body).HasData(
-            new
+            Body = new Body
             {
-                CarId = 2,
                 Type = BodyType.STATION_WAGON,
                 Length = 4495,
                 Width = 1745,
@@ -212,23 +181,17 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MinRoadClearance = 130,
                 Weight = 1410,
                 DoorNum = 4,
-            }
-        );
-        builder.OwnsOne(e => e.Interior).HasData(
-            new
+            },
+            Interior = new Interior
             {
-                CarId = 2,
                 Length = 1790,
                 Width = 1510,
                 Height = 1160,
                 // LuggageCap
                 RidingCap = 5,
-            }
-        );
-        builder.OwnsOne(e => e.Performance).HasData(
-            new
+            },
+            Performance = new Performance
             {
-                CarId = 2,
                 MinTurningRadius = 5.0f,
                 FcrWltc = 26.8f,
                 FcrWltcL = 25.1f,
@@ -244,12 +207,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 // EcrWltcExh
                 // EcrJc08
                 // MpcJc08
-            }
-        );
-        builder.OwnsOne(e => e.Engine).HasData(
-            new
+            },
+            Engine = new Engine
             {
-                CarId = 2,
                 Code = "2ZR-FXE",
                 Type = "直列4気筒 DOHC 16バルブ VVT-i ミラーサイクル",
                 CylinderNum = 4,
@@ -268,12 +228,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 FuelSystem = "電子制御式燃料噴射装置(EFI)",
                 FuelType = FuelType.REGULAR,
                 FuelTankCap = 43,
-            }
-        );
-        builder.OwnsOne(e => e.MotorX).HasData(
-            new
+            },
+            MotorX = new Motor
             {
-                CarId = 2,
                 Code = "1NM",
                 Type = "交流同期電動機",
                 Purpose = "動力前用",
@@ -284,12 +241,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MaxTorque = 163f,
                 // MaxTorqueLowerRpm
                 // MaxTorqueUpperRpm
-            }
-        );
-        builder.OwnsOne(e => e.MotorY).HasData(
-            new
+            },
+            MotorY = new Motor
             {
-                CarId = 2,
                 Code = "1MM",
                 Type = "交流同期電動機",
                 Purpose = "動力後用",
@@ -300,52 +254,40 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MaxTorque = 55f,
                 // MaxTorqueLowerRpm
                 // MaxTorqueUpperRpm
-            }
-        );
-        builder.OwnsOne(e => e.Battery).HasData(
-            new
+            },
+            Battery = new Battery
             {
-                CarId = 2,
                 Type = "ニッケル水素電池",
                 // Quantity
                 // Voltage
                 Capacity = 6.5f,
-            }
-        );
-        builder.OwnsOne(e => e.TireFront).HasData(
-            new
+            },
+            TireFront = new Tire
             {
-                CarId = 2,
                 SectionWidth = 195,
                 AspectRatio = 65,
                 WheelDiameter = 15,
-            }
-        );
-        builder.OwnsOne(e => e.TireRear).HasData(
-            new
+            },
+            TireRear = new Tire
             {
-                CarId = 2,
                 SectionWidth = 195,
                 AspectRatio = 65,
                 WheelDiameter = 15,
-            }
-        );
-        builder.OwnsOne(e => e.Transmission).HasData(
-            new
+            },
+            Transmission = new Transmission
             {
-                CarId = 2,
                 Type = TransmissionType.PG,
                 // GearRatiosFront
                 // RatioRear
                 ReductionRatioFront = 2.834f,
                 ReductionRatioRear = 10.487f,
             }
-        );
+        };
     }
 
-    private void ConfigureNsx(EntityTypeBuilder<Car> builder)
+    public static Car Nsx()
     {
-        builder.HasData(new Car
+        return new Car
         {
             Id = 3,
             MakerName = "ホンダ",
@@ -370,12 +312,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 "可変バルブタイミング",
                 "アイドリングストップ装置",
                 "電動パワーステアリング",
-            }
-        });
-        builder.OwnsOne(e => e.Body).HasData(
-            new
+            },
+            Body = new Body
             {
-                CarId = 3,
                 Type = BodyType.COUPE,
                 Length = 4535,
                 Width = 1940,
@@ -386,23 +325,17 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MinRoadClearance = 110,
                 Weight = 1790,
                 DoorNum = 2,
-            }
-        );
-        builder.OwnsOne(e => e.Interior).HasData(
-            new
+            },
+            Interior = new Interior
             {
-                CarId = 3,
                 // Length
                 // Width
                 // Height
                 // LuggageCap
                 RidingCap = 2,
-            }
-        );
-        builder.OwnsOne(e => e.Performance).HasData(
-            new
+            },
+            Performance = new Performance
             {
-                CarId = 3,
                 MinTurningRadius = 5.9f,
                 FcrWltc = 10.6f,
                 FcrWltcL = 7.8f,
@@ -418,12 +351,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 // EcrWltcExh
                 // EcrJc08
                 // MpcJc08
-            }
-        );
-        builder.OwnsOne(e => e.Engine).HasData(
-            new
+            },
+            Engine = new Engine
             {
-                CarId = 3,
                 Code = "JNC",
                 Type = "水冷V型6気筒縦置",
                 CylinderNum = 6,
@@ -442,12 +372,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 FuelSystem = "電子制御燃料噴射式(ホンダ PGM-FI)",
                 FuelType = FuelType.PREMIUM,
                 FuelTankCap = 59,
-            }
-        );
-        builder.OwnsOne(e => e.MotorX).HasData(
-            new
+            },
+            MotorX = new Motor
             {
-                CarId = 3,
                 Code = "H3",
                 Type = "交流同期電動機",
                 Purpose = "動力前用",
@@ -458,12 +385,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MaxTorque = 73f,
                 MaxTorqueLowerRpm = 0,
                 MaxTorqueUpperRpm = 2000,
-            }
-        );
-        builder.OwnsOne(e => e.MotorY).HasData(
-            new
+            },
+            MotorY = new Motor
             {
-                CarId = 3,
                 Code = "H2",
                 Type = "交流同期電動機",
                 Purpose = "動力後用",
@@ -474,40 +398,28 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MaxTorque = 148f,
                 MaxTorqueLowerRpm = 500,
                 MaxTorqueUpperRpm = 2000,
-            }
-        );
-        builder.OwnsOne(e => e.Battery).HasData(
-            new
+            },
+            Battery = new Battery
             {
-                CarId = 3,
                 Type = "ニッケル水素電池",
                 Quantity = 72,
                 // Voltage
                 // Capacity
-            }
-        );
-        builder.OwnsOne(e => e.TireFront).HasData(
-            new
+            },
+            TireFront = new Tire
             {
-                CarId = 3,
                 SectionWidth = 245,
                 AspectRatio = 35,
                 WheelDiameter = 19,
-            }
-        );
-        builder.OwnsOne(e => e.TireRear).HasData(
-            new
+            },
+            TireRear = new Tire
             {
-                CarId = 3,
                 SectionWidth = 305,
                 AspectRatio = 30,
                 WheelDiameter = 20,
-            }
-        );
-        builder.OwnsOne(e => e.Transmission).HasData(
-            new
+            },
+            Transmission = new Transmission
             {
-                CarId = 3,
                 Type = TransmissionType.DCT,
                 GearRatiosFront = new float[]
                 {
@@ -522,16 +434,16 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                     0.633f,
                     // Ratio10
                 },
-                RatioRear = 2.394f,
+                GearRatioRear = 2.394f,
                 ReductionRatioFront = 10.382f,
                 ReductionRatioRear = 3.583f,
             }
-        );
+        };
     }
 
-    private void ConfigureHondaE(EntityTypeBuilder<Car> builder)
+    public static Car HondaE()
     {
-        builder.HasData(new Car
+        return new Car
         {
             Id = 4,
             MakerName = "ホンダ",
@@ -552,12 +464,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
             BrakeRear = "油圧式ディスク",
             FuelEfficiency = new string[] {
                 "電動パワーステアリング",
-            }
-        });
-        builder.OwnsOne(e => e.Body).HasData(
-            new
+            },
+            Body = new Body
             {
-                CarId = 4,
                 Type = BodyType.HATCHBACK,
                 Length = 3895,
                 Width = 1750,
@@ -568,23 +477,17 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MinRoadClearance = 145,
                 Weight = 1540,
                 DoorNum = 4,
-            }
-        );
-        builder.OwnsOne(e => e.Interior).HasData(
-            new
+            },
+            Interior = new Interior
             {
-                CarId = 4,
                 Length = 1845,
                 Width = 1385,
                 Height = 1120,
                 // LuggageCap
                 RidingCap = 4,
-            }
-        );
-        builder.OwnsOne(e => e.Performance).HasData(
-            new
+            },
+            Performance = new Performance
             {
-                CarId = 4,
                 MinTurningRadius = 4.3f,
                 // FcrWltc
                 // FcrWltcL
@@ -600,13 +503,10 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 // EcrWltcExh
                 EcrJc08 = 135f,
                 MpcJc08 = 274f,
-            }
-        );
-        // Engine: Engine{}
-        builder.OwnsOne(e => e.MotorX).HasData(
-            new
+            },
+            // Engine: Engine{}
+            MotorX = new Motor
             {
-                CarId = 4,
                 Code = "MCF5",
                 Type = "交流同期電動機",
                 Purpose = "動力後用",
@@ -617,52 +517,40 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MaxTorque = 315f,
                 MaxTorqueLowerRpm = 0,
                 MaxTorqueUpperRpm = 2000,
-            }
-        );
-        // MotorY: Motor{}
-        builder.OwnsOne(e => e.Battery).HasData(
-            new
+            },
+            // MotorY: Motor{}
+            Battery = new Battery
             {
-                CarId = 4,
                 Type = "リチウムイオン電池",
                 Quantity = 193,
                 Voltage = 3.7f,
                 Capacity = 50.0f,
-            }
-        );
-        builder.OwnsOne(e => e.TireFront).HasData(
-            new
+            },
+            TireFront = new Tire
             {
-                CarId = 4,
                 SectionWidth = 205,
                 AspectRatio = 45,
                 WheelDiameter = 17,
-            }
-        );
-        builder.OwnsOne(e => e.TireRear).HasData(
-            new
+            },
+            TireRear = new Tire
             {
-                CarId = 4,
                 SectionWidth = 225,
                 AspectRatio = 45,
                 WheelDiameter = 17,
-            }
-        );
-        builder.OwnsOne(e => e.Transmission).HasData(
-            new
+            },
+            Transmission = new Transmission
             {
-                CarId = 4,
                 // 	Type
                 // 	GearRatiosFront
                 // 	RatioRear
                 ReductionRatioFront = 9.545f,
             }
-        );
+        };
     }
 
-    private void ConfigureNote(EntityTypeBuilder<Car> builder)
+    public static Car Note()
     {
-        builder.HasData(new Car
+        return new Car
         {
             Id = 5,
             MakerName = "日産",
@@ -687,12 +575,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 "可変バルブタイミング",
                 "ミラーサイクル",
                 "電動パワーステアリング",
-            }
-        });
-        builder.OwnsOne(e => e.Body).HasData(
-            new
+            },
+            Body = new Body
             {
-                CarId = 5,
                 Type = BodyType.HATCHBACK,
                 Length = 4045,
                 Width = 1695,
@@ -703,23 +588,17 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MinRoadClearance = 125,
                 Weight = 1340,
                 DoorNum = 4,
-            }
-        );
-        builder.OwnsOne(e => e.Interior).HasData(
-            new
+            },
+            Interior = new Interior
             {
-                CarId = 5,
                 Length = 2030,
                 Width = 1445,
                 Height = 1240,
                 // LuggageCap
                 RidingCap = 5,
-            }
-        );
-        builder.OwnsOne(e => e.Performance).HasData(
-            new
+            },
+            Performance = new Performance
             {
-                CarId = 5,
                 MinTurningRadius = 4.9f,
                 FcrWltc = 23.8f,
                 FcrWltcL = 23.1f,
@@ -735,12 +614,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 //EcrWltcExh
                 //EcrJc08
                 //MpcJc08
-            }
-        );
-        builder.OwnsOne(e => e.Engine).HasData(
-            new
+            },
+            Engine = new Engine
             {
-                CarId = 5,
                 Code = "HR12DE",
                 Type = "DOHC水冷直列3気筒",
                 CylinderNum = 3,
@@ -759,12 +635,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 FuelSystem = "ニッサンEGI(ECCS)電子制御燃料噴射装置",
                 FuelType = FuelType.REGULAR,
                 FuelTankCap = 36,
-            }
-        );
-        builder.OwnsOne(e => e.MotorX).HasData(
-            new
+            },
+            MotorX = new Motor
             {
-                CarId = 5,
                 Code = "EM47",
                 Type = "交流同期電動機",
                 Purpose = "発電用",
@@ -775,12 +648,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MaxTorque = 280f,
                 MaxTorqueLowerRpm = 0,
                 MaxTorqueUpperRpm = 2900,
-            }
-        );
-        builder.OwnsOne(e => e.MotorY).HasData(
-            new
+            },
+            MotorY = new Motor
             {
-                CarId = 5,
                 Code = "MM48",
                 Type = "交流同期電動機",
                 Purpose = "動力後用",
@@ -791,52 +661,40 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MaxTorque = 100f,
                 MaxTorqueLowerRpm = 0,
                 MaxTorqueUpperRpm = 4775,
-            }
-        );
-        builder.OwnsOne(e => e.Battery).HasData(
-            new
+            },
+            Battery = new Battery
             {
-                CarId = 5,
                 Type = "リチウムイオン電池",
                 // Quantity
                 // Voltage
                 // Capacity
-            }
-        );
-        builder.OwnsOne(e => e.TireFront).HasData(
-            new
+            },
+            TireFront = new Tire
             {
-                CarId = 5,
                 SectionWidth = 185,
                 AspectRatio = 60,
                 WheelDiameter = 16,
-            }
-        );
-        builder.OwnsOne(e => e.TireRear).HasData(
-            new
+            },
+            TireRear = new Tire
             {
-                CarId = 5,
                 SectionWidth = 185,
                 AspectRatio = 60,
                 WheelDiameter = 16,
-            }
-        );
-        builder.OwnsOne(e => e.Transmission).HasData(
-            new
+            },
+            Transmission = new Transmission
             {
-                CarId = 5,
                 // Type
                 // GearRatiosFront
                 // RatioRear
                 ReductionRatioFront = 7.388f,
                 ReductionRatioRear = 7.282f,
             }
-        );
+        };
     }
 
-    private void ConfigureThree(EntityTypeBuilder<Car> builder)
+    public static Car Three()
     {
-        builder.HasData(new Car
+        return new Car
         {
             Id = 6,
             MakerName = "BMW",
@@ -863,12 +721,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 "充電制御(ブレーキ・エネルギー回生システム)",
                 "アイドリング・ストップ装置(エンジン・オート・スタート/ストップ)",
                 "電動パワーステアリング",
-            }
-        });
-        builder.OwnsOne(e => e.Body).HasData(
-            new
+            },
+            Body = new Body
             {
-                CarId = 6,
                 Type = BodyType.STATION_WAGON,
                 Length = 4715,
                 Width = 1825,
@@ -879,23 +734,17 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 MinRoadClearance = 135,
                 Weight = 1730,
                 DoorNum = 4,
-            }
-        );
-        builder.OwnsOne(e => e.Interior).HasData(
-            new
+            },
+            Interior = new Interior
             {
-                CarId = 6,
                 // Length
                 // Width
                 // Height
                 LuggageCap = 500,
                 RidingCap = 5,
-            }
-        );
-        builder.OwnsOne(e => e.Performance).HasData(
-            new
+            },
+            Performance = new Performance
             {
-                CarId = 6,
                 MinTurningRadius = 5.7f,
                 FcrWltc = 15.6f,
                 FcrWltcL = 12.6f,
@@ -911,12 +760,9 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 //EcrWltcExh
                 //EcrJc08
                 //MpcJc08
-            }
-        );
-        builder.OwnsOne(e => e.Engine).HasData(
-            new
+            },
+            Engine = new Engine
             {
-                CarId = 6,
                 Code = "B47D20B",
                 Type = "直列4気筒DOHCディーゼル",
                 CylinderNum = 4,
@@ -935,33 +781,24 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                 FuelSystem = "デジタル・ディーゼル・エレクトロニクス(DDE/電子燃料噴射装置)",
                 FuelType = FuelType.DIESEL,
                 FuelTankCap = 59,
-            }
-        );
-        // MotorX: Motor{},
-        // MotorY: Motor{},
-        // Battery: Battery{},
-        builder.OwnsOne(e => e.TireFront).HasData(
-            new
+            },
+            // MotorX: Motor{},
+            // MotorY: Motor{},
+            // Battery: Battery{},
+            TireFront = new Tire
             {
-                CarId = 6,
                 SectionWidth = 225,
                 AspectRatio = 50,
                 WheelDiameter = 17,
-            }
-        );
-        builder.OwnsOne(e => e.TireRear).HasData(
-            new
+            },
+            TireRear = new Tire
             {
-                CarId = 6,
                 SectionWidth = 225,
                 AspectRatio = 50,
                 WheelDiameter = 17,
-            }
-        );
-        builder.OwnsOne(e => e.Transmission).HasData(
-            new
+            },
+            Transmission = new Transmission
             {
-                CarId = 6,
                 Type = TransmissionType.AT,
                 GearRatiosFront = new float[]
                 {
@@ -976,10 +813,10 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
                     //Ratio9
                     //Ratio10
                 },
-                RatioRear = 3.712f,
+                GearRatioRear = 3.712f,
                 ReductionRatioFront = 2.813f,
                 // ReductionRatioRear
             }
-        );
+        };
     }
 }

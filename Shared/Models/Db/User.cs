@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace HogeBlazor.Shared.Models;
+namespace HogeBlazor.Shared.Models.Db;
 
 public class User : IdentityUser
 {

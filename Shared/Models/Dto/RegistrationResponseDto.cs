@@ -1,4 +1,4 @@
-namespace HogeBlazor.Shared.Helpers;
+namespace HogeBlazor.Shared.Models.Dto;
 
 public class RegistrationResponseDto
 {

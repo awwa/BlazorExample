@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": "Server(ASP.NET Core)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -23,6 +23,11 @@
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
+        },
+        {
+            "name": "Client(Blazor WebAssembly Application",
+            "type": "blazorwasm",
+            "request": "launch"
         }
     ]
 }

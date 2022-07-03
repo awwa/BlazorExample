@@ -5,38 +5,35 @@ using System;
 using HogeBlazor.Server.Repositories;
 using Npgsql;
 using static HogeBlazor.Server.Repositories.CarRepository;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using HogeBlazor.Shared.Models.Db;
 
 namespace HogeBlazor.Server.Test.Repositories;
 
-public class CarRepositoryTest : IDisposable
+public class CarRepositoryTest
 {
-    private AppDbContext _context;
-    private NpgsqlConnection _conn;
-    private readonly DbContextOptions<AppDbContext> _contextOptions;
-    private CarRepository _repo;
+    public CarRepository Repository;
     public CarRepositoryTest()
     {
-        _conn = new NpgsqlConnection(connectionString: "Host=localhost;Username=postgres;Password=password;Database=hoge_blazor");
-        _conn.Open();
-        _contextOptions = new DbContextOptionsBuilder<AppDbContext>()
-        .UseNpgsql(_conn, sql => sql.UseNodaTime()).Options;
-        _context = CreateContext();
+        // テスト用設定ファイルの読み込み
+        IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .AddEnvironmentVariables()
+            .Build();
 
-        // DB構築
-        if (_context.Database.EnsureCreated())
-        {
-        }
-
-        _repo = new CarRepository(_context);
+        string npgsqlConnString = config.GetConnectionString("PostgresDatabase");
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseNpgsql(connectionString: npgsqlConnString);
+        optionsBuilder.LogTo(Console.WriteLine).EnableSensitiveDataLogging();   // 詳細ログの有効化
+        var Db = new AppDbContext(optionsBuilder.Options);
+        Repository = new CarRepository(config, Db);
     }
-
-    AppDbContext CreateContext() => new AppDbContext(_contextOptions);
-    public void Dispose() => _conn.Dispose();
 
     [Fact]
     public async void GetCarReturnsValidInstance()
     {
-        var car = await _repo.GetCar(1);
+        var car = await Repository.GetCar(1);
         if (car == null)
         {
             throw new Exception();
@@ -48,74 +45,85 @@ public class CarRepositoryTest : IDisposable
     [Fact]
     public async void GetCarReturnsNullIfNotExists()
     {
-        var car = await _repo.GetCar(-999);
+        var car = await Repository.GetCar(-999);
         Assert.Null(car);
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched1()
+    public async void GetCarsReturnsValidListByMakerNames()
     {
-        var p = new CarParameters() { MakerName = "マツダ" };
-        var cars = await _repo.GetCars(p);
-        Assert.Equal(1, cars.Count);
+        var p = new CarParameters() { MakerNames = new List<string> { "マツダ", "ヒュンダイ" } };
+        var cars = await Repository.GetCars(p);
+        Assert.Single(cars);
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched2()
+    public async void GetCarsReturnsValidListByBodyType()
     {
         var p = new CarParameters()
         {
-            BodyType = Shared.Models.BodyType.HATCHBACK,
+            BodyType = BodyType.HATCHBACK,
         };
-        var cars = await _repo.GetCars(p);
+        var cars = await Repository.GetCars(p);
         Assert.Equal(2, cars.Count);
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched3()
+    public async void GetCarsReturnsValidListByMakerNamesAndBodyType()
     {
         var p = new CarParameters()
         {
-            MakerName = "マツダ",
-            BodyType = Shared.Models.BodyType.SUV,
+            MakerNames = new List<string> { "マツダ" },
+            BodyType = BodyType.SUV,
         };
-        var cars = await _repo.GetCars(p);
-        Assert.Equal(1, cars.Count);
+        var cars = await Repository.GetCars(p);
+        Assert.Single(cars);
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched4()
+    public async void GetCarsReturnsValidListByMakerNames2()
+    {
+        var p = new CarParameters()
+        {
+            MakerNames = new List<string> { "マツダ", "トヨタ" },
+        };
+        var cars = await Repository.GetCars(p);
+        Assert.Equal(2, cars.Count);
+    }
+
+    [Fact]
+    public async void GetCarsReturnsValidListByWidthLower()
     {
         var p = new CarParameters()
         {
             WidthLower = 1800,
         };
-        var cars = await _repo.GetCars(p);
+        var cars = await Repository.GetCars(p);
         Assert.Equal(3, cars.Count);
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched5()
+    public async void GetCarsReturnsValidListByWidthUpper()
     {
         var p = new CarParameters()
         {
             WidthUpper = 1800,
         };
-        var cars = await _repo.GetCars(p);
+        var cars = await Repository.GetCars(p);
         Assert.Equal(3, cars.Count);
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched6()
+    public async void GetCarsReturnsValidListByAll()
     {
         var p = new CarParameters()
         {
-            MakerName = "マツダ",
+            MakerNames = new List<string> { "マツダ" },
             PriceLower = 3000000,
             PriceUpper = 3200000,
-            PowerTrain = Shared.Models.PowerTrain.ICE,
-            DriveSystem = Shared.Models.DriveSystem.AWD,
-            BodyType = Shared.Models.BodyType.SUV,
+            PowerTrain = PowerTrain.ICE,
+            DriveSystem = DriveSystem.AWD,
+            BodyType = BodyType.SUV,
             LengthLower = 4545,
             LengthUpper = 4545,
             WidthLower = 1840,
@@ -124,26 +132,27 @@ public class CarRepositoryTest : IDisposable
             HeightUpper = 1690,
             WeightUpper = 1620,
             DoorNumLower = 4,
-            RidingCap = 5,
+            RidingCapLower = 5,
+            RidingCapUpper = 5,
             FcrWltcLower = 13.0f,
             FcrJc08Lower = 14.2f,
             //MpcWltcLower
             //EcrWltcLower
             //EcrJc08Lower
             //MpcJc08Lower
-            FuelType = Shared.Models.FuelType.REGULAR,
+            FuelType = FuelType.REGULAR,
         };
-        var cars = await _repo.GetCars(p);
-        Assert.Equal(1, cars.Count);
+        var cars = await Repository.GetCars(p);
+        Assert.Single(cars);
     }
 
 
     [Fact]
     public async void GetCarsReturnsEmptyListIfNotMatched()
     {
-        var p = new CarParameters() { MakerName = "ほげ" };
-        var cars = await _repo.GetCars(p);
-        Assert.Equal(0, cars.Count);
+        var p = new CarParameters() { MakerNames = new List<string> { "ほげ" } };
+        var cars = await Repository.GetCars(p);
+        Assert.Empty(cars);
     }
 
     [Fact]
@@ -151,11 +160,10 @@ public class CarRepositoryTest : IDisposable
     {
         var p = new CarParameters()
         {
-            MakerName = "マツダ",
+            MakerNames = new List<string> { "マツダ" },
             MpcWltcLower = 14.2f,
         };
-        var cars = await _repo.GetCars(p);
-        Assert.Equal(0, cars.Count);
+        var cars = await Repository.GetCars(p);
+        Assert.Empty(cars);
     }
-
 }

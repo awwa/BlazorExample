@@ -1,8 +1,6 @@
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using NodaTime;
 
-namespace HogeBlazor.Shared.Models;
+namespace HogeBlazor.Shared.Models.Db;
 
 public class Car
 {
@@ -54,11 +52,11 @@ public class Car
     [Comment("性能")]
     public Performance Performance { get; set; } = default!;
 
-    [Comment("パワートレイン(ICE/StrHV/MldHV/SerHV/PHEV/BEV/RexEV/FCEV)")]
-    public PowerTrain? PowerTrain { get; set; }
+    [Comment("パワートレイン")]
+    public string? PowerTrain { get; set; }
 
-    [Comment("駆動方式(FF/FR/RR/MR/AWD)")]
-    public DriveSystem? DriveSystem { get; set; }
+    [Comment("駆動方式")]
+    public string? DriveSystem { get; set; }
 
     [Comment("エンジン")]
     public Engine Engine { get; set; } = default!;
@@ -70,7 +68,7 @@ public class Car
     public Motor MotorY { get; set; } = default!;
 
     [Comment("バッテリー")]
-    public virtual Battery Battery { get; set; } = default!;
+    public Battery Battery { get; set; } = default!;
 
     [Comment("ステアリング形式")]
     public string? Steering { get; set; }
@@ -104,7 +102,7 @@ public class Car
 public class Body
 {
     [Comment("ボディタイプ")]
-    public BodyType? Type { get; set; }
+    public string? Type { get; set; }
 
     [Comment("全長(mm)")]
     public int? Length { get; set; }
@@ -217,11 +215,11 @@ public class Engine
     [Comment("気筒数")]
     public int? CylinderNum { get; set; }
 
-    [Comment("シリンダーレイアウト(I/V/B/W)")]
-    public CylinderLayout? CylinderLayout { get; set; }
+    [Comment("シリンダーレイアウト")]
+    public string? CylinderLayout { get; set; }
 
-    [Comment("バルブ構造(SV/OHV/SOHC/DOHC)")]
-    public ValveSystem? ValveSystem { get; set; }
+    [Comment("バルブ構造")]
+    public string? ValveSystem { get; set; }
 
     [Comment("総排気量(L)")]
     public float? Displacement { get; set; }
@@ -256,8 +254,8 @@ public class Engine
     [Comment("燃料供給装置")]
     public string? FuelSystem { get; set; }
 
-    [Comment("使用燃料種類(軽油/無鉛レギュラーガソリン/無鉛プレミアムガソリン)")]
-    public FuelType? FuelType { get; set; }
+    [Comment("使用燃料種類")]
+    public string? FuelType { get; set; }
 
     [Comment("燃料タンク容量(L)")]
     public int? FuelTankCap { get; set; }
@@ -333,8 +331,8 @@ public class Tire
 [Owned]
 public class Transmission
 {
-    [Comment("種類(AT/DCT/AMT/MT/CVT)")]
-    public TransmissionType? Type { get; set; }
+    [Comment("トランスミッション種類")]
+    public string? Type { get; set; }
 
     [Comment("変速比前進配列")]
     public float[]? GearRatiosFront { get; set; }
@@ -349,81 +347,142 @@ public class Transmission
     public float? ReductionRatioRear { get; set; }
 }
 
-public enum BodyType
+/// <summary>
+/// ボディタイプ
+/// </summary>
+public class BodyType
 {
-    SEDAN,
-    HATCHBACK,
-    CROSS_COUNTRY,
-    MINI_VAN,
-    ONEBOX_WAGON,
-    K,
-    COUPE,
-    STATION_WAGON,
-    SUV,
-    ONEBOX_VAN,
-    K_OPEN,
-    K_ONEBOX_WAGON,
-    OPEN,
-    VAN,
-    K_VAN,
-    K_ONEBOX_VAN,
-    PICKUP_TRUCK,
-}
-public enum PowerTrain
-{
-    ICE,
-    StrHV,
-    MldHV,
-    SerHV,
-    PHEV,
-    BEV,
-    RexEV,
-    FCEV,
-}
-
-public enum DriveSystem
-{
-    FF,
-    FR,
-    RR,
-    MR,
-    AWD,
-}
-
-
-
-public enum CylinderLayout
-{
-    I,
-    V,
-    B,
-    W,
+    [Comment("セダン")]
+    public const string SEDAN = "SEDAN";
+    [Comment("ハッチバック")]
+    public const string HATCHBACK = "HATCHBACK";
+    [Comment("クロスカントリー")]
+    public const string CROSS_COUNTRY = "CROSS_COUNTRY";
+    [Comment("ミニバン")]
+    public const string MINI_VAN = "MINI_VAN,";
+    [Comment("ワンボックスワゴン")]
+    public const string ONEBOX_WAGON = "ONEBOX_WAGON";
+    [Comment("軽自動車")]
+    public const string K = "K";
+    [Comment("クーペ")]
+    public const string COUPE = "COUPE";
+    [Comment("ステーションワゴン")]
+    public const string STATION_WAGON = "STATION_WAGON";
+    [Comment("SUV")]
+    public const string SUV = "SUV";
+    [Comment("ワンボックスバン")]
+    public const string ONEBOX_VAN = "ONEBOX_VAN";
+    [Comment("軽オープン")]
+    public const string K_OPEN = "K_OPEN";
+    [Comment("軽ワンボックスワゴン")]
+    public const string K_ONEBOX_WAGON = "K_ONEBOX_WAGON";
+    [Comment("オープン")]
+    public const string OPEN = "OPEN";
+    [Comment("バン")]
+    public const string VAN = "VAN";
+    [Comment("軽バン")]
+    public const string K_VAN = "K_VAN";
+    [Comment("軽ワンボックスバン")]
+    public const string K_ONEBOX_VAN = "K_ONEBOX_VAN";
+    [Comment("ピックアップトラック")]
+    public const string PICKUP_TRUCK = "PICKUP_TRUCK";
 }
 
-public enum ValveSystem
+/// <summary>
+/// パワートレイン
+/// </summary>
+public class PowerTrain
 {
-    SV,
-    OHV,
-    SOHC,
-    DOHC,
+    [Comment("エンジン車")]
+    public const string ICE = "ICE";
+    [Comment("ストロングハイブリッド")]
+    public const string StrHV = "StrHV";
+    [Comment("マイルドハイブリッド")]
+    public const string MldHV = "MldHV";
+    [Comment("シリーズハイブリッド")]
+    public const string SerHV = "SerHV";
+    [Comment("プラグインハイブリッド")]
+    public const string PHEV = "PHEV";
+    [Comment("バッテリーEV")]
+    public const string BEV = "BEV";
+    [Comment("レンジエクステンダーEV")]
+    public const string RexEV = "RexEV";
+    [Comment("燃料電池車")]
+    public const string FCEV = "FCEV";
 }
 
-public enum FuelType
+/// <summary>
+/// 駆動方式
+/// </summary>
+public class DriveSystem
 {
-    DIESEL,
-    REGULAR,
-    PREMIUM,
-    LPG,
-    BIO,
-    HYDROGEN,
+    public const string FF = "FF";
+    public const string FR = "FR";
+    public const string RR = "RR";
+    public const string MR = "MR";
+    public const string AWD = "AWD";
 }
 
-public enum TransmissionType
+/// <summary>
+/// シリンダーレイアウト
+/// </summary>
+public class CylinderLayout
 {
-    AT,
-    DCT,
-    AMT,
-    MT,
-    CVT,
-    PG,
+    [Comment("直列")]
+    public const string I = "I";
+    [Comment("V型")]
+    public const string V = "V";
+    [Comment("水平対向")]
+    public const string B = "B";
+    [Comment("W型")]
+    public const string W = "W";
+}
+
+/// <summary>
+/// バルブ構造
+/// </summary>
+public class ValveSystem
+{
+    public const string SV = "SV";
+    public const string OHV = "OHV";
+    public const string SOHC = "SOHC";
+    public const string DOHC = "DOHC";
+}
+
+/// <summary>
+/// 使用燃料種類
+/// </summary>
+public class FuelType
+{
+    [Comment("軽油")]
+    public const string DIESEL = "DIESEL";
+    [Comment("無鉛レギュラーガソリン")]
+    public const string REGULAR = "REGULAR";
+    [Comment("無鉛プレミアムガソリン")]
+    public const string PREMIUM = "PREMIUM";
+    [Comment("LPG")]
+    public const string LPG = "LPG";
+    [Comment("バイオ燃料")]
+    public const string BIO = "BIO";
+    [Comment("水素")]
+    public const string HYDROGEN = "HYDROGEN";
+}
+
+/// <summary>
+/// トランスミッション種類
+/// </summary>
+public class TransmissionType
+{
+    [Comment("AT")]
+    public const string AT = "AT";
+    [Comment("DCT")]
+    public const string DCT = "DCT";
+    [Comment("AMT")]
+    public const string AMT = "AMT";
+    [Comment("MT")]
+    public const string MT = "MT";
+    [Comment("CVT")]
+    public const string CVT = "CVT";
+    [Comment("電気式無段変速機")]
+    public const string PG = "PG";
 }

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using HogeBlazor.Server.Db;
-using HogeBlazor.Shared.Models;
+using HogeBlazor.Server.Helpers;
+using HogeBlazor.Shared.Models.Db;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,7 @@ public class CarRepository : ICarRepository
 {
     private readonly AppDbContext _context;
 
-    public CarRepository(AppDbContext context)
+    public CarRepository(IConfiguration configuration, AppDbContext context)
     {
         _context = context;
     }
@@ -38,8 +39,12 @@ public class CarRepository : ICarRepository
 
     public async Task<List<Car>> GetCars(CarParameters p)
     {
+        // 検索条件の組み立て
         var exList = new List<Expression<Func<Car, bool>>>();
-        if (p.MakerName != null) exList.Add(x => x.MakerName == p.MakerName);
+        if (p.MakerNames.Any())
+        {
+            exList.Add(QueryHelper.GetOrExpression<Car>("MakerName", p.MakerNames));
+        }
         if (p.PriceLower != null) exList.Add(x => x.Price >= p.PriceLower);
         if (p.PriceUpper != null) exList.Add(x => x.Price <= p.PriceUpper);
         if (p.PowerTrain != null) exList.Add(x => x.PowerTrain == p.PowerTrain);
@@ -53,7 +58,8 @@ public class CarRepository : ICarRepository
         if (p.LengthUpper != null) exList.Add(x => x.Body.Length <= p.LengthUpper);
         if (p.WeightUpper != null) exList.Add(x => x.Body.Weight <= p.WeightUpper);
         if (p.DoorNumLower != null) exList.Add(x => x.Body.DoorNum >= p.DoorNumLower);
-        if (p.RidingCap != null) exList.Add(x => x.Interior.RidingCap == p.RidingCap);
+        if (p.RidingCapUpper != null) exList.Add(x => x.Interior.RidingCap == p.RidingCapUpper);
+        if (p.RidingCapLower != null) exList.Add(x => x.Interior.RidingCap >= p.RidingCapLower);
         if (p.FcrWltcLower != null) exList.Add(x => x.Performance.FcrWltc >= p.FcrWltcLower);
         if (p.FcrJc08Lower != null) exList.Add(x => x.Performance.FcrJc08 >= p.FcrJc08Lower);
         if (p.MpcWltcLower != null) exList.Add(x => x.Performance.MpcWltc >= p.MpcWltcLower);
@@ -67,7 +73,7 @@ public class CarRepository : ICarRepository
         {
             query = query.Where(ex);
         }
-        var cars = await query.ToListAsync<Car>();
+        var cars = await query.OrderBy(s => s.Id).ToListAsync<Car>();
         return cars;
     }
 
@@ -77,9 +83,9 @@ public class CarRepository : ICarRepository
     public class CarParameters
     {
         /// <summary>
-        /// メーカー名(完全一致)
+        /// メーカー名(複数指定)
         /// </summary>
-        public string? MakerName { get; set; }
+        public List<string> MakerNames { get; set; } = new List<string>();
         /// <summary>
         /// 小売価格(税込/円)下限
         /// </summary>
@@ -91,15 +97,15 @@ public class CarRepository : ICarRepository
         /// <summary>
         /// パワートレイン
         /// </summary>
-        public PowerTrain? PowerTrain { get; set; }
+        public string? PowerTrain { get; set; }
         /// <summary>
         /// 駆動方式
         /// </summary>
-        public DriveSystem? DriveSystem { get; set; }
+        public string? DriveSystem { get; set; }
         /// <summary>
         /// ボディタイプ
         /// </summary>
-        public BodyType? BodyType { get; set; }
+        public string? BodyType { get; set; }
         /// <summary>
         /// 全長(mm)下限
         /// </summary>
@@ -133,9 +139,14 @@ public class CarRepository : ICarRepository
         /// </summary>
         public int? DoorNumLower { get; set; }
         /// <summary>
-        /// 乗車定員(人)
+        /// 乗車定員(人)下限
         /// </summary>
-        public int? RidingCap { get; set; }
+        public int? RidingCapLower { get; set; }
+        /// <summary>
+        /// 乗車定員（人）上限
+        /// </summary>
+        /// <value></value>
+        public int? RidingCapUpper { get; set; }
         /// <summary>
         /// 燃料消費率WLTCモード(km/L)下限
         /// </summary>
@@ -163,6 +174,6 @@ public class CarRepository : ICarRepository
         /// <summary>
         /// 使用燃料種類
         /// </summary>
-        public FuelType? FuelType { get; set; }
+        public string? FuelType { get; set; }
     }
 }
