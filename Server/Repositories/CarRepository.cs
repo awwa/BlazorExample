@@ -73,7 +73,7 @@ public class CarRepository : ICarRepository
         {
             query = query.Where(ex);
         }
-        var cars = await query.ToListAsync<Car>();
+        var cars = await query.OrderBy(s => s.Id).ToListAsync<Car>();
         return cars;
     }
 
@@ -83,7 +83,7 @@ public class CarRepository : ICarRepository
     public class CarParameters
     {
         /// <summary>
-        /// メーカー名(完全一致)
+        /// メーカー名(複数指定)
         /// </summary>
         public List<string> MakerNames { get; set; } = new List<string>();
         /// <summary>

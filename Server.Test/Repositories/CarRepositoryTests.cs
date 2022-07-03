@@ -50,7 +50,7 @@ public class CarRepositoryTest
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched1()
+    public async void GetCarsReturnsValidListByMakerNames()
     {
         var p = new CarParameters() { MakerNames = new List<string> { "マツダ", "ヒュンダイ" } };
         var cars = await Repository.GetCars(p);
@@ -58,7 +58,7 @@ public class CarRepositoryTest
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched2()
+    public async void GetCarsReturnsValidListByBodyType()
     {
         var p = new CarParameters()
         {
@@ -69,7 +69,7 @@ public class CarRepositoryTest
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched3()
+    public async void GetCarsReturnsValidListByMakerNamesAndBodyType()
     {
         var p = new CarParameters()
         {
@@ -81,7 +81,7 @@ public class CarRepositoryTest
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched31()
+    public async void GetCarsReturnsValidListByMakerNames2()
     {
         var p = new CarParameters()
         {
@@ -92,7 +92,7 @@ public class CarRepositoryTest
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched4()
+    public async void GetCarsReturnsValidListByWidthLower()
     {
         var p = new CarParameters()
         {
@@ -103,7 +103,7 @@ public class CarRepositoryTest
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched5()
+    public async void GetCarsReturnsValidListByWidthUpper()
     {
         var p = new CarParameters()
         {
@@ -114,7 +114,7 @@ public class CarRepositoryTest
     }
 
     [Fact]
-    public async void GetCarsReturnsValidListIfMatched6()
+    public async void GetCarsReturnsValidListByAll()
     {
         var p = new CarParameters()
         {
@@ -166,5 +166,4 @@ public class CarRepositoryTest
         var cars = await Repository.GetCars(p);
         Assert.Empty(cars);
     }
-
 }

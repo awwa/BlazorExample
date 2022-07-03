@@ -52,10 +52,10 @@ public class Car
     [Comment("性能")]
     public Performance Performance { get; set; } = default!;
 
-    [Comment("パワートレイン(ICE/StrHV/MldHV/SerHV/PHEV/BEV/RexEV/FCEV)")]
+    [Comment("パワートレイン")]
     public string? PowerTrain { get; set; }
 
-    [Comment("駆動方式(FF/FR/RR/MR/AWD)")]
+    [Comment("駆動方式")]
     public string? DriveSystem { get; set; }
 
     [Comment("エンジン")]
@@ -215,10 +215,10 @@ public class Engine
     [Comment("気筒数")]
     public int? CylinderNum { get; set; }
 
-    [Comment("シリンダーレイアウト(I/V/B/W)")]
+    [Comment("シリンダーレイアウト")]
     public string? CylinderLayout { get; set; }
 
-    [Comment("バルブ構造(SV/OHV/SOHC/DOHC)")]
+    [Comment("バルブ構造")]
     public string? ValveSystem { get; set; }
 
     [Comment("総排気量(L)")]
@@ -254,7 +254,7 @@ public class Engine
     [Comment("燃料供給装置")]
     public string? FuelSystem { get; set; }
 
-    [Comment("使用燃料種類(軽油/無鉛レギュラーガソリン/無鉛プレミアムガソリン)")]
+    [Comment("使用燃料種類")]
     public string? FuelType { get; set; }
 
     [Comment("燃料タンク容量(L)")]
@@ -331,7 +331,7 @@ public class Tire
 [Owned]
 public class Transmission
 {
-    [Comment("種類(AT/DCT/AMT/MT/CVT)")]
+    [Comment("トランスミッション種類")]
     public string? Type { get; set; }
 
     [Comment("変速比前進配列")]
@@ -438,11 +438,11 @@ public class ValveSystem
 
 public class FuelType
 {
-    [Comment("ディーゼル")]
+    [Comment("軽油")]
     public const string DIESEL = "DIESEL";
-    [Comment("無縁レギュラー")]
+    [Comment("無縁レギュラーガソリン")]
     public const string REGULAR = "REGULAR";
-    [Comment("ハイオク")]
+    [Comment("無縁プレミアムガソリン")]
     public const string PREMIUM = "PREMIUM";
     [Comment("LPG")]
     public const string LPG = "LPG";

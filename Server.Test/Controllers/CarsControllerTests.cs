@@ -1,32 +1,26 @@
 using HogeBlazor.Shared.Models;
-// using HogeBlazor.Server.Helpers;
-// using Xunit;
-// using System.Net;
-// using System.Net.Http;
-// using Microsoft.AspNetCore.Mvc.Testing;
-// using System.Text.Json;
-// using System.Collections.Generic;
-// using Microsoft.EntityFrameworkCore;
-// using System.Text;
-// using System;
-// using static HogeBlazor.Server.Controllers.UsersController;
-// using System.Threading.Tasks;
 
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text.Json;
-// using HogeBlazor.Client.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 using Microsoft.AspNetCore.Http.Json;
+using HogeBlazor.Shared.Models.Db;
+using Newtonsoft.Json;
+using HogeBlazor.Server.Db;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using HogeBlazor.Server.Db.Configurations;
+using System.Threading.Tasks;
 
 namespace HogeBlazor.Server.Test.Controllers;
 
 public class CarsControllerTests
 {
     private readonly HttpClient _client;
+    private AppDbContext _db;
 
     // ASP.NET Core での統合テスト
     // https://docs.microsoft.com/ja-jp/aspnet/core/test/integration-tests?view=aspnetcore-6.0
@@ -39,8 +33,37 @@ public class CarsControllerTests
             });
         _client = application.CreateClient();
 
-        // var options = new DbContextOptions<HogeBlazorDbContext>();
-        // var _context = new HogeBlazorDbContext(options);
+        // テスト用設定ファイルの読み込み
+        IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .AddEnvironmentVariables()
+            .Build();
+
+        string npgsqlConnString = config.GetConnectionString("PostgresDatabase");
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseNpgsql(connectionString: npgsqlConnString);
+        //optionsBuilder.LogTo(Console.WriteLine)/*.EnableSensitiveDataLogging()*/;   // 詳細ログの有効化
+        _db = new AppDbContext(optionsBuilder.Options);
+    }
+
+    private async Task prepareTestData()
+    {
+        // 一旦全削除
+        var qs = await _db.Cars.ToArrayAsync<Car>();
+        _db.Cars.RemoveRange(qs);
+
+        // テストデータ挿入
+        var data = new List<Car>
+        {
+            CarConfiguration.Cx5(),
+            CarConfiguration.Corolla(),
+            CarConfiguration.Nsx(),
+            CarConfiguration.HondaE(),
+            CarConfiguration.Note(),
+            CarConfiguration.Three(),
+        };
+        _db.Cars.AddRange(data);
+        _db.SaveChanges();
     }
 
     //     /// <summary>
@@ -64,323 +87,667 @@ public class CarsControllerTests
     //         return token!.Token;
     //     }
 
+    #region GetCarsのテスト
     [Fact]
-    public async void GetCarsReturnsCarList()
+    public async void GetCarsReturnsCarListByMakerNames()
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars");
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?makerNames=マツダ&makerNames=ヒュンダイ&makerNames=トヨタ");
         var response = await _client.SendAsync(request);
+        // Assert
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseBody = await response.Content.ReadAsStringAsync();
-        // Console.WriteLine(responseBody);
         Assert.NotNull(responseBody);
-        // var options = new JsonSerializerOptions();
-        // options.Converters.Add(new DateOnlyJsonConverter());
-        // var cars = JsonSerializer.Deserialize<List<Car>>(responseBody, options);
-        // if (cars != null)
-        // {
-        //     Assert.Equal(6, cars.Count);
-        //     var car = cars[0];
-        //     Console.WriteLine(car);
-        //     Assert.Equal("マツダ", car.MakerName);
-        //     // Assert.Equal(new DateOnly(2016, 12, 15), car.ModelChangeFull);
-
-        // }
-        // else
-        // {
-        //     Assert.False(true);
-        // }
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(2, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("トヨタ", actual[1].MakerName);
+            }
+        }
     }
 
     [Fact]
-    public async void GetCarReturnsValidInstance()
+    public async void GetCarsReturnsCarListByPrice()
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars/1");
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?priceLower=3140500&priceUpper=4950000");
         var response = await _client.SendAsync(request);
+        // Assert
         response.EnsureSuccessStatusCode();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        string responseBody = await response.Content.ReadAsStringAsync();
-        // Console.WriteLine(responseBody);
+        var responseBody = await response.Content.ReadAsStringAsync();
         Assert.NotNull(responseBody);
-        // var car = JsonSerializer.Deserialize<Car>(responseBody);
-        // if (car != null)
-        // {
-        //     Assert.Equal("マツダ", car.MakerName);
-        // }
-        // else
-        // {
-        //     Assert.False(true);
-        // }
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(2, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("ホンダ", actual[1].MakerName);
+                Assert.Equal("Honda e", actual[1].ModelName);
+            }
+        }
     }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByPowerTrain()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?powerTrain=ICE");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(2, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("BMW", actual[1].MakerName);
+                Assert.Equal("3シリーズツーリング", actual[1].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByDriveSystem()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?driveSystem=AWD");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(5, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("トヨタ", actual[1].MakerName);
+                Assert.Equal("カローラツーリング", actual[1].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByBodyType()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?bodyType=HATCHBACK");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(2, actual.Count);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("Honda e", actual[0].ModelName);
+                Assert.Equal("日産", actual[1].MakerName);
+                Assert.Equal("ノート", actual[1].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByLength()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?lengthLower=4535&lengthUpper=4535");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("NSX", actual[0].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByWidth()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?widthLower=1745&widthUpper=1840");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(4, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("トヨタ", actual[1].MakerName);
+                Assert.Equal("カローラツーリング", actual[1].ModelName);
+                Assert.Equal("ホンダ", actual[2].MakerName);
+                Assert.Equal("Honda e", actual[2].ModelName);
+                Assert.Equal("BMW", actual[3].MakerName);
+                Assert.Equal("3シリーズツーリング", actual[3].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByHeight()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?heightLower=1690&heightUpper=1690");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByWeight()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?weightUpper=1620");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(4, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("トヨタ", actual[1].MakerName);
+                Assert.Equal("カローラツーリング", actual[1].ModelName);
+                Assert.Equal("ホンダ", actual[2].MakerName);
+                Assert.Equal("Honda e", actual[2].ModelName);
+                Assert.Equal("日産", actual[3].MakerName);
+                Assert.Equal("ノート", actual[3].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByDoorNum()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?doorNumLower=3");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(5, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("トヨタ", actual[1].MakerName);
+                Assert.Equal("カローラツーリング", actual[1].ModelName);
+                Assert.Equal("ホンダ", actual[2].MakerName);
+                Assert.Equal("Honda e", actual[2].ModelName);
+                Assert.Equal("日産", actual[3].MakerName);
+                Assert.Equal("ノート", actual[3].ModelName);
+                Assert.Equal("BMW", actual[4].MakerName);
+                Assert.Equal("3シリーズツーリング", actual[4].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByRidingCap()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?ridingCapLower=4&ridingCapUpper=4");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("Honda e", actual[0].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByFcrWltc()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?fcrWltcLower=13.0");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(4, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("トヨタ", actual[1].MakerName);
+                Assert.Equal("カローラツーリング", actual[1].ModelName);
+                Assert.Equal("日産", actual[2].MakerName);
+                Assert.Equal("ノート", actual[2].ModelName);
+                Assert.Equal("BMW", actual[3].MakerName);
+                Assert.Equal("3シリーズツーリング", actual[3].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByFcrJc08()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?fcrJc08Lower=14.2");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal(4, actual.Count);
+                Assert.Equal("マツダ", actual[0].MakerName);
+                Assert.Equal("CX-5", actual[0].ModelName);
+                Assert.Equal("トヨタ", actual[1].MakerName);
+                Assert.Equal("カローラツーリング", actual[1].ModelName);
+                Assert.Equal("日産", actual[2].MakerName);
+                Assert.Equal("ノート", actual[2].ModelName);
+                Assert.Equal("BMW", actual[3].MakerName);
+                Assert.Equal("3シリーズツーリング", actual[3].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByMpcWltc()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?mpcWltcLower=259");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("Honda e", actual[0].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByEcrWltc()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?ecrWltcLower=138");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("Honda e", actual[0].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByEcrJc08()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?ecrJc08Lower=135");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("Honda e", actual[0].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByMpcJc08()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?mpcJc08Lower=274");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("Honda e", actual[0].ModelName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarsReturnsCarListByFuelType()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars?fuelType=PREMIUM");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<List<Car>>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Single(actual);
+                Assert.Equal("ホンダ", actual[0].MakerName);
+                Assert.Equal("NSX", actual[0].ModelName);
+            }
+        }
+    }
+
+    #endregion
+
+    #region GetCarのテスト
+    [Fact]
+    public async void GetCarReturnsValidInstance()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars/1");
+        var response = await _client.SendAsync(request);
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(responseBody);
+        using (var responseStream = response.Content.ReadAsStream())
+        using (var streamReader = new System.IO.StreamReader(responseStream))
+        using (var jsonTextReader = new JsonTextReader(streamReader))
+        {
+            var serializer = JsonSerializer.Create();
+            var actual = serializer.Deserialize<Car>(jsonTextReader);
+            if (actual == null)
+            {
+                Assert.False(true);
+            }
+            else
+            {
+                Assert.Equal("マツダ", actual.MakerName);
+            }
+        }
+    }
+
+    [Fact]
+    public async void GetCarReturnsNotFound()
+    {
+        // Arrange
+        await prepareTestData();
+        // Act
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/cars/999");
+        var response = await _client.SendAsync(request);
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    #endregion
 }
-//     [Fact]
-//     public async void GetUserByQueryReturnsDTOObjectListForAllWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         string responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
-//         if (users != null)
-//         {
-//             Assert.Equal(3, users.Count);
-//         }
-//         else
-//         {
-//             Assert.False(users != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByQueryReturnsDTOObjectListByNameWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         string responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
-//         if (users != null)
-//         {
-//             Assert.Single(users);
-//         }
-//         else
-//         {
-//             Assert.False(users != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByQueryReturnsDTOObjectListByEmailWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?email=user@hogeblazor");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         string responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
-//         if (users != null)
-//         {
-//             Assert.Single(users);
-//         }
-//         else
-//         {
-//             Assert.False(users != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByQueryReturnsDTOObjectListByRoleWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?role=2");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         string responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
-//         if (users != null)
-//         {
-//             Assert.Single(users);
-//         }
-//         else
-//         {
-//             Assert.False(users != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByQueryReturnsDTOObjectListByNameAndEmailWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者&email=admin@hogeblazor");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         string responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
-//         if (users != null)
-//         {
-//             Assert.Single(users);
-//         }
-//         else
-//         {
-//             Assert.False(users != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByQueryReturnsDTOObjectListByEmailAndRoleWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?email=admin@hogeblazor&role=0");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         string responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
-//         if (users != null)
-//         {
-//             Assert.Single(users);
-//         }
-//         else
-//         {
-//             Assert.False(users != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByQueryReturnsDTOObjectListByNameAndRoleWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者&role=0");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         string responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var users = JsonSerializer.Deserialize<List<UserDTO>>(responseBody);
-//         if (users != null)
-//         {
-//             Assert.Single(users);
-//         }
-//         else
-//         {
-//             Assert.False(users != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByQueryReturnsUnauthorizedWithoutLogin()
-//     {
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/?name=管理者&email=admin@hogeblazor&role=0");
-//         var response = await _client.SendAsync(request);
-//         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-//         var responseBody = await response.Content.ReadAsStringAsync();
-//     }
-
-//     [Fact]
-//     public async void GetUserByIdReturnsUserDTOWithLogin()
-//     {
-//         var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/1");
-//         request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//         var responseBody = await response.Content.ReadAsStringAsync();
-//         Assert.NotNull(responseBody);
-//         var user = JsonSerializer.Deserialize<UserDTO>(responseBody);
-//         if (user != null)
-//         {
-//             Assert.IsType<UserDTO>(user);
-//         }
-//         else
-//         {
-//             Assert.False(user != null);
-//         }
-//     }
-
-//     [Fact]
-//     public async void GetUserByIdReturnsUnauthorizedWithoutLogin()
-//     {
-//         // var token = await Login("admin@hogeblazor", "password");
-//         var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/users/1");
-//         // request.Headers.Add("Authorization", "Bearer " + token);
-//         var response = await _client.SendAsync(request);
-//         // response.EnsureSuccessStatusCode();
-//         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-//         // var responseBody = await response.Content.ReadAsStringAsync();
-//         // Assert.NotNull(responseBody);
-//         // var user = JsonSerializer.Deserialize<UserDTO>(responseBody);
-//         // if (user != null)
-//         // {
-//         //     Assert.IsType<UserDTO>(user);
-//         // }
-//         // else
-//         // {
-//         //     Assert.False(user != null);
-//         // }
-//     }
-
-//     // Userモデルのアノテーションによる制限がAPIアクセス時にかかっていることは確認済み
-//     // 細かいテストはモデルのUTにおまかせする
-//     // [Fact]
-//     // public async void HogeTestE2E()
-//     // {
-//     //     var param = new Dictionary<string, object>()
-//     //     {
-//     //         ["name"] = "ほげ 太郎",
-//     //         ["email"] = "add@hogeblazor",
-//     //         ["plainPassword"] = "plain_password",
-//     //         ["role"] = User.RoleType.User,
-//     //     };
-//     //     var jsonString = System.Text.Json.JsonSerializer.Serialize(param);
-//     //     var content = new StringContent(jsonString, Encoding.UTF8, @"application/json");
-
-//     //     HttpResponseMessage response = await _client.PostAsync("/api/v1/users/", content);
-//     //     response.EnsureSuccessStatusCode();
-//     //     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-//     //     string responseBody = await response.Content.ReadAsStringAsync();
-//     //     Console.WriteLine(responseBody);
-//     // }
-
-//     // [Fact]
-//     // public async void PostUser()
-//     // {
-//     //     var param = new Dictionary<string, object>()
-//     //     {
-//     //         ["name"] = "追加ユーザー",
-//     //         ["email"] = "add@hogeblazor",
-//     //         ["password"] = "plain_password",
-//     //         ["role"] = User.RoleType.User,
-//     //     };
-//     //     var jsonString = System.Text.Json.JsonSerializer.Serialize(param);
-//     //     var content = new StringContent(jsonString, Encoding.UTF8, @"application/json");
-//     //     HttpResponseMessage response = await _client.PostAsync("/api/v1/users", content);
-//     //     response.EnsureSuccessStatusCode();
-//     //     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-//     //     string responseBody = await response.Content.ReadAsStringAsync();
-//     //     Assert.NotNull(responseBody);
-//     //     var user = JsonSerializer.Deserialize<User>(responseBody);
-//     //     Assert.NotNull(user);
-//     //     Assert.Equal("追加ユーザー", user.Name);
-//     // }
-
-//     // [Fact]
-//     // public void DeleteUser()
-//     // {
-//     //     //DbContextのオプションを作成
-//     //     var options = new DbContextOptionsBuilder<HogeBlazorDbContext>()
-//     //         .UseInMemoryDatabase(databaseName: "UnitTestDB")
-//     //         .Options;
-
-//     //     //DbContextをインスタンス化
-//     //     var context = new HogeBlazorDbContext(options);
-//     //     var users = context.Users.ToList<User>();
-//     //     foreach (var user in users)
-//     //     {
-//     //         context.Remove(user);
-//     //     }
-//     //     context.SaveChanges();
-//     //     Assert.Equal(0, context.Users.ToList<User>().Count);
-
-//     // }
-// }
