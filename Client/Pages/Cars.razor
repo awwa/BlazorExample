@@ -6,7 +6,36 @@
 @* @attribute [Authorize(Roles = "Administrator")] *@
 
 <div>
-    <RadzenDataGrid Data="@CarList" TItem="Car">
+    <RadzenCheckBox Name="BodyVisibleCheckBox" Change=@((bool v) => BodyVisible = !BodyVisible) />
+    <RadzenLabel Text="ボディ" Component="BodyVisibleCheckBox" />
+
+    <RadzenCheckBox Name="InteriorVisibleCheckBox" Change=@((bool v) => InteriorVisible = !InteriorVisible) />
+    <RadzenLabel Text="内装" Component="InteriorVisibleCheckBox" />
+
+    <RadzenCheckBox Name="PerformanceVisibleCheckBox" Change=@((bool v) => PerformanceVisible = !PerformanceVisible) />
+    <RadzenLabel Text="走行性能" Component="PerformanceVisibleCheckBox" />
+
+    <RadzenCheckBox Name="EngineVisibleCheckBox" Change=@((bool v) => EngineVisible = !EngineVisible) />
+    <RadzenLabel Text="エンジン" Component="EngineVisibleCheckBox" />
+
+    <RadzenCheckBox Name="MotorVisibleCheckBox" Change=@((bool v) => MotorVisible = !MotorVisible) />
+    <RadzenLabel Text="モーター" Component="MotorVisibleCheckBox" />
+
+    <RadzenCheckBox Name="BatteryVisibleCheckBox" Change=@((bool v) => BatteryVisible = !BatteryVisible) />
+    <RadzenLabel Text="バッテリー" Component="BatteryVisibleCheckBox" />
+
+    <RadzenCheckBox Name="TireVisibleCheckBox" Change=@((bool v) => TireVisible = !TireVisible) />
+    <RadzenLabel Text="タイヤ" Component="TireVisibleCheckBox" />
+
+    <RadzenCheckBox Name="TransmissionVisibleCheckBox" Change=@((bool v) => TransmissionVisible =
+        !TransmissionVisible) />
+    <RadzenLabel Text="トランスミッション" Component="TransmissionVisibleCheckBox" />
+
+    <RadzenCheckBox Name="OtherVisibleCheckBox" Change=@((bool v) => OtherVisible = !OtherVisible) />
+    <RadzenLabel Text="その他" Component="OtherVisibleCheckBox" />
+</div>
+<div>
+    <RadzenDataGrid Data="@CarList" TItem="Car" AllowColumnResize="true">
         <Columns>
             <RadzenDataGridColumn TItem="Car" Property="MakerName">
                 <Template Context="car">
@@ -24,8 +53,177 @@
             <RadzenDataGridColumn TItem="Car" Property="ModelName" Title="@TitleModelName" />
             <RadzenDataGridColumn TItem="Car" Property="GradeName" Title="@TitleGradeName" />
             <RadzenDataGridColumn TItem="Car" Property="ModelCode" Title="@TitleModelCode" />
-            <RadzenDataGridColumn TItem="Car" Property="Price" Title="@TitlePrice" />
+            <RadzenDataGridColumn TItem="Car" Property="Price" Title="@TitlePrice" FormatString="{0:C0}" />
             <RadzenDataGridColumn TItem="Car" Property="ModelChangeFull" Title="@TitleModelChangeFull" />
+            <RadzenDataGridColumn TItem="Car" Property="ModelChangeLast" Title="@TitleModelChangeLast" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Type" Title="@TitleBodyType" Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Length" Title="@TitleBodyLength" Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Width" Title="@TitleBodyWidth" Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Height" Title="@TitleBodyHeight" Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.WheelBase" Title="@TitleBodyWheelBase"
+                Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.TreadFront" Title="@TitleBodyTreadFront"
+                Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.TreadRear" Title="@TitleBodyTreadRear"
+                Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.MinRoadClearance" Title="@TitleBodyMinRoadClearance"
+                Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Weight" Title="@TitleBodyWeight" Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.DoorNum" Title="@TitleBodyDoorNum"
+                Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Interior.Length" Title="@TitleInteriorLength"
+                Visible="@InteriorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Interior.Width" Title="@TitleInteriorWidth"
+                Visible="@InteriorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Interior.Height" Title="@TitleInteriorHeight"
+                Visible="@InteriorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Interior.LuggageCap" Title="@TitleInteriorLuggageCap"
+                Visible="@InteriorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Interior.RidingCap" Title="@TitleInteriorRidingCap"
+                Visible="@InteriorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.MinTurningRadius"
+                Title="@TitlePerformanceMinTurningRadius" Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltc" Title="@TitlePerformanceFcrWltc"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcL" Title="@TitlePerformanceFcrWltcL"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcM" Title="@TitlePerformanceFcrWltcM"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcH" Title="@TitlePerformanceFcrWltcH"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcExh" Title="@TitlePerformanceFcrWltcExh"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.FcrJc08" Title="@TitlePerformanceFcrJc08"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.MpcWltc" Title="@TitlePerformanceMpcWltc"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltc" Title="@TitlePerformanceEcrWltc"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcL" Title="@TitlePerformanceEcrWltcL"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcM" Title="@TitlePerformanceEcrWltcM"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcH" Title="@TitlePerformanceEcrWltcH"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcExh" Title="@TitlePerformanceEcrWltcExh"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.EcrJc08" Title="@TitlePerformanceEcrJc08"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Performance.MpcJc08" Title="@TitlePerformanceMpcJc08"
+                Visible="@PerformanceVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="PowerTrain" Title="@TitlePowerTrain" />
+            <RadzenDataGridColumn TItem="Car" Property="DriveSystem" Title="@TitleDriveSystem" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.Code" Title="@TitleEngineCode"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.Type" Title="@TitleEngineType"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.CylinderNum" Title="@TitleEngineCylinderNum"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.CylinderLayout" Title="@TitleEngineCylinderLayout"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.ValveSystem" Title="@TitleEngineValveSystem"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.Displacement" Title="@TitleEngineDisplacement"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.Bore" Title="@TitleEngineBore"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.Stroke" Title="@TitleEngineStroke"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.CompressionRatio" Title="@TitleEngineCompressionRatio"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.MaxOutput" Title="@TitleEngineMaxOutput"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.MaxOutputLowerRpm" Title="@TitleEngineMaxOutputLowerRpm"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.MaxOutputUpperRpm" Title="@TitleEngineMaxOutputUpperRpm"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.MaxTorque" Title="@TitleEngineMaxTorque"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.MaxTorqueLowerRpm" Title="@TitleEngineMaxTorqueLowerRpm"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.MaxTorqueUpperRpm" Title="@TitleEngineMaxTorqueUpperRpm"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.FuelSystem" Title="@TitleEngineFuelSystem"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.FuelType" Title="@TitleEngineFuelType"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.FuelTankCap" Title="@TitleEngineFuelTankCap"
+                Visible="@EngineVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.Code" Title="@TitleMotorCode" Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.Type" Title="@TitleMotorType" Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.Purpose" Title="@TitleMotorPurpose"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.RatedOutput" Title="@TitleMotorRatedOutput"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxOutput" Title="@TitleMotorMaxOutput"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxOutputLowerRpm" Title="@TitleMotorMaxOutputLowerRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxOutputUpperRpm" Title="@TitleMotorMaxOutputUpperRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxTorque" Title="@TitleMotorMaxTorque"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxTorqueLowerRpm" Title="@TitleMotorMaxTorqueLowerRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxTorqueUpperRpm" Title="@TitleMotorMaxTorqueUpperRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.Code" Title="@TitleMotorCode" Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.Type" Title="@TitleMotorType" Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.Purpose" Title="@TitleMotorPurpose"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.RatedOutput" Title="@TitleMotorRatedOutput"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxOutput" Title="@TitleMotorMaxOutput"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxOutputLowerRpm" Title="@TitleMotorMaxOutputLowerRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxOutputUpperRpm" Title="@TitleMotorMaxOutputUpperRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxTorque" Title="@TitleMotorMaxTorque"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxTorqueLowerRpm" Title="@TitleMotorMaxTorqueLowerRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxTorqueUpperRpm" Title="@TitleMotorMaxTorqueUpperRpm"
+                Visible="@MotorVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Battery.Type" Title="@TitleBatteryType"
+                Visible="@BatteryVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Battery.Quantity" Title="@TitleBatteryQuantity"
+                Visible="@BatteryVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Battery.Voltage" Title="@TitleBatteryVoltage"
+                Visible="@BatteryVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Battery.Capacity" Title="@TitleBatteryCapacity"
+                Visible="@BatteryVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Steering" Title="@TitleSteering" Visible="@OtherVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="SuspensionFront" Title="@TitleSuspensionFront"
+                Visible="@OtherVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="SuspensionRear" Title="@TitleSuspensionRear"
+                Visible="@OtherVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="BrakeFront" Title="@TitleBrakeFront" Visible="@OtherVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="BrakeRear" Title="@TitleBrakeRear" Visible="@OtherVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="TireFront.SectionWidth" Title="@TitleTireSectionWidth"
+                Visible="@TireVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="TireFront.AspectRatio" Title="@TitleTireAspectRatio"
+                Visible="@TireVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="TireFront.WheelDiameter" Title="@TitleTireWheelDiameter"
+                Visible="@TireVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="TireRear.SectionWidth" Title="@TitleTireSectionWidth"
+                Visible="@TireVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="TireRear.AspectRatio" Title="@TitleTireAspectRatio"
+                Visible="@TireVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="TireRear.WheelDiameter" Title="@TitleTireWheelDiameter"
+                Visible="@TireVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Transmission.Type" Title="@TitleTransmissionType"
+                Visible="@TransmissionVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Transmission.GearRatiosFront"
+                Title="@TitleTransmissionGearRatiosFront" Visible="@TransmissionVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Transmission.GearRatioRear"
+                Title="@TitleTransmissionGearRatioRear" Visible="@TransmissionVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Transmission.ReductionRatioFront"
+                Title="@TitleTransmissionReductionRatioFront" Visible="@TransmissionVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Transmission.ReductionRatioRear"
+                Title="@TitleTransmissionReductionRatioRear" Visible="@TransmissionVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="FuelEfficiency" Title="@TitleFuelEfficiency"
+                Visible="@OtherVisible" />
         </Columns>
     </RadzenDataGrid>
 </div>
