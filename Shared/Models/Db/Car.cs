@@ -28,7 +28,7 @@ public class Car
     [Comment("型式")]
     public string ModelCode { get; set; } = string.Empty;
 
-    [Comment("小売価格(税込/円)")]
+    [Comment("小売価格（税込/円）")]
     public int? Price { get; set; }
 
     [Comment("URL")]
@@ -37,10 +37,18 @@ public class Car
     [Comment("イメージURL")]
     public string? ImageUrl { get; set; }
 
-    [Comment("フルモデルチェンジ時期(日本)[yyyy-mm-dd]")]
+    /// <summary>
+    /// フルモデルチェンジ時期(日本)[yyyy-mm-dd]
+    /// </summary>
+    /// <value></value>
+    [Comment("フルモデルチェンジ")]
     public string? ModelChangeFull { get; set; }
 
-    [Comment("最終モデルチェンジ時期(日本)[yyyy-mm-dd]")]
+    /// <summary>
+    /// 最終モデルチェンジ時期(日本)[yyyy-mm-dd]
+    /// </summary>
+    /// <value></value>
+    [Comment("最終モデルチェンジ")]
     public string? ModelChangeLast { get; set; }
 
     [Comment("車体")]
