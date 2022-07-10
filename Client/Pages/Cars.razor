@@ -35,9 +35,9 @@
     <RadzenLabel Text="その他" Component="OtherVisibleCheckBox" />
 </div>
 <div>
-    <RadzenDataGrid Data="@CarList" TItem="Car" AllowColumnResize="true">
+    <RadzenDataGrid Data="@CarList" TItem="Car" AllowColumnResize="true" ColumnWidth="80px">
         <Columns>
-            <RadzenDataGridColumn TItem="Car" Property="MakerName">
+            <RadzenDataGridColumn TItem="Car" Property="MakerName" Frozen="true">
                 <Template Context="car">
                     <div class="flex-container">
                         <div class="flex-item">
@@ -48,69 +48,82 @@
                     </div>
                 </Template>
             </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Car" Property="ModelName" Title="@TitleModelName" Width="100px"
+                Frozen="true" />
 
             <RadzenDataGridColumn TItem="Car" Property="MakerName" Title="@TitleMakerName" />
-            <RadzenDataGridColumn TItem="Car" Property="ModelName" Title="@TitleModelName" />
-            <RadzenDataGridColumn TItem="Car" Property="GradeName" Title="@TitleGradeName" />
+            <RadzenDataGridColumn TItem="Car" Property="GradeName" Title="@TitleGradeName" Width="100px" />
             <RadzenDataGridColumn TItem="Car" Property="ModelCode" Title="@TitleModelCode" />
-            <RadzenDataGridColumn TItem="Car" Property="Price" Title="@TitlePrice" FormatString="{0:C0}" />
+            <RadzenDataGridColumn TItem="Car" Property="Price" Title="@TitlePrice" TextAlign="TextAlign.Right"
+                Width="100px">
+                <Template Context="car">
+                    @String.Format(new System.Globalization.CultureInfo("ja-JP"), "{0:C0}", car.Price)
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="Car" Property="ModelChangeFull" Title="@TitleModelChangeFull" />
             <RadzenDataGridColumn TItem="Car" Property="ModelChangeLast" Title="@TitleModelChangeLast" />
-            <RadzenDataGridColumn TItem="Car" Property="Body.Type" Title="@TitleBodyType" Visible="@BodyVisible" />
-            <RadzenDataGridColumn TItem="Car" Property="Body.Length" Title="@TitleBodyLength" Visible="@BodyVisible" />
-            <RadzenDataGridColumn TItem="Car" Property="Body.Width" Title="@TitleBodyWidth" Visible="@BodyVisible" />
-            <RadzenDataGridColumn TItem="Car" Property="Body.Height" Title="@TitleBodyHeight" Visible="@BodyVisible" />
+            <!-- Body -->
+            <RadzenDataGridColumn TItem=" Car" Property="Body.Type" Title="@TitleBodyType" Visible="@BodyVisible" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Length" Title="@TitleBodyLength" Visible="@BodyVisible"
+                FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Width" Title="@TitleBodyWidth" Visible="@BodyVisible"
+                FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Height" Title="@TitleBodyHeight" Visible="@BodyVisible"
+                FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Body.WheelBase" Title="@TitleBodyWheelBase"
-                Visible="@BodyVisible" />
+                Visible="@BodyVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Body.TreadFront" Title="@TitleBodyTreadFront"
-                Visible="@BodyVisible" />
+                Visible="@BodyVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Body.TreadRear" Title="@TitleBodyTreadRear"
-                Visible="@BodyVisible" />
+                Visible="@BodyVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Body.MinRoadClearance" Title="@TitleBodyMinRoadClearance"
-                Visible="@BodyVisible" />
-            <RadzenDataGridColumn TItem="Car" Property="Body.Weight" Title="@TitleBodyWeight" Visible="@BodyVisible" />
-            <RadzenDataGridColumn TItem="Car" Property="Body.DoorNum" Title="@TitleBodyDoorNum"
-                Visible="@BodyVisible" />
+                Visible="@BodyVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.Weight" Title="@TitleBodyWeight" Visible="@BodyVisible"
+                FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
+            <RadzenDataGridColumn TItem="Car" Property="Body.DoorNum" Title="@TitleBodyDoorNum" Visible="@BodyVisible"
+                FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
+            <!-- Interior -->
             <RadzenDataGridColumn TItem="Car" Property="Interior.Length" Title="@TitleInteriorLength"
-                Visible="@InteriorVisible" />
+                Visible="@InteriorVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Interior.Width" Title="@TitleInteriorWidth"
-                Visible="@InteriorVisible" />
+                Visible="@InteriorVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Interior.Height" Title="@TitleInteriorHeight"
-                Visible="@InteriorVisible" />
+                Visible="@InteriorVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Interior.LuggageCap" Title="@TitleInteriorLuggageCap"
-                Visible="@InteriorVisible" />
+                Visible="@InteriorVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Interior.RidingCap" Title="@TitleInteriorRidingCap"
-                Visible="@InteriorVisible" />
+                Visible="@InteriorVisible" FormatString="{0:#,0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.MinTurningRadius"
-                Title="@TitlePerformanceMinTurningRadius" Visible="@PerformanceVisible" />
+                Title="@TitlePerformanceMinTurningRadius" Visible="@PerformanceVisible" FormatString="{0:F1}"
+                TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltc" Title="@TitlePerformanceFcrWltc"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcL" Title="@TitlePerformanceFcrWltcL"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcM" Title="@TitlePerformanceFcrWltcM"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcH" Title="@TitlePerformanceFcrWltcH"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.FcrWltcExh" Title="@TitlePerformanceFcrWltcExh"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.FcrJc08" Title="@TitlePerformanceFcrJc08"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.MpcWltc" Title="@TitlePerformanceMpcWltc"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltc" Title="@TitlePerformanceEcrWltc"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcL" Title="@TitlePerformanceEcrWltcL"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcM" Title="@TitlePerformanceEcrWltcM"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcH" Title="@TitlePerformanceEcrWltcH"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.EcrWltcExh" Title="@TitlePerformanceEcrWltcExh"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.EcrJc08" Title="@TitlePerformanceEcrJc08"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Performance.MpcJc08" Title="@TitlePerformanceMpcJc08"
-                Visible="@PerformanceVisible" />
+                Visible="@PerformanceVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="PowerTrain" Title="@TitlePowerTrain" />
             <RadzenDataGridColumn TItem="Car" Property="DriveSystem" Title="@TitleDriveSystem" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.Code" Title="@TitleEngineCode"
@@ -118,81 +131,81 @@
             <RadzenDataGridColumn TItem="Car" Property="Engine.Type" Title="@TitleEngineType"
                 Visible="@EngineVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.CylinderNum" Title="@TitleEngineCylinderNum"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.CylinderLayout" Title="@TitleEngineCylinderLayout"
                 Visible="@EngineVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.ValveSystem" Title="@TitleEngineValveSystem"
                 Visible="@EngineVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.Displacement" Title="@TitleEngineDisplacement"
-                Visible="@EngineVisible" />
-            <RadzenDataGridColumn TItem="Car" Property="Engine.Bore" Title="@TitleEngineBore"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" TextAlign="TextAlign.Right" />
+            <RadzenDataGridColumn TItem="Car" Property="Engine.Bore" Title="@TitleEngineBore" Visible="@EngineVisible"
+                FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.Stroke" Title="@TitleEngineStroke"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.CompressionRatio" Title="@TitleEngineCompressionRatio"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.MaxOutput" Title="@TitleEngineMaxOutput"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.MaxOutputLowerRpm" Title="@TitleEngineMaxOutputLowerRpm"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.MaxOutputUpperRpm" Title="@TitleEngineMaxOutputUpperRpm"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.MaxTorque" Title="@TitleEngineMaxTorque"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.MaxTorqueLowerRpm" Title="@TitleEngineMaxTorqueLowerRpm"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.MaxTorqueUpperRpm" Title="@TitleEngineMaxTorqueUpperRpm"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.FuelSystem" Title="@TitleEngineFuelSystem"
                 Visible="@EngineVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.FuelType" Title="@TitleEngineFuelType"
                 Visible="@EngineVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Engine.FuelTankCap" Title="@TitleEngineFuelTankCap"
-                Visible="@EngineVisible" />
+                Visible="@EngineVisible" FormatString="{0:F0}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.Code" Title="@TitleMotorCode" Visible="@MotorVisible" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.Type" Title="@TitleMotorType" Visible="@MotorVisible" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.Purpose" Title="@TitleMotorPurpose"
                 Visible="@MotorVisible" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.RatedOutput" Title="@TitleMotorRatedOutput"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxOutput" Title="@TitleMotorMaxOutput"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxOutputLowerRpm" Title="@TitleMotorMaxOutputLowerRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxOutputUpperRpm" Title="@TitleMotorMaxOutputUpperRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxTorque" Title="@TitleMotorMaxTorque"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxTorqueLowerRpm" Title="@TitleMotorMaxTorqueLowerRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorX.MaxTorqueUpperRpm" Title="@TitleMotorMaxTorqueUpperRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.Code" Title="@TitleMotorCode" Visible="@MotorVisible" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.Type" Title="@TitleMotorType" Visible="@MotorVisible" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.Purpose" Title="@TitleMotorPurpose"
                 Visible="@MotorVisible" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.RatedOutput" Title="@TitleMotorRatedOutput"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxOutput" Title="@TitleMotorMaxOutput"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxOutputLowerRpm" Title="@TitleMotorMaxOutputLowerRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxOutputUpperRpm" Title="@TitleMotorMaxOutputUpperRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxTorque" Title="@TitleMotorMaxTorque"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxTorqueLowerRpm" Title="@TitleMotorMaxTorqueLowerRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="MotorY.MaxTorqueUpperRpm" Title="@TitleMotorMaxTorqueUpperRpm"
-                Visible="@MotorVisible" />
+                Visible="@MotorVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Battery.Type" Title="@TitleBatteryType"
                 Visible="@BatteryVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Battery.Quantity" Title="@TitleBatteryQuantity"
                 Visible="@BatteryVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Battery.Voltage" Title="@TitleBatteryVoltage"
-                Visible="@BatteryVisible" />
+                Visible="@BatteryVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Battery.Capacity" Title="@TitleBatteryCapacity"
-                Visible="@BatteryVisible" />
+                Visible="@BatteryVisible" FormatString="{0:F1}" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Steering" Title="@TitleSteering" Visible="@OtherVisible" />
             <RadzenDataGridColumn TItem="Car" Property="SuspensionFront" Title="@TitleSuspensionFront"
                 Visible="@OtherVisible" />
@@ -201,27 +214,29 @@
             <RadzenDataGridColumn TItem="Car" Property="BrakeFront" Title="@TitleBrakeFront" Visible="@OtherVisible" />
             <RadzenDataGridColumn TItem="Car" Property="BrakeRear" Title="@TitleBrakeRear" Visible="@OtherVisible" />
             <RadzenDataGridColumn TItem="Car" Property="TireFront.SectionWidth" Title="@TitleTireSectionWidth"
-                Visible="@TireVisible" />
+                Visible="@TireVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="TireFront.AspectRatio" Title="@TitleTireAspectRatio"
-                Visible="@TireVisible" />
+                Visible="@TireVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="TireFront.WheelDiameter" Title="@TitleTireWheelDiameter"
-                Visible="@TireVisible" />
+                Visible="@TireVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="TireRear.SectionWidth" Title="@TitleTireSectionWidth"
-                Visible="@TireVisible" />
+                Visible="@TireVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="TireRear.AspectRatio" Title="@TitleTireAspectRatio"
-                Visible="@TireVisible" />
+                Visible="@TireVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="TireRear.WheelDiameter" Title="@TitleTireWheelDiameter"
-                Visible="@TireVisible" />
+                Visible="@TireVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Transmission.Type" Title="@TitleTransmissionType"
                 Visible="@TransmissionVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Transmission.GearRatiosFront"
                 Title="@TitleTransmissionGearRatiosFront" Visible="@TransmissionVisible" />
             <RadzenDataGridColumn TItem="Car" Property="Transmission.GearRatioRear"
-                Title="@TitleTransmissionGearRatioRear" Visible="@TransmissionVisible" />
+                Title="@TitleTransmissionGearRatioRear" Visible="@TransmissionVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Transmission.ReductionRatioFront"
-                Title="@TitleTransmissionReductionRatioFront" Visible="@TransmissionVisible" />
+                Title="@TitleTransmissionReductionRatioFront" Visible="@TransmissionVisible"
+                TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Transmission.ReductionRatioRear"
-                Title="@TitleTransmissionReductionRatioRear" Visible="@TransmissionVisible" />
+                Title="@TitleTransmissionReductionRatioRear" Visible="@TransmissionVisible"
+                TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="FuelEfficiency" Title="@TitleFuelEfficiency"
                 Visible="@OtherVisible" />
         </Columns>

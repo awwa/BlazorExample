@@ -25,8 +25,10 @@ public partial class Cars
     public string TitleGradeName { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Car>("GradeName");
     public string TitleModelCode { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Car>("ModelCode");
     public string TitlePrice { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Car>("Price");
+    public string SubTitlePrice { get; set; } = "hoge";
     public string TitleModelChangeFull { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Car>("ModelChangeFull");
     public string TitleModelChangeLast { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Car>("ModelChangeLast");
+    public string TitleBody { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Car>("Body");
     public string TitleBodyType { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Body>("Type");
     public string TitleBodyLength { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Body>("Length");
     public string TitleBodyWidth { get; set; } = CommentHelper.GetCommentAttribute<HogeBlazor.Shared.Models.Db.Body>("Width");

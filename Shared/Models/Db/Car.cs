@@ -51,7 +51,7 @@ public class Car
     [Comment("最終モデルチェンジ")]
     public string? ModelChangeLast { get; set; }
 
-    [Comment("車体")]
+    [Comment("ボディ")]
     public Body Body { get; set; } = default!;
 
     [Comment("車内")]
