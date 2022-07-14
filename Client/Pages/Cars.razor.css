@@ -23,10 +23,11 @@
     object-fit: cover;
 }
 
-::deep .hoge {
-    background-color: brown;
-}
-
 ::deep .rz-grid-table td {
     padding: 4px !important;
+}
+
+::deep .rz-column-title {
+    text-transform: none !important;
+    white-space: pre-wrap !important;
 }

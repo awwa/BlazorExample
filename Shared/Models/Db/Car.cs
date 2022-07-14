@@ -2,6 +2,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HogeBlazor.Shared.Models.Db;
 
+public class UnitAttribute : Attribute
+{
+    protected string _unit;
+    public UnitAttribute(string unit)
+    {
+        _unit = unit;
+    }
+
+    public string Unit
+    {
+        get { return _unit; }
+        set { _unit = value; }
+    }
+}
+
 public class Car
 {
     [Comment("ID")]
@@ -401,7 +416,7 @@ public class BodyType
 /// </summary>
 public class PowerTrain
 {
-    [Comment("エンジン車")]
+    [Comment("エンジン")]
     public const string ICE = "ICE";
     [Comment("ストロングハイブリッド")]
     public const string StrHV = "StrHV";

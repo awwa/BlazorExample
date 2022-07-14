@@ -140,16 +140,20 @@
         "operationId": "Cars_GetCars",
         "parameters": [
           {
-            "name": "MakerName",
+            "name": "makerNames",
             "in": "query",
+            "style": "form",
+            "explode": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "x-position": 1
           },
           {
-            "name": "PriceLower",
+            "name": "priceLower",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -159,7 +163,7 @@
             "x-position": 2
           },
           {
-            "name": "PriceUpper",
+            "name": "priceUpper",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -169,46 +173,34 @@
             "x-position": 3
           },
           {
-            "name": "PowerTrain",
+            "name": "powerTrain",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/PowerTrain"
-                }
-              ]
+              "type": "string",
+              "nullable": true
             },
             "x-position": 4
           },
           {
-            "name": "DriveSystem",
+            "name": "driveSystem",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/DriveSystem"
-                }
-              ]
+              "type": "string",
+              "nullable": true
             },
             "x-position": 5
           },
           {
-            "name": "BodyType",
+            "name": "bodyType",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/BodyType"
-                }
-              ]
+              "type": "string",
+              "nullable": true
             },
             "x-position": 6
           },
           {
-            "name": "LengthLower",
+            "name": "lengthLower",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -218,7 +210,7 @@
             "x-position": 7
           },
           {
-            "name": "LengthUpper",
+            "name": "lengthUpper",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -228,7 +220,7 @@
             "x-position": 8
           },
           {
-            "name": "WidthLower",
+            "name": "widthLower",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -238,7 +230,7 @@
             "x-position": 9
           },
           {
-            "name": "WidthUpper",
+            "name": "widthUpper",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -248,7 +240,7 @@
             "x-position": 10
           },
           {
-            "name": "HeightLower",
+            "name": "heightLower",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -258,7 +250,7 @@
             "x-position": 11
           },
           {
-            "name": "HeightUpper",
+            "name": "heightUpper",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -268,7 +260,7 @@
             "x-position": 12
           },
           {
-            "name": "WeightUpper",
+            "name": "weightUpper",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -278,7 +270,7 @@
             "x-position": 13
           },
           {
-            "name": "DoorNumLower",
+            "name": "doorNumLower",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -288,7 +280,7 @@
             "x-position": 14
           },
           {
-            "name": "RidingCap",
+            "name": "ridingCapLower",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -298,17 +290,17 @@
             "x-position": 15
           },
           {
-            "name": "FcrWltcLower",
+            "name": "ridingCapUpper",
             "in": "query",
             "schema": {
-              "type": "number",
-              "format": "float",
+              "type": "integer",
+              "format": "int32",
               "nullable": true
             },
             "x-position": 16
           },
           {
-            "name": "FcrJc08Lower",
+            "name": "fcrWltcLower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -318,7 +310,7 @@
             "x-position": 17
           },
           {
-            "name": "MpcWltcLower",
+            "name": "fcrJc08Lower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -328,7 +320,7 @@
             "x-position": 18
           },
           {
-            "name": "EcrWltcLower",
+            "name": "mpcWltcLower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -338,7 +330,7 @@
             "x-position": 19
           },
           {
-            "name": "EcrJc08Lower",
+            "name": "ecrWltcLower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -348,7 +340,7 @@
             "x-position": 20
           },
           {
-            "name": "MpcJc08Lower",
+            "name": "ecrJc08Lower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -358,17 +350,23 @@
             "x-position": 21
           },
           {
-            "name": "FuelType",
+            "name": "mpcJc08Lower",
             "in": "query",
             "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/FuelType"
-                }
-              ]
+              "type": "number",
+              "format": "float",
+              "nullable": true
             },
             "x-position": 22
+          },
+          {
+            "name": "fuelType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 23
           }
         ],
         "responses": {
@@ -669,20 +667,12 @@
             "$ref": "#/components/schemas/Performance"
           },
           "powerTrain": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/PowerTrain"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           },
           "driveSystem": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/DriveSystem"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           },
           "engine": {
             "$ref": "#/components/schemas/Engine"
@@ -738,12 +728,8 @@
         "additionalProperties": false,
         "properties": {
           "type": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/BodyType"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           },
           "length": {
             "type": "integer",
@@ -791,48 +777,6 @@
             "nullable": true
           }
         }
-      },
-      "BodyType": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "SEDAN",
-          "HATCHBACK",
-          "CROSS_COUNTRY",
-          "MINI_VAN",
-          "ONEBOX_WAGON",
-          "K",
-          "COUPE",
-          "STATION_WAGON",
-          "SUV",
-          "ONEBOX_VAN",
-          "K_OPEN",
-          "K_ONEBOX_WAGON",
-          "OPEN",
-          "VAN",
-          "K_VAN",
-          "K_ONEBOX_VAN",
-          "PICKUP_TRUCK"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16
-        ]
       },
       "Interior": {
         "type": "object",
@@ -946,48 +890,6 @@
           }
         }
       },
-      "PowerTrain": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "ICE",
-          "StrHV",
-          "MldHV",
-          "SerHV",
-          "PHEV",
-          "BEV",
-          "RexEV",
-          "FCEV"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7
-        ]
-      },
-      "DriveSystem": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "FF",
-          "FR",
-          "RR",
-          "MR",
-          "AWD"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
-      },
       "Engine": {
         "type": "object",
         "additionalProperties": false,
@@ -1006,20 +908,12 @@
             "nullable": true
           },
           "cylinderLayout": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/CylinderLayout"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           },
           "valveSystem": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ValveSystem"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           },
           "displacement": {
             "type": "number",
@@ -1076,12 +970,8 @@
             "nullable": true
           },
           "fuelType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/FuelType"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           },
           "fuelTankCap": {
             "type": "integer",
@@ -1089,58 +979,6 @@
             "nullable": true
           }
         }
-      },
-      "CylinderLayout": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "I",
-          "V",
-          "B",
-          "W"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ]
-      },
-      "ValveSystem": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "SV",
-          "OHV",
-          "SOHC",
-          "DOHC"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ]
-      },
-      "FuelType": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "DIESEL",
-          "REGULAR",
-          "PREMIUM",
-          "LPG",
-          "BIO",
-          "HYDROGEN"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
       },
       "Motor": {
         "type": "object",
@@ -1246,12 +1084,8 @@
         "additionalProperties": false,
         "properties": {
           "type": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/TransmissionType"
-              }
-            ]
+            "type": "string",
+            "nullable": true
           },
           "gearRatiosFront": {
             "type": "array",
@@ -1277,26 +1111,6 @@
             "nullable": true
           }
         }
-      },
-      "TransmissionType": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "AT",
-          "DCT",
-          "AMT",
-          "MT",
-          "CVT",
-          "PG"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
       },
       "RefreshTokenDto": {
         "type": "object",
