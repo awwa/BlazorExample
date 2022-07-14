@@ -453,104 +453,108 @@ namespace HogeBlazor.Client.Helpers
         }
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Car>> GetCarsAsync(string makerName, int? priceLower, int? priceUpper, PowerTrain? powerTrain, DriveSystem? driveSystem, BodyType? bodyType, int? lengthLower, int? lengthUpper, int? widthLower, int? widthUpper, int? heightLower, int? heightUpper, int? weightUpper, int? doorNumLower, int? ridingCap, float? fcrWltcLower, float? fcrJc08Lower, float? mpcWltcLower, float? ecrWltcLower, float? ecrJc08Lower, float? mpcJc08Lower, FuelType? fuelType)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Car>> GetCarsAsync(System.Collections.Generic.IEnumerable<string> makerNames, int? priceLower, int? priceUpper, string powerTrain, string driveSystem, string bodyType, int? lengthLower, int? lengthUpper, int? widthLower, int? widthUpper, int? heightLower, int? heightUpper, int? weightUpper, int? doorNumLower, int? ridingCapLower, int? ridingCapUpper, float? fcrWltcLower, float? fcrJc08Lower, float? mpcWltcLower, float? ecrWltcLower, float? ecrJc08Lower, float? mpcJc08Lower, string fuelType)
         {
-            return GetCarsAsync(makerName, priceLower, priceUpper, powerTrain, driveSystem, bodyType, lengthLower, lengthUpper, widthLower, widthUpper, heightLower, heightUpper, weightUpper, doorNumLower, ridingCap, fcrWltcLower, fcrJc08Lower, mpcWltcLower, ecrWltcLower, ecrJc08Lower, mpcJc08Lower, fuelType, System.Threading.CancellationToken.None);
+            return GetCarsAsync(makerNames, priceLower, priceUpper, powerTrain, driveSystem, bodyType, lengthLower, lengthUpper, widthLower, widthUpper, heightLower, heightUpper, weightUpper, doorNumLower, ridingCapLower, ridingCapUpper, fcrWltcLower, fcrJc08Lower, mpcWltcLower, ecrWltcLower, ecrJc08Lower, mpcJc08Lower, fuelType, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Car>> GetCarsAsync(string makerName, int? priceLower, int? priceUpper, PowerTrain? powerTrain, DriveSystem? driveSystem, BodyType? bodyType, int? lengthLower, int? lengthUpper, int? widthLower, int? widthUpper, int? heightLower, int? heightUpper, int? weightUpper, int? doorNumLower, int? ridingCap, float? fcrWltcLower, float? fcrJc08Lower, float? mpcWltcLower, float? ecrWltcLower, float? ecrJc08Lower, float? mpcJc08Lower, FuelType? fuelType, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Car>> GetCarsAsync(System.Collections.Generic.IEnumerable<string> makerNames, int? priceLower, int? priceUpper, string powerTrain, string driveSystem, string bodyType, int? lengthLower, int? lengthUpper, int? widthLower, int? widthUpper, int? heightLower, int? heightUpper, int? weightUpper, int? doorNumLower, int? ridingCapLower, int? ridingCapUpper, float? fcrWltcLower, float? fcrJc08Lower, float? mpcWltcLower, float? ecrWltcLower, float? ecrJc08Lower, float? mpcJc08Lower, string fuelType, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/cars?");
-            if (makerName != null)
+            if (makerNames != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("MakerName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(makerName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                foreach (var item_ in makerNames) { urlBuilder_.Append(System.Uri.EscapeDataString("makerNames") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (priceLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("PriceLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(priceLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("priceLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(priceLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (priceUpper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("PriceUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(priceUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("priceUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(priceUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (powerTrain != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("PowerTrain") + "=").Append(System.Uri.EscapeDataString(ConvertToString(powerTrain, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("powerTrain") + "=").Append(System.Uri.EscapeDataString(ConvertToString(powerTrain, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (driveSystem != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("DriveSystem") + "=").Append(System.Uri.EscapeDataString(ConvertToString(driveSystem, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("driveSystem") + "=").Append(System.Uri.EscapeDataString(ConvertToString(driveSystem, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (bodyType != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("BodyType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("bodyType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (lengthLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("LengthLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(lengthLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("lengthLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(lengthLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (lengthUpper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("LengthUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(lengthUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("lengthUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(lengthUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (widthLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("WidthLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(widthLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("widthLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(widthLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (widthUpper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("WidthUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(widthUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("widthUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(widthUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (heightLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("HeightLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(heightLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("heightLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(heightLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (heightUpper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("HeightUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(heightUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("heightUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(heightUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (weightUpper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("WeightUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(weightUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("weightUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(weightUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (doorNumLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("DoorNumLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(doorNumLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("doorNumLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(doorNumLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (ridingCap != null)
+            if (ridingCapLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("RidingCap") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ridingCap, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("ridingCapLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ridingCapLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (ridingCapUpper != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("ridingCapUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ridingCapUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (fcrWltcLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("FcrWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("fcrWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (fcrJc08Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("FcrJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("fcrJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (mpcWltcLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("MpcWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("mpcWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (ecrWltcLower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("EcrWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("ecrWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (ecrJc08Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("EcrJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("ecrJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (mpcJc08Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("MpcJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("mpcJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (fuelType != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("FuelType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fuelType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("fuelType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fuelType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -1369,10 +1373,10 @@ namespace HogeBlazor.Client.Helpers
         public Performance Performance { get; set; }
 
         [Newtonsoft.Json.JsonProperty("powerTrain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PowerTrain? PowerTrain { get; set; }
+        public string PowerTrain { get; set; }
 
         [Newtonsoft.Json.JsonProperty("driveSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public DriveSystem? DriveSystem { get; set; }
+        public string DriveSystem { get; set; }
 
         [Newtonsoft.Json.JsonProperty("engine", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Engine Engine { get; set; }
@@ -1419,7 +1423,7 @@ namespace HogeBlazor.Client.Helpers
     public partial class Body
     {
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public BodyType? Type { get; set; }
+        public string Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Length { get; set; }
@@ -1447,46 +1451,6 @@ namespace HogeBlazor.Client.Helpers
 
         [Newtonsoft.Json.JsonProperty("doorNum", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? DoorNum { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum BodyType
-    {
-
-        SEDAN = 0,
-
-        HATCHBACK = 1,
-
-        CROSS_COUNTRY = 2,
-
-        MINI_VAN = 3,
-
-        ONEBOX_WAGON = 4,
-
-        K = 5,
-
-        COUPE = 6,
-
-        STATION_WAGON = 7,
-
-        SUV = 8,
-
-        ONEBOX_VAN = 9,
-
-        K_OPEN = 10,
-
-        K_ONEBOX_WAGON = 11,
-
-        OPEN = 12,
-
-        VAN = 13,
-
-        K_VAN = 14,
-
-        K_ONEBOX_VAN = 15,
-
-        PICKUP_TRUCK = 16,
 
     }
 
@@ -1561,44 +1525,6 @@ namespace HogeBlazor.Client.Helpers
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum PowerTrain
-    {
-
-        ICE = 0,
-
-        StrHV = 1,
-
-        MldHV = 2,
-
-        SerHV = 3,
-
-        PHEV = 4,
-
-        BEV = 5,
-
-        RexEV = 6,
-
-        FCEV = 7,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum DriveSystem
-    {
-
-        FF = 0,
-
-        FR = 1,
-
-        RR = 2,
-
-        MR = 3,
-
-        AWD = 4,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Engine
     {
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1611,10 +1537,10 @@ namespace HogeBlazor.Client.Helpers
         public int? CylinderNum { get; set; }
 
         [Newtonsoft.Json.JsonProperty("cylinderLayout", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public CylinderLayout? CylinderLayout { get; set; }
+        public string CylinderLayout { get; set; }
 
         [Newtonsoft.Json.JsonProperty("valveSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ValveSystem? ValveSystem { get; set; }
+        public string ValveSystem { get; set; }
 
         [Newtonsoft.Json.JsonProperty("displacement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? Displacement { get; set; }
@@ -1650,56 +1576,10 @@ namespace HogeBlazor.Client.Helpers
         public string FuelSystem { get; set; }
 
         [Newtonsoft.Json.JsonProperty("fuelType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public FuelType? FuelType { get; set; }
+        public string FuelType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("fuelTankCap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? FuelTankCap { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum CylinderLayout
-    {
-
-        I = 0,
-
-        V = 1,
-
-        B = 2,
-
-        W = 3,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum ValveSystem
-    {
-
-        SV = 0,
-
-        OHV = 1,
-
-        SOHC = 2,
-
-        DOHC = 3,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum FuelType
-    {
-
-        DIESEL = 0,
-
-        REGULAR = 1,
-
-        PREMIUM = 2,
-
-        LPG = 3,
-
-        BIO = 4,
-
-        HYDROGEN = 5,
 
     }
 
@@ -1773,7 +1653,7 @@ namespace HogeBlazor.Client.Helpers
     public partial class Transmission
     {
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public TransmissionType? Type { get; set; }
+        public string Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("gearRatiosFront", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<float> GearRatiosFront { get; set; }
@@ -1786,24 +1666,6 @@ namespace HogeBlazor.Client.Helpers
 
         [Newtonsoft.Json.JsonProperty("reductionRatioRear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? ReductionRatioRear { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum TransmissionType
-    {
-
-        AT = 0,
-
-        DCT = 1,
-
-        AMT = 2,
-
-        MT = 3,
-
-        CVT = 4,
-
-        PG = 5,
 
     }
 

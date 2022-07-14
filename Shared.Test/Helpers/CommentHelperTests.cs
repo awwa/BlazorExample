@@ -13,7 +13,7 @@ public class CommentHelperTests
     {
         // Arrange
         // Act
-        var actual = CommentHelper.GetCommentAttribute<Car>("ModelName");
+        var actual = CommentHelper.GetCommentAttributeOnProperty<Car>("ModelName");
         // Assert
         Assert.Equal("モデル名", actual);
     }
@@ -23,7 +23,7 @@ public class CommentHelperTests
     {
         // Arrange
         // Act
-        var actual = CommentHelper.GetCommentAttribute<Body>("Type");
+        var actual = CommentHelper.GetCommentAttributeOnProperty<Body>("Type");
         // Assert
         Assert.Equal("ボディタイプ", actual);
     }
@@ -36,7 +36,7 @@ public class CommentHelperTests
         // Assert
         Assert.Throws<NotImplementedException>(() =>
         {
-            CommentHelper.GetCommentAttribute<Car>("存在しないプロパティ");
+            CommentHelper.GetCommentAttributeOnProperty<Car>("存在しないプロパティ");
         });
     }
 }
