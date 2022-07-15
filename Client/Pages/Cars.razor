@@ -270,8 +270,9 @@
                     @(ConvertForDisplay<HogeBlazor.Shared.Models.Db.TransmissionType>(car.Transmission.Type))
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="Car" Property="Transmission.GearRatiosFront"
-                Title="@TitleTransmissionGearRatiosFront" Visible="@TransmissionVisible" />
+            <!-- TODOfloat[]のままでは表示できないので調整が必要 -->
+            @* <RadzenDataGridColumn TItem="Car" Property="Transmission.GearRatiosFront"
+                Title="@TitleTransmissionGearRatiosFront" Visible="@TransmissionVisible" /> *@
             <RadzenDataGridColumn TItem="Car" Property="Transmission.GearRatioRear"
                 Title="@TitleTransmissionGearRatioRear" Visible="@TransmissionVisible" TextAlign="TextAlign.Right" />
             <RadzenDataGridColumn TItem="Car" Property="Transmission.ReductionRatioFront"
