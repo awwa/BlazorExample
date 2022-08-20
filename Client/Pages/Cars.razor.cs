@@ -1,9 +1,7 @@
 using System.Reflection;
 using HogeBlazor.Client.Helpers;
 using HogeBlazor.Client.Repositories;
-// using HogeBlazor.Shared.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 
 namespace HogeBlazor.Client.Pages;
 public partial class Cars

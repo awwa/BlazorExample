@@ -2,7 +2,9 @@
 
 html,
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+    font-weight: 300 !important;
+    font-family: 'Noto Sans JP', sans-serif !important;
 }
 
 h1:focus {

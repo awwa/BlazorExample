@@ -1,0 +1,23 @@
+.spec-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    margin-right: 40px;
+    width: 240px;
+
+}
+
+.spec-title {
+    margin-bottom: 2px;
+}
+
+.spec-value {
+    padding-left: 20px;
+    font-weight: bold;
+    text-align: right;
+}
