@@ -6,6 +6,6 @@ public partial class CarFigure
     protected async override Task OnInitializedAsync()
     {
         var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Shared/CarFigure.razor.js");
-        await module.InvokeVoidAsync("drawTopView");
+        await module.InvokeVoidAsync("drawCar");
     }
 }
