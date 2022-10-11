@@ -1,21 +1,24 @@
-export function drawCar() {
+export function drawCar(type, length, width, height,
+    wheelBase, treadFront, treadRear, minRoadClearance
+) {
+    console.log(type);
     var canvas = document.getElementById("car_figure");
     var c = canvas.getContext("2d");
 
     // Draw top view
-    drawCarTopView(c);
+    drawCarTopView(c, type);
 
     // Draw side view
-    drawCarSideView(c);
+    drawCarSideView(c, type, 50, 745, 650, 295);
 
     // Draw front view
-    drawCarFrontView(c);
+    drawCarFrontView(c, type);
 
     // Draw rear view
-    drawCarRearView(c);
+    drawCarRearView(c, type);
 }
 
-function drawCarTopView(c) {
+function drawCarTopView(c, type) {
     // 外周
     c.fillStyle = 'white';
     c.lineWidth = 2;
@@ -63,41 +66,23 @@ function drawCarTopView(c) {
     c.closePath();
     c.fill();
     c.stroke();
-    // サイドフロントガラス右
+    // サイドガラス右
     c.beginPath();
     c.moveTo(290, 70);
     c.lineTo(380, 100);
-    c.lineTo(430, 100);
-    c.lineTo(410, 70);
-    c.closePath();
-    c.fill();
-    c.stroke();
-    // サイドフロントガラス左
-    c.beginPath();
-    c.moveTo(290, 330);
-    c.lineTo(410, 330);
-    c.lineTo(430, 300);
-    c.lineTo(380, 300);
-    c.closePath();
-    c.fill();
-    c.stroke();
-    // サイドリアガラス右
-    c.beginPath();
-    c.moveTo(440, 70);
-    c.lineTo(450, 100);
     c.lineTo(550, 100);
     c.lineTo(580, 85);
     c.lineTo(550, 70);
     c.closePath();
     c.fill();
     c.stroke();
-    // サイドリアガラス左
+    // サイドガラス左
     c.beginPath();
-    c.moveTo(450, 300);
-    c.lineTo(440, 330);
-    c.lineTo(550, 330);
-    c.lineTo(580, 315);
+    c.moveTo(290, 330);
+    c.lineTo(380, 300);
     c.lineTo(550, 300);
+    c.lineTo(580, 315);
+    c.lineTo(550, 330);
     c.closePath();
     c.fill();
     c.stroke();
@@ -115,109 +100,135 @@ function drawCarTopView(c) {
     c.fill();
     c.stroke();
     // 寸法表記
-    drawArrowLineVertical(c, 20, 50, 100, 350, 30); // 全幅
+    drawDimensionLineVertical(c, 20, 50, 100, 350, 30, 'body width'); // 全幅
 }
 
-function drawCarSideView(c) {
+// fx: フロントX座標
+// bl: 長さ（描画座標）
+// gy: 地面Y座標
+// bh: 高さ（描画座標）
+// rc: 最低地上高（描画座標）
+function drawCarSideView(c, type, fx, gy, bl, bh) {
+    // ガイドライン
+    // c.lineWidth = 2;
+    // c.moveTo(0, 480);
+    // c.lineTo(800, 480);
+    // c.stroke();
     // 外周
+    let frx = fx + (bl * 0.48);     // front roof X
+    let rrx = fx + (bl * 0.85);     // rear roof X
+    let ry = gy - bh;               // roof Y
+    let fgbx = fx + (bl * 0.28)     // front glass bottom X
+    let fgby = gy - (bh * 0.66);    // front glass bottom Y
+    let rtx = fx + bl;              // rear top X
+    let rty = gy - (bh * 0.66);     // rear top Y
     c.lineWidth = 2;
     c.fillStyle = 'white';
     c.beginPath();
-    c.moveTo(50, 590);  // grill top
-    c.lineTo(50, 680);  // grill under
-    c.lineTo(150, 700);
-    c.lineTo(600, 700);
-    c.lineTo(700, 670); // rear under
-    c.lineTo(700, 550); // rear top
-    c.lineTo(600, 450); // spoiler top
-    c.lineTo(360, 450); // front glass top
-    c.lineTo(230, 550); // front glass under
+    c.moveTo(fx, gy - (bh * 0.53));             // grill top
+    c.lineTo(fx, gy - (bh * 0.22));             // grill bottom
+    c.lineTo(fx + (bl * 0.15), gy - (bh * 0.15));  // body bottom
+    c.lineTo(fx + (bl * 0.77), gy - (bh * 0.15));  // body bottom
+    c.lineTo(fx + bl, gy - (bh * 0.22));        // rear bottom
+    c.lineTo(rtx, rty);                         // rear top
+    c.lineTo(rrx, ry);                          // rear roof
+    c.lineTo(frx, ry);                          // front roof
+    c.lineTo(fgbx, fgby);                       // front glass bottom
     c.closePath();
     c.fill();
     c.stroke();
     // フロントガラス
+    let fgtx = fgbx + (frx - fgbx) * 0.9;   // front glass top X
+    let fgty = fgby - (fgby - ry) * 0.9;    // front glass top Y
     c.fillStyle = 'lightgray';
     c.beginPath();
-    c.moveTo(347, 460); // front glass top
-    c.lineTo(230, 550); // front glass under
-    c.lineTo(270, 550); // front glass under
-    c.lineTo(360, 460); // front glass top
+    c.moveTo(fgtx, fgty);       // front glass top
+    c.lineTo(fgbx, fgby);       // front glass bottom
+    c.lineTo(fgbx + 40, fgby);  // front glass bottom
+    c.lineTo(fgtx + 15, fgty);  // front glass top
     c.closePath();
     c.fill();
     c.stroke();
-    // サイドフロントガラス
+    // サイドガラス
     c.beginPath();
-    c.moveTo(380, 460); // side front glass top
-    c.lineTo(290, 550); // side front glass under
-    c.lineTo(410, 550); // side front glass under
-    c.lineTo(430, 460); // side front glass under
-    c.closePath();
-    c.fill();
-    c.stroke();
-    // サイドリアガラス
-    c.beginPath();
-    c.moveTo(450, 460); // side front glass top
-    c.lineTo(440, 550); // side front glass under
-    c.lineTo(550, 550); // side front glass under
-    c.lineTo(580, 500); // side front glass under
-    c.lineTo(550, 460); // side front glass under
+    c.moveTo(fgtx + 33, fgty);                  // side glass top
+    c.lineTo(fgbx + 58, fgby);                  // side glass front bottom
+    c.lineTo(fgbx + 318, fgby);                 // side glass rear bottom
+    c.lineTo(fgbx + 348, (fgty + fgby) / 2);    // side glass under
+    c.lineTo(fgbx + 318, fgty);                 // side glass rear top
     c.closePath();
     c.fill();
     c.stroke();
     // リアガラス
+    let rgtx = rrx + (rtx - rrx) * 0.1; // rear glass top X
+    let rgbx = rrx + (rtx - rrx) * 0.8; // rear glass bottom X
     c.beginPath();
-    c.moveTo(585, 460); // side front glass top
-    c.lineTo(640, 530); // side front glass under
-    c.lineTo(680, 530); // side front glass under
-    c.lineTo(610, 460); // side front glass under
+    c.moveTo(rgtx - 25, fgty);      // rear glass top
+    c.lineTo(rgbx - 40, fgby - 20); // rear glass bottom
+    c.lineTo(rgbx, fgby - 20);      // rear glass bottom
+    c.lineTo(rgtx, fgty);           // rear glass top
     c.closePath();
     c.fill();
     c.stroke();
     // ヘッドライト
+    let hlty = gy - (bh * 0.50); // head light top Y
+    let hlby = gy - (bh * 0.43); // head light bottom Y
     c.beginPath();
-    c.moveTo(50, 595);  // front top
-    c.lineTo(50, 620);
-    c.lineTo(120, 620);
-    c.lineTo(120, 595);
+    c.moveTo(fx, hlty);  // front top
+    c.lineTo(fx, hlby);
+    c.lineTo(fx + 70, hlby);
+    c.lineTo(fx + 70, hlty);
     c.closePath();
     c.stroke();
     // リアランプ
+    let rlty = gy - (bh * 0.69); // rear lamp top Y
+    let rlby = gy - (bh * 0.62); // rear lamp bottom Y
+    let rlrx = fx + bl - 10;    // rear lamp rear X
+    let rlfx = fx + bl - 80;    // rear lamp front X
     c.fillStyle = "darkred";
     c.beginPath();
-    c.moveTo(690, 540);
-    c.lineTo(690, 565);
-    c.lineTo(620, 565);
-    c.lineTo(620, 540);
+    c.moveTo(rlrx, rlty);
+    c.lineTo(rlrx, rlby);
+    c.lineTo(rlfx, rlby);
+    c.lineTo(rlfx, rlty);
     c.closePath();
     c.fill();
     c.stroke();
     // ドアミラー
+    let dmfx = fgbx + 68;   // door mirror front X
+    let dmty = fgby - 20;   // door mirror top Y
+    let dmrx = fgbx + 88;  // door mirror rear X
+    let dmby = fgby + 10;   // door mirror bottom Y
     c.fillStyle = "white";
     c.beginPath();
-    c.moveTo(300, 530);
-    c.lineTo(300, 560);
-    c.lineTo(320, 560);
-    c.lineTo(320, 530);
+    c.moveTo(dmfx, dmty);
+    c.lineTo(dmfx, dmby);
+    c.lineTo(dmrx, dmby);
+    c.lineTo(dmrx, dmty);
     c.closePath();
     c.fill();
     c.stroke();
     // 前輪
-    drawTireSideView(c, 180, 680, 64, 44);
+    let ftcx = fx + bl * 0.20;   // front tire center X
+    let tcy = gy - bh * 0.22;   // tire center Y
+    drawTireSideView(c, ftcx, tcy, 64, 44);
     // 後輪
-    drawTireSideView(c, 580, 680, 64, 44);
+    let rtcx = fx + bl * 0.82;   // rear tire center X
+    drawTireSideView(c, rtcx, tcy, 64, 44);
     // 地面
     c.lineWidth = 2;
-    c.moveTo(20, 745);
-    c.lineTo(730, 745);
+    c.moveTo(fx - 30, gy);
+    c.lineTo(fx + bl + 30, gy);
     c.stroke();
     // 寸法表記
-    drawArrowLineHorizontal(c, 180, 745, 580, 775, 770);    // ホイールベース
-    drawArrowLineHorizontal(c, 50, 670, 700, 800, 795);     // 全長
-    drawArrowLineVertical(c, 600, 450, 750, 745, 745);      // 全幅
-    drawArrowLineVertical(c, 100, 700, 120, 745, 105);      // 最低地上高
+    drawDimensionLineHorizontal(c, ftcx, gy, rtcx, gy + 30, gy + 25, 'wheelbase');    // ホイールベース
+    drawDimensionLineHorizontal(c, fx, gy - (bh * 0.22), fx + bl, gy + 55, gy + 50, 'body length2');     // 全長
+    drawDimensionLineVertical(c, rrx, ry, fx + bl + 50, gy, fx + bl + 45, 'body height');      // 全高
+    drawDimensionLineVertical(c, fx + (bl * 0.15) - 50, gy - (bh * 0.15), fx + (bl * 0.15) - 20, gy, fx + (bl * 0.15) - 45, 'min body height');      // 最低地上高
 }
 
-function drawCarFrontView(c) {
+
+function drawCarFrontView(c, type) {
     // 外周
     drawOuterFrontView(c, 975, 350, 0, 0);
     // フロントガラス
@@ -265,7 +276,7 @@ function drawCarFrontView(c) {
     c.stroke();
 }
 
-function drawCarRearView(c) {
+function drawCarRearView(c, type) {
     // 外周
     drawOuterFrontView(c, 975, 745, 0, 0);
     // リアガラス
@@ -366,7 +377,7 @@ function drawOuterFrontView(c, x, y, w, h) {
     c.lineTo(x + 205, y);
     c.stroke();
     // 寸法線
-    drawArrowLineHorizontal(c, x - 128, y, x + 128, y + 30, y + 25);    // トレッド前
+    drawDimensionLineHorizontal(c, x - 128, y, x + 128, y + 30, y + 25, 'tred');    // トレッド前
 }
 
 // Draw tire front view
@@ -405,7 +416,7 @@ function drawTireSideView(c, x, y, tireRad, wheelRad) {
     c.fill();
 }
 
-function drawArrowLineVertical(c, sx, sy, ex, ey, lx) {
+function drawDimensionLineVertical(c, sx, sy, ex, ey, lx, text) {
     c.lineWidth = 1;
     c.fillStyle = 'black';
     // 寸法補助線上
@@ -434,9 +445,17 @@ function drawArrowLineVertical(c, sx, sy, ex, ey, lx) {
     c.lineTo(lx + 3, ey - 12);
     c.closePath();
     c.fill();
+    // 寸法
+    c.textAlign = 'center';
+    c.font = '16px sans-serif';
+    c.translate(lx, (sy + ey) / 2);
+    c.rotate(-Math.PI / 2);
+    c.fillText(text, 0, -4);
+    c.rotate(Math.PI / 2);
+    c.translate(-lx, -(sy + ey) / 2);
 }
 
-function drawArrowLineHorizontal(c, sx, sy, ex, ey, ly) {
+function drawDimensionLineHorizontal(c, sx, sy, ex, ey, ly, text) {
     c.lineWidth = 1;
     c.fillStyle = 'black';
     // 寸法補助線左
@@ -465,4 +484,8 @@ function drawArrowLineHorizontal(c, sx, sy, ex, ey, ly) {
     c.lineTo(ex - 12, ly + 3);
     c.closePath();
     c.fill();
+    // 寸法
+    c.textAlign = 'center';
+    c.font = '16px sans-serif';
+    c.fillText(text, (sx + ex) / 2, ly - 4);
 }

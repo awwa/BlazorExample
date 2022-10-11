@@ -1,6 +1,0 @@
-.size-container {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-image: url("/images/trihedral/suv.png");
-    height: 500px;
-}
