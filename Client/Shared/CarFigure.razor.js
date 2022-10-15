@@ -5,379 +5,425 @@ export function drawCar(type, length, width, height,
     var canvas = document.getElementById("car_figure");
     var c = canvas.getContext("2d");
 
+    // パラメータ
+    let fxtv = 50;    // フロントX座標 for top view
+    let cytv = 200;   // センターY座標 for top view
+    let bl = 650;   // 全長（描画座標）
+    let bw = 300;   // 全幅（描画座標）
+    let bh = 295;   // 全高（描画座標）
+
+    let gysv = 745;   // 地面Y座標 for side view
+    let rbytv = cytv - bw / 2;  // right body Y
+    let lbytv = cytv + bw / 2;  // left body Y
+    let frxsv = fxtv + (bl * 0.48);     // front roof X for side view
+    let rrxsv = fxtv + (bl * 0.85);     // rear roof X for side view
+    let rysv = gysv - bh;               // roof Y for side view
+    let rtxsv = fxtv + bl;              // rear top X for side view
+    let rtysv = gysv - (bh * 0.66);     // rear top Y for side view
+    let fgbxsv = fxtv + (bl * 0.28)     // front glass bottom X for side view
+    let fgbysv = gysv - (bh * 0.66);    // front glass bottom Y for side view
+    let fgtxsv = fgbxsv + (frxsv - fgbxsv) * 0.9;   // front glass top X for side view
+    let fgtysv = fgbysv - (fgbysv - rysv) * 0.9;    // front glass top Y for side view
+
+    // door mirror
+    let ow = 350;   // outer width
+    let dml = 20;   // door mirror length
+    let dmh = 30;   // door mirror height
+    let dmw = 35;   // door mirror width
+    let dmfx = fgbxsv + 68;           // door mirror front X
+    let dmrx = fgbxsv + 68 + dml;           // door mirror rear X
+
+    let rgtxsv = rrxsv + (rtxsv - rrxsv) * 0.1;     // rear glass top X for side view
+    let rgbxsv = rrxsv + (rtxsv - rrxsv) * 0.8;     // rear glass bottom X for side view
+    let hltysv = gysv - (bh * 0.50);    // head light top Y for side view
+    let hlbysv = gysv - (bh * 0.43);    // head light bottom Y for side view
+    let rltysv = gysv - (bh * 0.69);    // rear lamp top Y for side view
+    let rlbysv = gysv - (bh * 0.62);    // rear lamp bottom Y for side view
+    let rlrxsv = fxtv + bl - 10;        // rear lamp rear X for side view
+    let rlfxsv = fxtv + bl - 80;        // rear lamp front X for side view
+    let ftcx = fxtv + bl * 0.20;      // front tire center X
+    let tcy = gysv - bh * 0.22;       // tire center Y
+    let rtcx = fxtv + bl * 0.82;      // rear tire center X
+
     // Draw top view
-    drawCarTopView(c, type);
-
-    // Draw side view
-    drawCarSideView(c, type, 50, 745, 650, 295);
-
-    // Draw front view
-    drawCarFrontView(c, type);
-
-    // Draw rear view
-    drawCarRearView(c, type);
-}
-
-function drawCarTopView(c, type) {
     // 外周
     c.fillStyle = 'white';
     c.lineWidth = 2;
     c.beginPath();
-    c.moveTo(90, 50);   // front right
-    c.lineTo(50, 100);
-    c.lineTo(50, 300);
-    c.lineTo(90, 350);  // front left
-    c.lineTo(640, 350); // rear left
-    c.lineTo(700, 290);
-    c.lineTo(700, 110);
-    c.lineTo(640, 50);  // rear right
+    c.moveTo(fxtv + 40, rbytv);   // front right
+    c.lineTo(fxtv, cytv - 100);
+    c.lineTo(fxtv, cytv + 100);
+    c.lineTo(fxtv + 40, lbytv);  // front left
+    c.lineTo(fxtv + bl - 60, lbytv); // rear left
+    c.lineTo(fxtv + bl, cytv + 90);
+    c.lineTo(fxtv + bl, cytv - 90);
+    c.lineTo(fxtv + bl - 60, rbytv);  // rear right
+    c.closePath();
+    c.fill();
+    c.stroke();
+    // ドアミラー右
+    let rdmytv = cytv - ow / 2;    // right door mirror Y for top view
+    let ldmytv = cytv + ow / 2;    // left door mirror Y for top view
+    c.beginPath();
+    c.moveTo(dmfx, rdmytv);
+    c.lineTo(dmfx, rdmytv + dmw);
+    c.lineTo(dmrx, rdmytv + dmw);
+    c.lineTo(dmrx, rdmytv);
     c.closePath();
     c.fill();
     c.stroke();
     // ドアミラー左
     c.beginPath();
-    c.moveTo(300, 30);
-    c.lineTo(300, 60);
-    c.lineTo(320, 60);
-    c.lineTo(320, 30);
-    c.closePath();
-    c.fill();
-    c.stroke();
-    // ドアミラー右
-    c.beginPath();
-    c.moveTo(300, 340);
-    c.lineTo(300, 370);
-    c.lineTo(320, 370);
-    c.lineTo(320, 340);
+    c.moveTo(dmfx, ldmytv);
+    c.lineTo(dmfx, ldmytv - dmw);
+    c.lineTo(dmrx, ldmytv - dmw);
+    c.lineTo(dmrx, ldmytv);
     c.closePath();
     c.fill();
     c.stroke();
     // フロントガラス
+    let fgbw = 240;
+    let fgtw = 180;
     c.fillStyle = 'lightgray';
     c.beginPath();
-    c.moveTo(270, 80);  // bottom right
-    c.lineTo(230, 140);
-    c.lineTo(230, 260);
-    c.lineTo(270, 320); // bottom left
-    c.lineTo(360, 290); // top left
-    c.lineTo(350, 240);
-    c.lineTo(350, 160);
-    c.lineTo(360, 110); // top right
+    c.moveTo(fgbxsv + 40, cytv - fgbw / 2);  // bottom right
+    c.lineTo(fgbxsv, cytv - 60);
+    c.lineTo(fgbxsv, cytv + 60);
+    c.lineTo(fgbxsv + 40, cytv + fgbw / 2); // bottom left
+    c.lineTo(fgtxsv + 15, cytv + fgtw / 2); // top left
+    c.lineTo(fgtxsv, cytv + 40);
+    c.lineTo(fgtxsv, cytv - 40);
+    c.lineTo(fgtxsv + 15, cytv - fgtw / 2); // top right
     c.closePath();
     c.fill();
     c.stroke();
     // サイドガラス右
+    let sgftx = fgtxsv + 33;   // side glass front top X
+    let sgfbx = fgbxsv + 58;   // side glass front bottom X
+    let sgrbx = fgbxsv + 318;  // side glass rear bottom X
+    let sgrmx = fgbxsv + 348;  // side glass rear middle X
+    let sgrtx = fgbxsv + 318;  // side glass rear top X
+    let rsgfby = cytv - 130;    // right side glass front bottom Y
+    let rsgfty = cytv - 100;    // right side glass front top Y
+    let rsgrty = cytv - 100;   // right side glass rear top Y
+    let rsgrmy = cytv - 115;   // right side glass rear middle Y
+    let rsgrby = cytv - 130;   // right side glass rear bottom Y
     c.beginPath();
-    c.moveTo(290, 70);
-    c.lineTo(380, 100);
-    c.lineTo(550, 100);
-    c.lineTo(580, 85);
-    c.lineTo(550, 70);
+    c.moveTo(sgfbx, rsgfby);
+    c.lineTo(sgftx, rsgfty);
+    c.lineTo(sgrtx, rsgrty);
+    c.lineTo(sgrmx, rsgrmy);
+    c.lineTo(sgrbx, rsgrby);
     c.closePath();
     c.fill();
     c.stroke();
     // サイドガラス左
+    let lsgfby = cytv + 130;    // left side glass front bottom Y
+    let lsgfty = cytv + 100;    // left side glass front top Y
+    let lsgrty = cytv + 100;   // left side glass rear top Y
+    let lsgrmy = cytv + 115;   // left side glass rear middle Y
+    let lsgrby = cytv + 130;   // left side glass rear bottom Y
     c.beginPath();
-    c.moveTo(290, 330);
-    c.lineTo(380, 300);
-    c.lineTo(550, 300);
-    c.lineTo(580, 315);
-    c.lineTo(550, 330);
+    c.moveTo(sgfbx, lsgfby);
+    c.lineTo(sgftx, lsgfty);
+    c.lineTo(sgrtx, lsgrty);
+    c.lineTo(sgrmx, lsgrmy);
+    c.lineTo(sgrbx, lsgrby);
     c.closePath();
     c.fill();
     c.stroke();
     // リアガラス
+    let rgbw = 240;
+    let rgtw = 180;
     c.beginPath();
-    c.moveTo(585, 110);
-    c.lineTo(610, 160);
-    c.lineTo(610, 240);
-    c.lineTo(585, 290);
-    c.lineTo(640, 320);
-    c.lineTo(680, 270);
-    c.lineTo(680, 130);
-    c.lineTo(640, 80);
+    c.moveTo(rgtxsv - 25, cytv - rgtw / 2/*90*/);
+    c.lineTo(rgtxsv, cytv - 40);
+    c.lineTo(rgtxsv, cytv + 40);
+    c.lineTo(rgtxsv - 25, cytv + rgtw / 2/*90*/);
+    c.lineTo(rgbxsv - 40, cytv + rgbw / 2/*120*/);
+    c.lineTo(rgbxsv, cytv + 70);
+    c.lineTo(rgbxsv, cytv - 70);
+    c.lineTo(rgbxsv - 40, cytv - rgbw / 2/*120*/);
     c.closePath();
     c.fill();
     c.stroke();
     // 寸法表記
-    drawDimensionLineVertical(c, 20, 50, 100, 350, 30, 'body width'); // 全幅
-}
+    drawDimensionLineVertical(c, fxtv - 30, rbytv, fxtv + 40, lbytv, fxtv - 25, 'body width'); // 全幅
 
-// fx: フロントX座標
-// bl: 長さ（描画座標）
-// gy: 地面Y座標
-// bh: 高さ（描画座標）
-// rc: 最低地上高（描画座標）
-function drawCarSideView(c, type, fx, gy, bl, bh) {
-    // ガイドライン
-    // c.lineWidth = 2;
-    // c.moveTo(0, 480);
-    // c.lineTo(800, 480);
-    // c.stroke();
+    // Draw side view
+    let mrcy = gysv - (bh * 0.15);    // min road clearance Y
     // 外周
-    let frx = fx + (bl * 0.48);     // front roof X
-    let rrx = fx + (bl * 0.85);     // rear roof X
-    let ry = gy - bh;               // roof Y
-    let fgbx = fx + (bl * 0.28)     // front glass bottom X
-    let fgby = gy - (bh * 0.66);    // front glass bottom Y
-    let rtx = fx + bl;              // rear top X
-    let rty = gy - (bh * 0.66);     // rear top Y
     c.lineWidth = 2;
     c.fillStyle = 'white';
     c.beginPath();
-    c.moveTo(fx, gy - (bh * 0.53));             // grill top
-    c.lineTo(fx, gy - (bh * 0.22));             // grill bottom
-    c.lineTo(fx + (bl * 0.15), gy - (bh * 0.15));  // body bottom
-    c.lineTo(fx + (bl * 0.77), gy - (bh * 0.15));  // body bottom
-    c.lineTo(fx + bl, gy - (bh * 0.22));        // rear bottom
-    c.lineTo(rtx, rty);                         // rear top
-    c.lineTo(rrx, ry);                          // rear roof
-    c.lineTo(frx, ry);                          // front roof
-    c.lineTo(fgbx, fgby);                       // front glass bottom
+    c.moveTo(fxtv, gysv - (bh * 0.53));         // grill top
+    c.lineTo(fxtv, gysv - (bh * 0.22));         // grill bottom
+    c.lineTo(fxtv + (bl * 0.15), mrcy);         // body bottom
+    c.lineTo(fxtv + (bl * 0.77), mrcy);         // body bottom
+    c.lineTo(fxtv + bl, gysv - (bh * 0.22));    // rear bottom
+    c.lineTo(rtxsv, rtysv);                     // rear top
+    c.lineTo(rrxsv, rysv);                      // rear roof
+    c.lineTo(frxsv, rysv);                      // front roof
+    c.lineTo(fgbxsv, fgbysv);                   // front glass bottom
     c.closePath();
     c.fill();
     c.stroke();
     // フロントガラス
-    let fgtx = fgbx + (frx - fgbx) * 0.9;   // front glass top X
-    let fgty = fgby - (fgby - ry) * 0.9;    // front glass top Y
     c.fillStyle = 'lightgray';
     c.beginPath();
-    c.moveTo(fgtx, fgty);       // front glass top
-    c.lineTo(fgbx, fgby);       // front glass bottom
-    c.lineTo(fgbx + 40, fgby);  // front glass bottom
-    c.lineTo(fgtx + 15, fgty);  // front glass top
+    c.moveTo(fgtxsv, fgtysv);       // front glass top
+    c.lineTo(fgbxsv, fgbysv);       // front glass bottom
+    c.lineTo(fgbxsv + 40, fgbysv);  // front glass bottom
+    c.lineTo(fgtxsv + 15, fgtysv);  // front glass top
     c.closePath();
     c.fill();
     c.stroke();
     // サイドガラス
     c.beginPath();
-    c.moveTo(fgtx + 33, fgty);                  // side glass top
-    c.lineTo(fgbx + 58, fgby);                  // side glass front bottom
-    c.lineTo(fgbx + 318, fgby);                 // side glass rear bottom
-    c.lineTo(fgbx + 348, (fgty + fgby) / 2);    // side glass under
-    c.lineTo(fgbx + 318, fgty);                 // side glass rear top
+    c.moveTo(sgftx, fgtysv);                // side glass top
+    c.lineTo(sgfbx, fgbysv);                // side glass front bottom
+    c.lineTo(sgrbx, fgbysv);                // side glass rear bottom
+    c.lineTo(sgrmx, (fgtysv + fgbysv) / 2); // side glass under
+    c.lineTo(sgrtx, fgtysv);                // side glass rear top
     c.closePath();
     c.fill();
     c.stroke();
     // リアガラス
-    let rgtx = rrx + (rtx - rrx) * 0.1; // rear glass top X
-    let rgbx = rrx + (rtx - rrx) * 0.8; // rear glass bottom X
     c.beginPath();
-    c.moveTo(rgtx - 25, fgty);      // rear glass top
-    c.lineTo(rgbx - 40, fgby - 20); // rear glass bottom
-    c.lineTo(rgbx, fgby - 20);      // rear glass bottom
-    c.lineTo(rgtx, fgty);           // rear glass top
+    c.moveTo(rgtxsv - 25, fgtysv);      // rear glass top
+    c.lineTo(rgbxsv - 40, fgbysv - 20); // rear glass bottom
+    c.lineTo(rgbxsv, fgbysv - 20);      // rear glass bottom
+    c.lineTo(rgtxsv, fgtysv);           // rear glass top
     c.closePath();
     c.fill();
     c.stroke();
     // ヘッドライト
-    let hlty = gy - (bh * 0.50); // head light top Y
-    let hlby = gy - (bh * 0.43); // head light bottom Y
     c.beginPath();
-    c.moveTo(fx, hlty);  // front top
-    c.lineTo(fx, hlby);
-    c.lineTo(fx + 70, hlby);
-    c.lineTo(fx + 70, hlty);
+    c.moveTo(fxtv, hltysv);  // front top
+    c.lineTo(fxtv, hlbysv);
+    c.lineTo(fxtv + 70, hlbysv);
+    c.lineTo(fxtv + 70, hltysv);
     c.closePath();
     c.stroke();
     // リアランプ
-    let rlty = gy - (bh * 0.69); // rear lamp top Y
-    let rlby = gy - (bh * 0.62); // rear lamp bottom Y
-    let rlrx = fx + bl - 10;    // rear lamp rear X
-    let rlfx = fx + bl - 80;    // rear lamp front X
     c.fillStyle = "darkred";
     c.beginPath();
-    c.moveTo(rlrx, rlty);
-    c.lineTo(rlrx, rlby);
-    c.lineTo(rlfx, rlby);
-    c.lineTo(rlfx, rlty);
+    c.moveTo(rlrxsv, rltysv);
+    c.lineTo(rlrxsv, rlbysv);
+    c.lineTo(rlfxsv, rlbysv);
+    c.lineTo(rlfxsv, rltysv);
     c.closePath();
     c.fill();
     c.stroke();
     // ドアミラー
-    let dmfx = fgbx + 68;   // door mirror front X
-    let dmty = fgby - 20;   // door mirror top Y
-    let dmrx = fgbx + 88;  // door mirror rear X
-    let dmby = fgby + 10;   // door mirror bottom Y
+    let dmtysv = fgbysv - 35;           // door mirror top Y for side view
+    let dmbysv = fgbysv - 35 + dmh;           // door mirror bottom Y for side view
     c.fillStyle = "white";
     c.beginPath();
-    c.moveTo(dmfx, dmty);
-    c.lineTo(dmfx, dmby);
-    c.lineTo(dmrx, dmby);
-    c.lineTo(dmrx, dmty);
+    c.moveTo(dmfx, dmtysv);
+    c.lineTo(dmfx, dmbysv);
+    c.lineTo(dmrx, dmbysv);
+    c.lineTo(dmrx, dmtysv);
     c.closePath();
     c.fill();
     c.stroke();
     // 前輪
-    let ftcx = fx + bl * 0.20;   // front tire center X
-    let tcy = gy - bh * 0.22;   // tire center Y
     drawTireSideView(c, ftcx, tcy, 64, 44);
     // 後輪
-    let rtcx = fx + bl * 0.82;   // rear tire center X
     drawTireSideView(c, rtcx, tcy, 64, 44);
     // 地面
     c.lineWidth = 2;
-    c.moveTo(fx - 30, gy);
-    c.lineTo(fx + bl + 30, gy);
+    c.moveTo(fxtv - 30, gysv);
+    c.lineTo(fxtv + bl + 30, gysv);
     c.stroke();
     // 寸法表記
-    drawDimensionLineHorizontal(c, ftcx, gy, rtcx, gy + 30, gy + 25, 'wheelbase');    // ホイールベース
-    drawDimensionLineHorizontal(c, fx, gy - (bh * 0.22), fx + bl, gy + 55, gy + 50, 'body length2');     // 全長
-    drawDimensionLineVertical(c, rrx, ry, fx + bl + 50, gy, fx + bl + 45, 'body height');      // 全高
-    drawDimensionLineVertical(c, fx + (bl * 0.15) - 50, gy - (bh * 0.15), fx + (bl * 0.15) - 20, gy, fx + (bl * 0.15) - 45, 'min body height');      // 最低地上高
-}
+    drawDimensionLineHorizontal(c, ftcx, gysv, rtcx, gysv + 30, gysv + 25, 'wheelbase');    // ホイールベース
+    drawDimensionLineHorizontal(c, fxtv, gysv - (bh * 0.22), fxtv + bl, gysv + 55, gysv + 50, 'body length2');     // 全長
+    drawDimensionLineVertical(c, rrxsv, rysv, fxtv + bl + 50, gysv, fxtv + bl + 45, 'body height');      // 全高
+    drawDimensionLineVertical(c, fxtv + (bl * 0.15) - 50, mrcy, fxtv + (bl * 0.15) - 20, gysv, fxtv + (bl * 0.15) - 45, 'min body height');      // 最低地上高
 
-
-function drawCarFrontView(c, type) {
+    // Draw front view
+    let cxfv = 975;     // center X for front view
+    let gyfv = 350;     // ground Y for front view
     // 外周
-    drawOuterFrontView(c, 975, 350, 0, 0);
+    drawOuterFrontView(c, cxfv, gyfv, bw, bh, dmw, dmh);
     // フロントガラス
+    let fgtyfv = fgtysv - (gysv - gyfv);    // front glass top Y for front view
+    let fgbyfv = fgbysv - (gysv - gyfv);    // front glass bottom Y for front view
     c.lineWidth = 2;
     c.fillStyle = 'lightgray';
     c.beginPath();
-    c.moveTo(885, 65);     // left top+180
-    c.lineTo(855, 155);    // left bottom+240
-    c.lineTo(1095, 155);    // right bottom
-    c.lineTo(1065, 65);     // right top
+    c.moveTo(cxfv - fgtw / 2, fgtyfv);  // left top+180
+    c.lineTo(cxfv - fgbw / 2, fgbyfv);  // left bottom+240
+    c.lineTo(cxfv + fgbw / 2, fgbyfv);  // right bottom
+    c.lineTo(cxfv + fgtw / 2, fgtyfv);  // right top
     c.closePath();
     c.fill();
     c.stroke();
     // グリル
+    let gw = 150;   // grill width
+    let gtyfv = gyfv - (bh * 0.50);    // grill top Y for front view
+    let gbyfv = gyfv - (bh * 0.33);    // grill bottom Y for front view
     c.beginPath();
-    c.moveTo(900, 185); // left top
-    c.lineTo(900, 250);
-    c.lineTo(1050, 250);
-    c.lineTo(1050, 185);
+    c.moveTo(cxfv - gw / 2, gtyfv); // left top
+    c.lineTo(cxfv - gw / 2, gbyfv);
+    c.lineTo(cxfv + gw / 2, gbyfv);
+    c.lineTo(cxfv + gw / 2, gtyfv);
     c.closePath();
     c.stroke();
     // ヘッドライト左
+    let hlw = 65;                       // head light width
+    let lhlxfv = cxfv - 75;             // left head light X for front view
+    let hltyfv = gyfv - (bh * 0.50);    // head light top Y for front view
+    let hlbyfv = gyfv - (bh * 0.43);    // head light bottom Y for front view
     c.beginPath();
-    c.moveTo(835, 185); // left top
-    c.lineTo(835, 210);
-    c.lineTo(900, 210);
-    c.lineTo(900, 185);
+    c.moveTo(lhlxfv - hlw, hltyfv); // left top
+    c.lineTo(lhlxfv - hlw, hlbyfv);
+    c.lineTo(lhlxfv, hlbyfv);
+    c.lineTo(lhlxfv, hltyfv);
     c.closePath();
     c.stroke();
     // ヘッドライト右
+    let rhlxfv = cxfv + 75; // right head light X for front view
     c.beginPath();
-    c.moveTo(1050, 185); // left top
-    c.lineTo(1050, 210);
-    c.lineTo(1115, 210);
-    c.lineTo(1115, 185);
+    c.moveTo(rhlxfv, hltyfv); // left top
+    c.lineTo(rhlxfv, hlbyfv);
+    c.lineTo(rhlxfv + hlw, hlbyfv);
+    c.lineTo(rhlxfv + hlw, hltyfv);
     c.closePath();
     c.stroke();
     // ナンバープレート
+    let npw = 60;   // number plate width
+    let nph = 30;   // number plate height
+    let npbyfv = gyfv - (bh * 0.20); // number plate bottom Y for front view
     c.beginPath();
-    c.moveTo(945, 260); // left top
-    c.lineTo(945, 290);
-    c.lineTo(1005, 290);
-    c.lineTo(1005, 260);
+    c.moveTo(cxfv - npw / 2, npbyfv - nph); // left top
+    c.lineTo(cxfv - npw / 2, npbyfv);
+    c.lineTo(cxfv + npw / 2, npbyfv);
+    c.lineTo(cxfv + npw / 2, npbyfv - nph);
     c.closePath();
     c.stroke();
-}
 
-function drawCarRearView(c, type) {
+    // Draw rear view
     // 外周
-    drawOuterFrontView(c, 975, 745, 0, 0);
+    drawOuterFrontView(c, cxfv, gysv, bw, bh, dmw, dmh);
     // リアガラス
     c.lineWidth = 2;
     c.fillStyle = 'lightgray';
     c.beginPath();
-    c.moveTo(885, 460);     // left top
-    c.lineTo(855, 530);    // left bottom
-    c.lineTo(1095, 530);    // right bottom
-    c.lineTo(1065, 460);     // right top
+    c.moveTo(cxfv - rgtw / 2, fgtysv);      // left top
+    c.lineTo(cxfv - rgbw / 2, fgbysv - 20); // left bottom
+    c.lineTo(cxfv + rgbw / 2, fgbysv - 20); // right bottom
+    c.lineTo(cxfv + rgtw / 2, fgtysv);      // right top
     c.closePath();
     c.fill();
     c.stroke();
     // リアランプ左
+    let rlw = 65;           // rear lamp width
+    let lrlxrv = cxfv - 70; // left rear lamp X for rear view
     c.fillStyle = "darkred";
     c.beginPath();
-    c.moveTo(840, 540); // left top
-    c.lineTo(840, 565);
-    c.lineTo(905, 565);
-    c.lineTo(905, 540);
+    c.moveTo(lrlxrv - rlw, rltysv); // left top
+    c.lineTo(lrlxrv - rlw, rlbysv);
+    c.lineTo(lrlxrv, rlbysv);
+    c.lineTo(lrlxrv, rltysv);
     c.closePath();
     c.fill();
     c.stroke();
     // リアランプ右
+    let rrlxrv = cxfv + 70;  // right rear lamp X for rear view
     c.fillStyle = "darkred";
     c.beginPath();
-    c.moveTo(1045, 540); // left top
-    c.lineTo(1045, 565);
-    c.lineTo(1110, 565);
-    c.lineTo(1110, 540);
+    c.moveTo(rrlxrv, rltysv); // left top
+    c.lineTo(rrlxrv, rlbysv);
+    c.lineTo(rrlxrv + rlw, rlbysv);
+    c.lineTo(rrlxrv + rlw, rltysv);
     c.closePath();
     c.fill();
     c.stroke();
     // ナンバープレート
+    let npbyrv = gysv - (bh * 0.46);    // number plate bottom Y for rear view
     c.beginPath();
-    c.moveTo(945, 580); // left top
-    c.lineTo(945, 610);
-    c.lineTo(1005, 610);
-    c.lineTo(1005, 580);
+    c.moveTo(cxfv - npw / 2, npbyrv - nph); // left top
+    c.lineTo(cxfv - npw / 2, npbyrv);
+    c.lineTo(cxfv + npw / 2, npbyrv);
+    c.lineTo(cxfv + npw / 2, npbyrv - nph);
     c.closePath();
     c.stroke();
+
 }
 
-function drawOuterFrontView(c, x, y, w, h) {
+function drawOuterFrontView(c, cx, gy, bw, bh, dmw, dmh) {
+    let ow = 350;   // outer width
     // 左輪
-    drawTireFrontView(c, x - 128, y - 65, 64, 44);
+    drawTireFrontView(c, cx - 128, gy - 65, 64, 44);
     // 右輪
-    drawTireFrontView(c, x + 128, y - 65, 64, 44);
+    drawTireFrontView(c, cx + 128, gy - 65, 64, 44);
     // 外周
+    let lrxfv = cx - bw / 2 + 50;    // left roof X for front view
+    let lsxfv = cx - bw / 2;         // left side X for front view
+    let lbxfv = cx - bw / 2 + 6;     // left bottom X for front view
+    let rrxfv = cx + bw / 2 - 50;    // right top X for front view
+    let rsxfv = cx + bw / 2;         // right side X for front view
+    let rbxfv = cx + bw / 2 - 6;     // right bottom X for front view
+    let ryfv = gy - bh;                // roof Y for front view
+    let syfv = gy - bh * 0.59;       // side Y for front view
+    let byfv = gy - bh * 0.15;     // bottom Y for front view
     c.lineWidth = 2;
     c.fillStyle = 'white';
     c.beginPath();
-    c.moveTo(x - 100, y - 295);     // left top
-    c.lineTo(x - 150, y - 175);     // left side
-    c.lineTo(x - 144, y - 45);      // left under
-    c.lineTo(x + 144, y - 45);      // right under
-    c.lineTo(x + 150, y - 175);     // right side
-    c.lineTo(x + 100, y - 295);     // right top
+    c.moveTo(lrxfv, ryfv);     // left top
+    c.lineTo(lsxfv, syfv);     // left side
+    c.lineTo(lbxfv, byfv);      // left bottom
+    c.lineTo(rbxfv, byfv);      // right bottom
+    c.lineTo(rsxfv, syfv);     // right side
+    c.lineTo(rrxfv, ryfv);     // right top
     c.closePath();
     c.fill();
     c.stroke();
     // ドアミラー左
+    let fgbyfv = gy - bh * 0.66;    // front glass bottom Y for front view
+    let dmtyfv = fgbyfv - 35;       // door mirror top Y for front view
+    let dmbyfv = fgbyfv - 35 + dmh; // door mirror bottom Y for front view
     c.beginPath();
-    c.moveTo(x - 175, y - 230);      // left top
-    c.lineTo(x - 175, y - 200);
-    c.lineTo(x - 140, y - 200);
-    c.lineTo(x - 140, y - 230);
+    c.moveTo(cx - ow / 2, dmtyfv);      // left top
+    c.lineTo(cx - ow / 2, dmbyfv);
+    c.lineTo(cx - ow / 2 + dmw, dmbyfv);
+    c.lineTo(cx - ow / 2 + dmw, dmtyfv);
     c.closePath();
     c.fill();
     c.stroke();
     c.beginPath();
-    c.moveTo(x - 157, y - 200);      // left top
-    c.lineTo(x - 145, y - 186);
-    c.lineTo(x - 141, y - 196);
-    c.lineTo(x - 145, y - 200);
+    c.moveTo(cx - (ow / 2 - dmw * 0.50), dmbyfv);      // left top
+    c.lineTo(lsxfv + (lrxfv - lsxfv) * 0.08, syfv + (ryfv - syfv) * 0.08);
+    c.lineTo(lsxfv + (lrxfv - lsxfv) * 0.18, syfv + (ryfv - syfv) * 0.18);
+    c.lineTo(cx - (ow / 2 - dmw * 0.90), dmbyfv);
     c.closePath();
     c.fill();
     c.stroke();
     // ドアミラー右
     c.beginPath();
-    c.moveTo(x + 140, y - 230);      // left top
-    c.lineTo(x + 140, y - 200);
-    c.lineTo(x + 175, y - 200);
-    c.lineTo(x + 175, y - 230);
+    c.moveTo(cx + ow / 2 - dmw, dmtyfv);      // left top
+    c.lineTo(cx + ow / 2 - dmw, dmbyfv);
+    c.lineTo(cx + ow / 2, dmbyfv);
+    c.lineTo(cx + ow / 2, dmtyfv);
     c.closePath();
     c.fill();
     c.stroke();
     c.beginPath();
-    c.moveTo(x + 145, y - 200);      // left top
-    c.lineTo(x + 141, y - 196);
-    c.lineTo(x + 145, y - 186);
-    c.lineTo(x + 157, y - 200);
+    c.moveTo(cx + (ow / 2 - dmw * 0.90), dmbyfv);      // left top
+    c.lineTo(rsxfv + (rrxfv - rsxfv) * 0.18, syfv + (ryfv - syfv) * 0.18);
+    c.lineTo(rsxfv + (rrxfv - rsxfv) * 0.08, syfv + (ryfv - syfv) * 0.08);
+    c.lineTo(cx + (ow / 2 - dmw * 0.50), dmbyfv);
     c.closePath();
     c.fill();
     c.stroke();
     // 地面
-    c.moveTo(x - 205, y);
-    c.lineTo(x + 205, y);
+    c.moveTo(cx - 205, gy);
+    c.lineTo(cx + 205, gy);
     c.stroke();
     // 寸法線
-    drawDimensionLineHorizontal(c, x - 128, y, x + 128, y + 30, y + 25, 'tred');    // トレッド前
+    drawDimensionLineHorizontal(c, cx - 128, gy, cx + 128, gy + 30, gy + 25, 'tred');    // トレッド前
 }
 
 // Draw tire front view
