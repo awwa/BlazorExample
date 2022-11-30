@@ -381,10 +381,6 @@ public class BodyType
     public const string HATCHBACK = "HATCHBACK";
     [Comment("クロスカントリー")]
     public const string CROSS_COUNTRY = "CROSS_COUNTRY";
-    [Comment("ミニバン")]
-    public const string MINI_VAN = "MINI_VAN,";
-    [Comment("ワンボックスワゴン")]
-    public const string ONEBOX_WAGON = "ONEBOX_WAGON";
     [Comment("軽自動車")]
     public const string K = "K";
     [Comment("クーペ")]
@@ -393,20 +389,14 @@ public class BodyType
     public const string STATION_WAGON = "STATION_WAGON";
     [Comment("SUV")]
     public const string SUV = "SUV";
-    [Comment("ワンボックスバン")]
-    public const string ONEBOX_VAN = "ONEBOX_VAN";
+    [Comment("ワンボックス")]
+    public const string ONEBOX = "ONEBOX";
     [Comment("軽オープン")]
     public const string K_OPEN = "K_OPEN";
-    [Comment("軽ワンボックスワゴン")]
-    public const string K_ONEBOX_WAGON = "K_ONEBOX_WAGON";
+    [Comment("軽ワンボックス")]
+    public const string K_ONEBOX = "K_ONEBOX";
     [Comment("オープン")]
     public const string OPEN = "OPEN";
-    [Comment("バン")]
-    public const string VAN = "VAN";
-    [Comment("軽バン")]
-    public const string K_VAN = "K_VAN";
-    [Comment("軽ワンボックスバン")]
-    public const string K_ONEBOX_VAN = "K_ONEBOX_VAN";
     [Comment("ピックアップトラック")]
     public const string PICKUP_TRUCK = "PICKUP_TRUCK";
 }

@@ -1,5 +1,7 @@
 @inject IJSRuntime JSRuntime;
 
-<canvas id="car_figure" width="1200px" height="800px">
-
-</canvas>
+<div>
+    <RadzenDropDown TValue="string" Data="@BodyTypes" Change="@ChangeDropDown" />
+    <canvas id="car_figure" width="1200px" height="800px">
+    </canvas>
+</div>
