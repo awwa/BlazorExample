@@ -23,6 +23,7 @@ export function drawCar(type, length, width, height,
         wRf: 200,   // width roof
         wB: 300,    // width body
         wR: 180,    // width rear
+        hFt: 130,   // height front top
         hBm: 145,   // height body middle
         wBb: 288,   // height body bottom
         // roof
@@ -31,7 +32,7 @@ export function drawCar(type, length, width, height,
         hRgb: 180,  // height rear glass bottom
         hRt: 160,   // height rear top
         // road clearance
-        hRcGb: 50, // height road clearance grill bottom
+        hRcFb: 50, // height road clearance grill bottom
         hRc: 37,   // height road clearance
         hRcRb: 50, // height road clearance rear bottom
         // front set back
@@ -59,9 +60,9 @@ export function drawCar(type, length, width, height,
         lFgt: 20,  // length front glass top
         lFgb: 40,  // length front glass bottom
         wFgt1: 80, // width front glass top 1
-        wFgt2: 180, // width front glass top 2
+        wFgt2: 190, // width front glass top 2
         wFgb1: 120, // width front glass bottom 1
-        wFgb2: 240, // width front glass bottom 2
+        wFgb2: 260, // width front glass bottom 2
         // A pillar
         lApt: 18,  // length A pillar top
         lApb: 18,  // length A pillar bottom
@@ -69,15 +70,15 @@ export function drawCar(type, length, width, height,
         lSgt: 280,  // length side glass top
         lSgm: 290,  // length side glass middle
         lSgb: 260,  // length side glass bottom
-        wSgt: 200,  // width side glass top
-        wSgb: 260,  // width side glass bottom
+        wSgt: 210,  // width side glass top
+        wSgb: 270,  // width side glass bottom
         hSgm: 200,  // height side glass middle
         // C pillar
         lCpt: 50,  // length C pillar top
         lCpb: 105,  // length C pillar bottom
         // rear glass
         wRgt1: 80, // width rear glass top 1
-        wRgt2: 180, // width rear glass top 2
+        wRgt2: 190, // width rear glass top 2
         wRgb1: 140, // width rear glass bottom 1
         wRgb2: 240, // width rear glass bottom 2
         // tire
@@ -90,7 +91,7 @@ export function drawCar(type, length, width, height,
         // grill
         wG: 150,    // width grill
         hG: 60,    // height grill
-        hGt: 130,   // height grill top
+        hGt: 120,   // height grill top
         // head lamp
         wHl: 66,   // width head lamp
         hHl: 16,   // height head lamp
@@ -136,6 +137,7 @@ export function drawCar(type, length, width, height,
         case "SUV":
             // body
             param.lB = 650;
+            param.hFt = 158;
             param.hBm = 170;
             param.hRgb = 215;
             // roof
@@ -143,7 +145,7 @@ export function drawCar(type, length, width, height,
             param.hRf = 295;
             param.hRt = 195;
             // road clearance
-            param.hRcGb = 64;
+            param.hRcFb = 64;
             param.hRc = 44;
             param.hRcRb = 64;
             // front set back
@@ -165,7 +167,7 @@ export function drawCar(type, length, width, height,
             param.rT = 64;
             param.rW = 44;
             // grill
-            param.hGt = 158;
+            param.hGt = 145;
             // head lamp
             param.hHl = 20;
             param.hHlt = 145;
@@ -179,17 +181,20 @@ export function drawCar(type, length, width, height,
         case "CROSS_COUNTRY":
             // body
             param.lB = 675;
+            param.wRf = 260;
             param.wR = 230;
+            param.hFt = 175;
             param.hBm = 170;
+            param.wBb = 300;
             // roof
             param.hFgb = 195;
             param.hRf = 295;
             param.hRgb = 195;
             param.hRt = 195;
             // road clearance
-            param.hRcGb = 50;
-            param.hRc = 44;
-            param.hRcRb = 50;
+            param.hRcFb = 64;
+            param.hRc = 64;
+            param.hRcRb = 64;
             // front set back
             param.fsbRf = 310;
             param.fsbFgb = 182;
@@ -202,11 +207,20 @@ export function drawCar(type, length, width, height,
             param.fsbDm = 250;
             // front glass
             param.lFgt = 14;
+            param.wFgt2 = 240;
+            param.wFgb2 = 270;
             // side glass
             param.lSgt = 385;
             param.lSgm = 370;
             param.lSgb = 380;
             param.hSgm = 240;
+            param.wSgt = 250;
+            param.wSgb = 280;
+            // rear glass
+            param.wRgt1 = 170;
+            param.wRgb1 = 190;
+            param.wRgt2 = 240;
+            param.wRgb2 = 270;
             // C pillar
             param.lCpt = 20;
             param.lCpb = 20;
@@ -215,29 +229,32 @@ export function drawCar(type, length, width, height,
             param.rW = 44;
             // grill
             param.hG = 80;
-            param.hGt = 175;
+            param.hGt = 155;
             // head lamp
             param.hHl = 25;
-            param.hHlt = 145;
+            param.hHlt = 155;
             // rear lamp
             param.hRl = 25;
             param.hRlt = 185;
             // number plate
-            param.hFnpt = 90;
-            param.hRnpt = 166;
+            param.hFnpt = 100;
+            param.hRnpt = 145;
             break;
         case "ONEBOX":
             // body
             param.lB = 675;
+            param.wRf = 260;
             param.wR = 230;
+            param.hFt = 170;
             param.hBm = 170;
+            param.wBb = 300;
             // roof
             param.hFgb = 195;
             param.hRf = 295;
             param.hRgb = 195;
             param.hRt = 195;
             // road clearance
-            param.hRcGb = 44;
+            param.hRcFb = 44;
             param.hRc = 44;
             param.hRcRb = 44;
             // front set back
@@ -252,17 +269,26 @@ export function drawCar(type, length, width, height,
             param.fsbDm = 140;
             // front glass
             param.lFgt = 14;
+            param.wFgt2 = 240;
+            param.wFgb2 = 270;
             // side glass
             param.lSgt = 505;
             param.lSgm = 483;
             param.lSgb = 485;
             param.hSgm = 240;
+            param.wSgt = 250;
+            param.wSgb = 280;
+            // rear glass
+            param.wRgt1 = 170;
+            param.wRgb1 = 190;
+            param.wRgt2 = 240;
+            param.wRgb2 = 270;
             // C pillar
             param.lCpt = 20;
             param.lCpb = 20;
             // grill
             param.hG = 80;
-            param.hGt = 170;
+            param.hGt = 145;
             // head lamp
             param.hHl = 25;
             param.hHlt = 145;
@@ -274,8 +300,8 @@ export function drawCar(type, length, width, height,
             param.hRnpt = 166;
             break;
         case "OPEN":
-        case "K_OPEN":
             // body
+            param.hFt = 110;
             param.hBm = 130;
             // roof
             param.hFgb = 140;
@@ -283,7 +309,7 @@ export function drawCar(type, length, width, height,
             param.hRgb = 150;
             param.hRt = 140;
             // road clearance
-            param.hRcGb = 37;
+            param.hRcFb = 37;
             // front set back
             param.fsbF = 60;
             param.fsbRf = 390;
@@ -321,6 +347,7 @@ export function drawCar(type, length, width, height,
             param.lB = 675;
             param.wRf = 260;
             param.wR = 230;
+            param.hFt = 175;
             param.hBm = 170;
             param.wBb = 300;
             // roof
@@ -329,7 +356,7 @@ export function drawCar(type, length, width, height,
             param.hRgb = 195;
             param.hRt = 195;
             // road clearance
-            param.hRcGb = 64;
+            param.hRcFb = 64;
             param.hRc = 64;
             param.hRcRb = 64;
             // front set back
@@ -341,12 +368,17 @@ export function drawCar(type, length, width, height,
             // door mirror
             param.hDmt = 200;
             // front glass
-            param.wFgt2 = 220;
+            param.wFgt2 = 240;
+            param.wFgb2 = 270;
             // side glass
             param.lSgt = 230;
             param.lSgm = 210;
             param.lSgb = 210;
-            param.wSgt = 240;
+            param.wSgt = 250;
+            param.wSgb = 280;
+            // rear glass
+            param.wRgt2 = 240;
+            param.wRgb2 = 270;
             // C pillar
             param.lCpt = 17;
             param.lCpb = 17;
@@ -355,26 +387,28 @@ export function drawCar(type, length, width, height,
             param.rW = 44;
             // grill
             param.hG = 80;
-            param.hGt = 170;
+            param.hGt = 155;
             // head lamp
             param.hHl = 25;
             param.hHlt = 155;
             // rear lamp
             param.hRl = 25;
-            param.hRlt = 180;
+            param.hRlt = 160;
             // number plate
             param.hFnpt = 100;
             break;
         case "K":
             // body
-            param.wRf = 260;
+            param.hFt = 160;
+            param.wB = 250;
+            param.wRf = 240;
             param.lB = 540;
-            param.wBb = 300;
+            param.wBb = 250;
             // roof
             param.hFgb = 170;
             param.hRf = 265;
             // road clearance
-            param.hRcGb = 40;
+            param.hRcFb = 40;
             param.hRcRb = 40;
             // front set back
             param.fsbF = 30;
@@ -385,79 +419,162 @@ export function drawCar(type, length, width, height,
             param.rsbRf = 40;
             param.rsbRgb = 6;
             // door mirror
+            param.wO = 310;
             param.hDmt = 180;
             param.fsbDm = 170;
             // front glass
-            param.wFgt2 = 250;
-            param.wFgb2 = 280;
+            param.wFgt2 = 220;
+            param.wFgb2 = 230;
             // side glass
             param.lSgt = 330;
             param.lSgm = 330;
             param.lSgb = 330;
-            param.wSgt = 260;
-            param.wSgb = 290;
+            param.wSgt = 230;
+            param.wSgb = 240;
             // rear glass
-            param.wRgt2 = 250;
-            param.wRgb2 = 280;
+            param.wRgt1 = 100;
+            param.wRgt2 = 220;
+            param.wRgb1 = 180;
+            param.wRgb2 = 230;
             // C pillar
             param.lCpt = 25;
             param.lCpb = 25;
+            // grill
+            param.hGt = 155;
             // head lamp
+            param.wHl = 40;
             param.hHl = 30;
             param.hHlt = 155;
             // rear lamp
+            param.wRl = 40;
+            param.wIRl = 160;
             param.hRl = 30;
             // tire
+            param.wT = 30;
+            param.wTr = 220;
             param.fsbFt = 70;
-            // grill
-            param.hGt = 160;
             break;
         case "K_ONEBOX":
             // body
-            param.wRf = 260;
+            param.hFt = 160;
+            param.wB = 250;
+            param.wRf = 240;
+            param.wR = 240;
             param.lB = 540;
-            param.wBb = 300;
+            param.wBb = 250;
             // roof
             param.hFgb = 170;
             param.hRf = 265;
             // road clearance
-            param.hRcGb = 40;
+            param.hRcFb = 40;
             param.hRcRb = 40;
             // front set back
             param.fsbF = 30;
             param.fsbRf = 150;
             param.fsbFgb = 100;
             // rear set back
-            param.rsbR = 30;
+            param.rsbR = 10;
             param.rsbRf = 10;
             param.rsbRgb = 2;
             // door mirror
+            param.wO = 310;
             param.hDmt = 180;
             param.fsbDm = 150;
             // front glass
-            param.wFgt2 = 250;
-            param.wFgb2 = 280;
+            param.wFgt2 = 220;
+            param.wFgb2 = 230;
             // side glass
             param.lSgt = 368;
             param.lSgm = 355;
             param.lSgb = 355;
-            param.wSgt = 260;
-            param.wSgb = 290;
+            param.wSgt = 230;
+            param.wSgb = 240;
             // rear glass
-            param.wRgt2 = 200;
-            param.wRgb2 = 200;
+            param.wRgt1 = 100;
+            param.wRgt2 = 220;
+            param.wRgb1 = 180;
+            param.wRgb2 = 230;
             // C pillar
             param.lCpt = 25;
             param.lCpb = 25;
+            // grill
+            param.hGt = 155;
             // head lamp
+            param.wHl = 40;
             param.hHl = 30;
             param.hHlt = 155;
             // rear lamp
+            param.wRl = 40;
+            param.wIRl = 160;
             param.hRl = 30;
             // tire
+            param.wT = 30;
+            param.wTr = 220;
             param.fsbFt = 70;
+            break;
+        case "K_OPEN":
+            // body
+            param.hFt = 110;
+            param.wB = 250;
+            param.hBm = 130;
+            param.lB = 540;
+            param.wBb = 240;
+            // roof
+            param.hFgb = 140;
+            param.hRf = 220;
+            param.wR = 210;
+            param.hRgb = 150;
+            param.hRt = 140;
+            // road clearance
+            param.hRcFb = 37;
+            // front set back
+            param.fsbF = 30;
+            param.fsbRf = 330;
+            param.fsbFgb = 200;
+            // rear set back
+            param.rsbR = 30;
+            param.rsbRf = 140;
+            param.rsbRgb = 80;
+            // door mirror
+            param.wO = 310;
+            param.hDmt = 145;
+            param.fsbDm = 270;
+            // front glass
+            param.wFgt1 = 120;
+            param.wFgt2 = 180;
+            param.wFgb2 = 220;
+            // side glass
+            param.lSgt = 140;
+            param.lSgm = 140;
+            param.lSgb = 130;
+            param.hSgm = 160;
+            param.wSgt = 190;
+            param.wSgb = 230;
+            // C pillar
+            param.lCpt = 20;
+            param.lCpb = 60;
+            // rear glass
+            param.wRgt2 = 150;
+            param.wRgb1 = 100;
+            param.wRgb2 = 180;
             // grill
-            param.hGt = 160;
+            param.wG = 140;
+            param.hGt = 105;
+            param.hG = 40;
+            // head lamp
+            param.wHl = 50;
+            param.hHlt = 105;
+            // rear lamp
+            param.wRl = 36;
+            param.wIRl = 160;
+            param.hRlt = 130;
+            // tire
+            param.wT = 30;
+            param.wTr = 220;
+            param.fsbFt = 70;
+            // number plate
+            param.hFnpt = 70;
+            param.hRnpt = 100;
             break;
     }
 
@@ -485,28 +602,6 @@ function drawTopView(c, p, v) {
     c.lineTo(ox + p.lB, oy + p.wR / 2);
     c.lineTo(ox + p.lB, oy - p.wR / 2);
     c.lineTo(ox + p.lB - p.rsbR, oy - p.wB / 2);
-    c.closePath();
-    c.fill();
-    c.stroke();
-
-    // right door mirror
-    c.fillStyle = 'white';
-    c.beginPath();
-    c.moveTo(ox + p.fsbDm, oy - p.wO / 2);
-    c.lineTo(ox + p.fsbDm, oy - p.wO / 2 + p.wDm);
-    c.lineTo(ox + p.fsbDm + p.lDm, oy - p.wO / 2 + p.wDm);
-    c.lineTo(ox + p.fsbDm + p.lDm, oy - p.wO / 2);
-    c.closePath();
-    c.fill();
-    c.stroke();
-
-    // left door mirror
-    c.fillStyle = 'white';
-    c.beginPath();
-    c.moveTo(ox + p.fsbDm, oy + p.wO / 2);
-    c.lineTo(ox + p.fsbDm, oy + p.wO / 2 - p.wDm);
-    c.lineTo(ox + p.fsbDm + p.lDm, oy + p.wO / 2 - p.wDm);
-    c.lineTo(ox + p.fsbDm + p.lDm, oy + p.wO / 2);
     c.closePath();
     c.fill();
     c.stroke();
@@ -567,6 +662,28 @@ function drawTopView(c, p, v) {
     c.fill();
     c.stroke();
 
+    // right door mirror
+    c.fillStyle = 'white';
+    c.beginPath();
+    c.moveTo(ox + p.fsbDm, oy - p.wO / 2);
+    c.lineTo(ox + p.fsbDm, oy - p.wO / 2 + p.wDm);
+    c.lineTo(ox + p.fsbDm + p.lDm, oy - p.wO / 2 + p.wDm);
+    c.lineTo(ox + p.fsbDm + p.lDm, oy - p.wO / 2);
+    c.closePath();
+    c.fill();
+    c.stroke();
+
+    // left door mirror
+    c.fillStyle = 'white';
+    c.beginPath();
+    c.moveTo(ox + p.fsbDm, oy + p.wO / 2);
+    c.lineTo(ox + p.fsbDm, oy + p.wO / 2 - p.wDm);
+    c.lineTo(ox + p.fsbDm + p.lDm, oy + p.wO / 2 - p.wDm);
+    c.lineTo(ox + p.fsbDm + p.lDm, oy + p.wO / 2);
+    c.closePath();
+    c.fill();
+    c.stroke();
+
     // 寸法表記
     drawDimensionLineVertical(c, ox - 30, oy - p.wB / 2, ox + p.fsbF, oy + p.wB / 2, ox - 25, `${v.width}mm`); // 全幅
 }
@@ -580,7 +697,7 @@ function drawSideView(c, p, v) {
     // body
     c.fillStyle = 'white';
     c.beginPath();
-    c.moveTo(ox + p.fsbGb, oy - p.hRcGb);
+    c.moveTo(ox + p.fsbGb, oy - p.hRcFb);
     c.lineTo(ox + p.fsbFt, oy - p.hRc);
     c.lineTo(ox + p.fsbFt + p.lWb, oy - p.hRc);
     c.lineTo(ox + p.lB, oy - p.hRcRb);
@@ -589,7 +706,7 @@ function drawSideView(c, p, v) {
     c.lineTo(ox + p.lB - p.rsbRf, oy - p.hRf);
     c.lineTo(ox + p.fsbRf, oy - p.hRf);
     c.lineTo(ox + p.fsbFgb, oy - p.hFgb);
-    c.lineTo(ox + p.fsbGt, oy - p.hGt);
+    c.lineTo(ox + p.fsbGt, oy - p.hFt);
     c.closePath();
     c.fill();
     c.stroke();
@@ -651,7 +768,7 @@ function drawSideView(c, p, v) {
     c.stroke();
 
     // rear lamp
-    c.fillStyle = "darkred";
+    c.fillStyle = "white";//"darkred";
     c.beginPath();
     c.moveTo(ox + p.lB, oy - p.hRlt);
     c.lineTo(ox + p.lB - p.rsbR, oy - p.hRlt);
@@ -670,7 +787,7 @@ function drawSideView(c, p, v) {
 
     // 寸法表記
     drawDimensionLineHorizontal(c, ox + p.fsbFt, oy, ox + p.fsbFt + p.lWb, oy + 30, oy + 25, `${v.wheelBase}mm`);    // ホイールベース
-    drawDimensionLineHorizontal(c, ox, oy - p.hRcGb, ox + p.lB, oy + 55, oy + 50, `${v.length}mm`);     // 全長
+    drawDimensionLineHorizontal(c, ox, oy - p.hRcFb, ox + p.lB, oy + 55, oy + 50, `${v.length}mm`);     // 全長
     drawDimensionLineVertical(c, ox + p.lB - p.rsbRf, oy - p.hRf, ox + p.lB + 55, oy, ox + p.lB + 45, `${v.height}mm`);      // 全高
     drawDimensionLineVertical(c, ox + p.fsbFt - 70, oy - p.hRc, ox + p.fsbFt, oy, ox + p.fsbFt - 65, `${v.minRoadClearance}mm`);      // 最低地上高
 
@@ -681,13 +798,13 @@ function drawSideView(c, p, v) {
     drawTireSideView(c, ox + p.fsbFt + p.lWb, oy - p.rT, p.rT, p.rW);
 }
 
-function drawFrontView(c, p) {
+function drawFrontView(c, p, v) {
     let ox = 1000;  // origin X
     let oy = 350;   // origin Y
     c.lineWidth = 1;
     c.strokeStyle = 'black';
 
-    drawOuterFrontView2(c, p, ox, oy);
+    drawOuterFrontView(c, p, ox, oy);
 
     // front glass
     c.fillStyle = 'lightgray';
@@ -743,15 +860,18 @@ function drawFrontView(c, p) {
     c.closePath();
     c.fill();
     c.stroke();
+
+    // 寸法表記
+    drawDimensionLineHorizontal(c, ox - p.wTr / 2, oy, ox + p.wTr / 2, oy + 30, oy + 25, `${v.treadFront}mm`);    // トレッド(前)
 }
 
-function drawRearView(c, p) {
+function drawRearView(c, p, v) {
     let ox = 1000;  // origin X
     let oy = 745;   // origin Y
     c.lineWidth = 1;
     c.strokeStyle = 'black';
 
-    drawOuterFrontView2(c, p, ox, oy);
+    drawOuterFrontView(c, p, ox, oy);
 
     // rear glass
     c.fillStyle = 'lightgray';
@@ -765,7 +885,7 @@ function drawRearView(c, p) {
     c.stroke();
 
     // right rear lamp
-    c.fillStyle = 'darkred';
+    c.fillStyle = 'white';//'darkred';
     c.beginPath();
     c.moveTo(ox - p.wIRl / 2, oy - p.hRlt);
     c.lineTo(ox - p.wIRl / 2 - p.wRl, oy - p.hRlt);
@@ -776,7 +896,7 @@ function drawRearView(c, p) {
     c.stroke();
 
     // left rear lamp
-    c.fillStyle = 'darkred';
+    c.fillStyle = 'white';//'darkred';
     c.beginPath();
     c.moveTo(ox + p.wIRl / 2, oy - p.hRlt);
     c.lineTo(ox + p.wIRl / 2 + p.wRl, oy - p.hRlt);
@@ -794,27 +914,17 @@ function drawRearView(c, p) {
     c.lineTo(ox + p.wNp / 2, oy - p.hRnpt);
     c.closePath();
     c.stroke();
+
+    // 寸法表記
+    drawDimensionLineHorizontal(c, ox - p.wTr / 2, oy, ox + p.wTr / 2, oy + 30, oy + 25, `${v.treadRear}mm`);    // トレッド(後)
 }
 
-function drawOuterFrontView2(c, p, ox, oy) {
+function drawOuterFrontView(c, p, ox, oy) {
     // right tire
     drawTireFrontView(c, ox - p.wTr / 2, oy - p.rT, p.rT, p.wT);
 
     // left tire
     drawTireFrontView(c, ox + p.wTr / 2, oy - p.rT, p.rT, p.wT);
-
-    // body
-    c.fillStyle = 'white';
-    c.beginPath();
-    c.moveTo(ox - p.wRf / 2, oy - p.hRf);
-    c.lineTo(ox - p.wB / 2, oy - p.hBm);
-    c.lineTo(ox - p.wBb / 2, oy - p.hRc);
-    c.lineTo(ox + p.wBb / 2, oy - p.hRc);
-    c.lineTo(ox + p.wB / 2, oy - p.hBm);
-    c.lineTo(ox + p.wRf / 2, oy - p.hRf);
-    c.closePath();
-    c.fill();
-    c.stroke();
 
     // right door mirror
     c.fillStyle = 'white';
@@ -834,6 +944,19 @@ function drawOuterFrontView2(c, p, ox, oy) {
     c.lineTo(ox + p.wO / 2, oy - p.hDmt - p.hDm);
     c.lineTo(ox + p.wO / 2 - p.wDm, oy - p.hDmt - p.hDm);
     c.lineTo(ox + p.wO / 2 - p.wDm, oy - p.hDmt);
+    c.closePath();
+    c.fill();
+    c.stroke();
+
+    // body
+    c.fillStyle = 'white';
+    c.beginPath();
+    c.moveTo(ox - p.wRf / 2, oy - p.hRf);
+    c.lineTo(ox - p.wB / 2, oy - p.hBm);
+    c.lineTo(ox - p.wBb / 2, oy - p.hRc);
+    c.lineTo(ox + p.wBb / 2, oy - p.hRc);
+    c.lineTo(ox + p.wB / 2, oy - p.hBm);
+    c.lineTo(ox + p.wRf / 2, oy - p.hRf);
     c.closePath();
     c.fill();
     c.stroke();
@@ -868,7 +991,7 @@ function drawTireFrontView(c, x, y, rad, wid) {
 }
 
 function drawTireSideView(c, x, y, tireRad, wheelRad) {
-    c.lineWidth = 2;
+    c.lineWidth = 1;
     c.beginPath();
     c.fillStyle = 'black';
     c.arc(x, y, tireRad, 0, 2 * Math.PI, true);
