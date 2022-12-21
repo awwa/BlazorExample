@@ -1,11 +1,16 @@
+using System.Globalization;
 using System.Reflection;
 using HogeBlazor.Client.Helpers;
 using HogeBlazor.Client.Repositories;
+using HogeBlazor.Client.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace HogeBlazor.Client.Pages;
-public partial class CarDetail
+public partial class CarDetail : IDisposable
 {
+    [Inject]
+    public HttpInterceptorService Interceptor { get; set; } = default!;
+
     public Car Car { get; set; } = new Car
     {
         Body = new Body(),
@@ -28,6 +33,7 @@ public partial class CarDetail
 
     protected async override Task OnInitializedAsync()
     {
+        Interceptor.RegisterEvent();
         Car = await GetCar(this.Id);
     }
 
@@ -35,4 +41,15 @@ public partial class CarDetail
     {
         return await CarRepo.GetCar(id);
     }
+
+    async void ButtonClicked()
+    {
+        //
+        //CultureInfo ci = new CultureInfo("es-MX", false);
+        //CultureInfo.CurrentCulture = ci;
+        Console.WriteLine(CultureInfo.CurrentCulture.ToString());
+        Car = await GetCar(this.Id);
+    }
+
+    public void Dispose() => Interceptor.DisposeEvent();
 }
