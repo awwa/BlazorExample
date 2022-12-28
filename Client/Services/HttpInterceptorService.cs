@@ -18,6 +18,7 @@ public class HttpInterceptorService
 
     public async Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e)
     {
+        Console.WriteLine("InterceptBeforeHttpAsync");
         // TODO nullチェックを改善したい
         if (e == null) throw new ArgumentNullException();
         if (e.Request == null) throw new ArgumentNullException();
