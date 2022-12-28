@@ -1,5 +1,6 @@
 @page "/cars/{Id:int}"
 @using Helpers
+@using HogeBlazor.Shared.Models.Db
 
 <div class="row">
     <h4>@Car.MakerName</h4>
@@ -43,96 +44,137 @@
             <RadzenPanel>
                 <h4>性能</h4>
                 <div class="spec-container">
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("MinTurningRadius"))</div>
-                        <div class="spec-value">@Car.Performance.MinTurningRadius</div>
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Performance", "MinTurningRadius"))"
+                        Value=@ToString(Car.Performance.MinTurningRadius) />
+                    @if (Car.PowerTrain != PowerTrain.BEV)
+                    {
+                        <EngineSpecItem Perf="@Car.Performance" />
+                    }
+                    else
+                    {
+                        <MotorSpecItem Perf="@Car.Performance" />
+                    }
+                </div>
+            </RadzenPanel>
+            <RadzenPanel>
+                <h4>エンジン</h4>
+                <div class="spec-container">
+                    <SingleItem Name="型式" Value=@Car.Engine.Code />
+                    <SingleItem Name="種類" Value=@Car.Engine.Type />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "CylinderNum"))"
+                        Value=@ToString(Car.Engine.CylinderNum) />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "CylinderLayout"))"
+                        Value=@Car.Engine.CylinderLayout />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "ValveSystem"))"
+                        Value=@Car.Engine.ValveSystem />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "Displacement"))"
+                        Value=@ToString(Car.Engine.Displacement) />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "Bore"))"
+                        Value=@ToString(Car.Engine.Bore) />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "Stroke"))"
+                        Value=@ToString(Car.Engine.Stroke) />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "CompressionRatio"))"
+                        Value=@ToString(Car.Engine.CompressionRatio) />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "MaxOutput"))"
+                        Value=@ToString(Car.Engine.MaxOutput) />
+                    <MultipleItem Name="最高出力回転数(rpm)" KVPairs=@MaxOutputRpm(Car, "Engine") />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "MaxTorque"))"
+                        Value=@ToString(Car.Engine.MaxTorque) />
+                    <MultipleItem Name="最大トルク回転数(rpm)" KVPairs=@MaxTorqueRpm(Car, "Engine") />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "MaxTorque"))"
+                        Value=@ToString(Car.Engine.MaxTorque) />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "FuelSystem"))"
+                        Value=@Car.Engine.FuelSystem />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "FuelType"))"
+                        Value=@Car.Engine.FuelType />
+                    <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "FuelTankCap"))"
+                        Value=@ToString(Car.Engine.FuelTankCap) />
+                </div>
+            </RadzenPanel>
+            @if (Car.MotorX != default)
+            {
+                <RadzenPanel>
+                    <h4>モーター1</h4>
+                    <div class="spec-container">
+                        <SingleItem Name="型式" Value=@Car.MotorX.Code />
+                        <SingleItem Name="種類" Value=@Car.MotorX.Type />
+                        <SingleItem Name="用途" Value=@Car.MotorX.Purpose />
+                        <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "RatedOutput"))"
+                        Value=@ToString(Car.MotorX.RatedOutput) />
+                        <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxOutput"))"
+                        Value=@ToString(Car.MotorX.MaxOutput) />
+                        <MultipleItem Name="最高出力回転数(rpm)" KVPairs=@MaxOutputRpm(Car, "MotorX") />
+                        <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxTorque"))"
+                        Value=@ToString(Car.MotorX.MaxTorque) />
+                        <MultipleItem Name="最高トルク回転数(rpm)" KVPairs=@MaxTorqueRpm(Car, "MotorX") />
                     </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("FcrWltc"))</div>
-                        <div class="spec-value">@Car.Performance.FcrWltc</div>
+                </RadzenPanel>
+            }
+            @if (Car.MotorY != default)
+            {
+                <RadzenPanel>
+                    <h4>モーター2</h4>
+                    <div class="spec-container">
+                        <SingleItem Name="型式" Value=@Car.MotorY.Code />
+                        <SingleItem Name="種類" Value=@Car.MotorY.Type />
+                        <SingleItem Name="用途" Value=@Car.MotorY.Purpose />
+                        <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "RatedOutput"))"
+                        Value=@ToString(Car.MotorY.RatedOutput) />
+                        <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxOutput"))"
+                        Value=@ToString(Car.MotorY.MaxOutput) />
+                        <MultipleItem Name="最高出力回転数(rpm)" KVPairs=@MaxOutputRpm(Car, "MotorY") />
+                        <SingleItem
+                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxTorque"))"
+                        Value=@ToString(Car.MotorY.MaxTorque) />
+                        <MultipleItem Name="最高トルク回転数(rpm)" KVPairs=@MaxTorqueRpm(Car, "MotorY") />
                     </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("FcrWltcL"))</div>
-                        <div class="spec-value">@Car.Performance.FcrWltcL</div>
+                </RadzenPanel>
+            }
+            @if (Car.Battery != default)
+            {
+                <RadzenPanel>
+                    <h4>バッテリー</h4>
+                    <div class="spec-container">
+                        <SingleItem Name="種類" Value=@Car.Battery.Type />
+                        <SingleItem Name="個数" Value=@ToString(Car.Battery.Quantity) />
+                        <SingleItem Name="電圧(V)" Value=@ToString(Car.Battery.Voltage) />
+                        <SingleItem Name="容量(Ah)" Value=@ToString(Car.Battery.Capacity) />
                     </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("FcrWltcM"))</div>
-                        <div class="spec-value">@Car.Performance.FcrWltcM</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("FcrWltcH"))</div>
-                        <div class="spec-value">@Car.Performance.FcrWltcH</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("FcrWltcExh"))</div>
-                        <div class="spec-value">@Car.Performance.FcrWltcExh</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("FcrJc08"))</div>
-                        <div class="spec-value">@Car.Performance.FcrJc08</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("MpcWltc"))</div>
-                        <div class="spec-value">@Car.Performance.MpcWltc</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("EcrWltc"))</div>
-                        <div class="spec-value">@Car.Performance.EcrWltc</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("EcrWltcL"))</div>
-                        <div class="spec-value">@Car.Performance.EcrWltcL</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("EcrWltcM"))</div>
-                        <div class="spec-value">@Car.Performance.EcrWltcM</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("EcrWltcH"))</div>
-                        <div class="spec-value">@Car.Performance.EcrWltcH</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("EcrWltcExh"))</div>
-                        <div class="spec-value">@Car.Performance.EcrWltcExh</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("EcrJc08"))</div>
-                        <div class="spec-value">@Car.Performance.EcrJc08</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Performance>
-                            ("MpcJc08"))</div>
-                        <div class="spec-value">@Car.Performance.MpcJc08</div>
-                    </div>
+                </RadzenPanel>
+            }
+            <RadzenPanel>
+                <h4>タイヤ</h4>
+                <div class="spec-container">
+                    <MultipleItem Name="幅(mm)" KVPairs=@SectionWidth(Car) />
+                    <MultipleItem Name="扁平率(%)" KVPairs=@AspectRatio(Car) />
+                    <MultipleItem Name="ホイール径(インチ)" KVPairs=@WheelDiameter(Car) />
+                </div>
+            </RadzenPanel>
+            <RadzenPanel>
+                <h4>トランスミッション</h4>
+                <div class="spec-container">
+                    <SingleItem Name="種類" Value=@Car.Transmission.Type />
+                    <MultipleItem Name="変速比" KVPairs=@GearRatios(Car) />
+                    <MultipleItem Name="減速比" KVPairs=@ReductionRaios(Car) />
                 </div>
             </RadzenPanel>
         </div>
@@ -247,357 +289,3 @@
         </div>
     </div>
 </div>
-
-<RadzenPanel>
-    <h4>エンジン</h4>
-    <div class="spec-container">
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("Code"))</div>
-    <div class="spec-value">@Car.Engine.Code</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("Type"))</div>
-    <div class="spec-value">@Car.Engine.Type</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("CylinderNum"))</div>
-    <div class="spec-value">@Car.Engine.CylinderNum</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("CylinderLayout"))</div>
-    <div class="spec-value">@Car.Engine.CylinderLayout</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("ValveSystem"))</div>
-    <div class="spec-value">@Car.Engine.ValveSystem</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("Displacement"))</div>
-    <div class="spec-value">@Car.Engine.Displacement</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("Bore"))</div>
-    <div class="spec-value">@Car.Engine.Bore</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("Stroke"))</div>
-    <div class="spec-value">@Car.Engine.Stroke</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("CompressionRatio"))</div>
-    <div class="spec-value">@Car.Engine.CompressionRatio</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("MaxOutput"))</div>
-    <div class="spec-value">@Car.Engine.MaxOutput</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("MaxOutputLowerRpm"))</div>
-    <div class="spec-value">@Car.Engine.MaxOutputLowerRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("MaxOutputUpperRpm"))</div>
-    <div class="spec-value">@Car.Engine.MaxOutputUpperRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("MaxTorque"))</div>
-    <div class="spec-value">@Car.Engine.MaxTorque</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("MaxTorqueLowerRpm"))</div>
-    <div class="spec-value">@Car.Engine.MaxTorqueLowerRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("MaxTorqueUpperRpm"))</div>
-    <div class="spec-value">@Car.Engine.MaxTorqueUpperRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("FuelSystem"))</div>
-    <div class="spec-value">@Car.Engine.FuelSystem</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("FuelType"))</div>
-    <div class="spec-value">@Car.Engine.FuelType</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Engine>
-    ("FuelTankCap"))</div>
-    <div class="spec-value">@Car.Engine.FuelTankCap</div>
-    </div>
-    </div>
-    </RadzenPanel>
-    <RadzenPanel>
-    <h4>電動機X</h4>
-    <div class="spec-container">
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("Code"))</div>
-    <div class="spec-value">@Car.MotorX.Code</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("Type"))</div>
-    <div class="spec-value">@Car.MotorX.Type</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("Purpose"))</div>
-    <div class="spec-value">@Car.MotorX.Purpose</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("RatedOutput"))</div>
-    <div class="spec-value">@Car.MotorX.RatedOutput</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxOutput"))</div>
-    <div class="spec-value">@Car.MotorX.MaxOutput</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxOutputLowerRpm"))</div>
-    <div class="spec-value">@Car.MotorX.MaxOutputLowerRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxOutputUpperRpm"))</div>
-    <div class="spec-value">@Car.MotorX.MaxOutputUpperRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxTorque"))</div>
-    <div class="spec-value">@Car.MotorX.MaxTorque</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxTorqueLowerRpm"))</div>
-    <div class="spec-value">@Car.MotorX.MaxTorqueLowerRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxTorqueUpperRpm"))</div>
-    <div class="spec-value">@Car.MotorX.MaxTorqueUpperRpm</div>
-    </div>
-    </div>
-    </RadzenPanel>
-    <RadzenPanel>
-    <h4>電動機Y</h4>
-    <div class="spec-container">
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("Code"))</div>
-    <div class="spec-value">@Car.MotorY.Code</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("Type"))</div>
-    <div class="spec-value">@Car.MotorY.Type</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("Purpose"))</div>
-    <div class="spec-value">@Car.MotorY.Purpose</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("RatedOutput"))</div>
-    <div class="spec-value">@Car.MotorY.RatedOutput</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxOutput"))</div>
-    <div class="spec-value">@Car.MotorY.MaxOutput</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxOutputLowerRpm"))</div>
-    <div class="spec-value">@Car.MotorY.MaxOutputLowerRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxOutputUpperRpm"))</div>
-    <div class="spec-value">@Car.MotorY.MaxOutputUpperRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxTorque"))</div>
-    <div class="spec-value">@Car.MotorY.MaxTorque</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxTorqueLowerRpm"))</div>
-    <div class="spec-value">@Car.MotorY.MaxTorqueLowerRpm</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Motor>
-    ("MaxTorqueUpperRpm"))</div>
-    <div class="spec-value">@Car.MotorY.MaxTorqueUpperRpm</div>
-    </div>
-    </div>
-    </RadzenPanel>
-    <RadzenPanel>
-    <h4>バッテリー</h4>
-    <div class="spec-container">
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Battery>
-    ("Type"))</div>
-    <div class="spec-value">@Car.Battery.Type</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Battery>
-    ("Quantity"))</div>
-    <div class="spec-value">@Car.Battery.Quantity</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Battery>
-    ("Voltage"))</div>
-    <div class="spec-value">@Car.Battery.Voltage</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Battery>
-    ("Capacity"))</div>
-    <div class="spec-value">@Car.Battery.Capacity</div>
-    </div>
-    </div>
-    </RadzenPanel>
-    <RadzenPanel>
-    <h4>前輪</h4>
-    <div class="spec-container">
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Tire>
-    ("SectionWidth"))</div>
-    <div class="spec-value">@Car.TireFront.SectionWidth</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Tire>
-    ("AspectRatio"))</div>
-    <div class="spec-value">@Car.TireFront.AspectRatio</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Tire>
-    ("WheelDiameter"))</div>
-    <div class="spec-value">@Car.TireFront.WheelDiameter</div>
-    </div>
-    </div>
-    </RadzenPanel>
-    <RadzenPanel>
-    <h4>後輪</h4>
-    <div class="spec-container">
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Tire>
-    ("SectionWidth"))</div>
-    <div class="spec-value">@Car.TireRear.SectionWidth</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Tire>
-    ("AspectRatio"))</div>
-    <div class="spec-value">@Car.TireRear.AspectRatio</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Tire>
-    ("WheelDiameter"))</div>
-    <div class="spec-value">@Car.TireRear.WheelDiameter</div>
-    </div>
-    </div>
-    </RadzenPanel>
-    <RadzenPanel>
-    <h4>トランスミッション</h4>
-    <div class="spec-container">
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Transmission>
-    ("Type"))</div>
-    <div class="spec-value">@Car.Transmission.Type</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Transmission>
-    ("GearRatiosFront"))</div>
-    <div class="spec-value">@Car.Transmission.GearRatiosFront</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Transmission>
-    ("GearRatioRear"))</div>
-    <div class="spec-value">@Car.Transmission.GearRatioRear</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Transmission>
-    ("ReductionRatioFront"))</div>
-    <div class="spec-value">@Car.Transmission.ReductionRatioFront</div>
-    </div>
-    <div class="spec-item">
-    <div class="spec-title">
-    @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Transmission>
-    ("ReductionRatioRear"))</div>
-    <div class="spec-value">@Car.Transmission.ReductionRatioRear</div>
-    </div>
-    </div>
-    </RadzenPanel>

@@ -200,6 +200,110 @@ public partial class CarDetail// : IDisposable
         };
     }
 
+    public string ToString(float? value)
+    {
+        return String.Format("{0}", value);
+    }
+
+    public List<KeyValuePair<string, string>> MaxOutputRpm(Helpers.Car car, string target)
+    {
+        switch (target)
+        {
+            case "Engine":
+                return new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("高", ToString(car.Engine.MaxOutputUpperRpm)),
+                    new KeyValuePair<string, string>("低", ToString(car.Engine.MaxOutputLowerRpm)),
+                };
+            case "MotorX":
+                return new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("高", ToString(car.MotorX.MaxOutputUpperRpm)),
+                    new KeyValuePair<string, string>("低", ToString(car.MotorX.MaxOutputLowerRpm)),
+                };
+            case "MotorY":
+                return new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("高", ToString(car.MotorY.MaxOutputUpperRpm)),
+                    new KeyValuePair<string, string>("低", ToString(car.MotorY.MaxOutputLowerRpm)),
+                };
+            default:
+                throw new NotImplementedException();
+        }
+    }
+    public List<KeyValuePair<string, string>> MaxTorqueRpm(Helpers.Car car, string target)
+    {
+        switch (target)
+        {
+            case "Engine":
+                return new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("高", ToString(car.Engine.MaxTorqueUpperRpm)),
+                    new KeyValuePair<string, string>("低", ToString(car.Engine.MaxTorqueLowerRpm)),
+                };
+            case "MotorX":
+                return new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("高", ToString(car.MotorX.MaxTorqueUpperRpm)),
+                    new KeyValuePair<string, string>("低", ToString(car.MotorX.MaxTorqueLowerRpm)),
+                };
+            case "MotorY":
+                return new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("高", ToString(car.MotorY.MaxTorqueUpperRpm)),
+                    new KeyValuePair<string, string>("低", ToString(car.MotorY.MaxTorqueLowerRpm)),
+                };
+            default:
+                throw new NotImplementedException();
+        }
+    }
+
+    public List<KeyValuePair<string, string>> SectionWidth(Helpers.Car car)
+    {
+        return new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("前", ToString(car.TireFront.SectionWidth)),
+            new KeyValuePair<string, string>("後", ToString(car.TireRear.SectionWidth)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> AspectRatio(Helpers.Car car)
+    {
+        return new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("前", ToString(car.TireFront.AspectRatio)),
+            new KeyValuePair<string, string>("後", ToString(car.TireRear.AspectRatio)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> WheelDiameter(Helpers.Car car)
+    {
+        return new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("前", ToString(car.TireFront.WheelDiameter)),
+            new KeyValuePair<string, string>("後", ToString(car.TireRear.WheelDiameter)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> GearRatios(Helpers.Car car)
+    {
+        var kvs = new List<KeyValuePair<string, string>>();
+        for (int i = 0; i < Car.Transmission.GearRatiosFront.Count; i++)
+        {
+            kvs.Add(new KeyValuePair<string, string>($"第{i}速", ToString(Car.Transmission.GearRatiosFront.ElementAt<float>(i))));
+        }
+        kvs.Add(new KeyValuePair<string, string>($"後退", ToString(Car.Transmission.GearRatioRear)));
+        return kvs;
+    }
+
+    public List<KeyValuePair<string, string>> ReductionRaios(Helpers.Car car)
+    {
+        return new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>($"前", ToString(Car.Transmission.ReductionRatioFront)),
+            new KeyValuePair<string, string>($"後", ToString(Car.Transmission.ReductionRatioRear)),
+        };
+    }
     // private async Task<Helpers.Car> GetCar(int id)
     // {
     //     return await CarRepo.GetCar(id);
