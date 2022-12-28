@@ -7,5 +7,5 @@ public partial class MultipleItem
     public string Name { get; set; } = string.Empty;
 
     [Parameter]
-    public List<KeyValuePair<string, string>> VVValues { get; set; } = default!;
+    public List<KeyValuePair<string, string>> KVPairs { get; set; } = default!;
 }
