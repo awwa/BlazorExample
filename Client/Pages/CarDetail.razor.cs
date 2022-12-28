@@ -20,6 +20,13 @@ public partial class CarDetail
         Transmission = new Transmission(),
     };
 
+    public List<KeyValuePair<string, string>> TestValues { get; set; } = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("A", "a"),
+        new KeyValuePair<string, string>("B", "b"),
+        new KeyValuePair<string, string>("C", "c"),
+    };
+
     [Parameter]
     public int Id { get; set; }
 

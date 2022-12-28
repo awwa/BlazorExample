@@ -1,0 +1,28 @@
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px 8px 16px;
+    width: 332px;
+    gap: 8px;
+    border-left: 4px solid #8C82FF;
+}
+
+.spec-title {
+    margin-bottom: 0px;
+}
+
+.spec-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.spec-sub-title {
+    flex-grow: 1;
+    padding-left: 16px;
+}
+
+.spec-value {
+    flex-grow: 3;
+    font-weight: bold;
+    text-align: right;
+}
