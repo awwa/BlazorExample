@@ -28,8 +28,8 @@ public partial class EngineSpecItem
     public string FcrWltcH { get; set; } = string.Empty;
 
     [Parameter]
-    public string MpcWltcTitle { get; set; } = string.Empty;
+    public string FcrJc08Title { get; set; } = string.Empty;
 
     [Parameter]
-    public string MpcWltc { get; set; } = string.Empty;
+    public string FcrJc08 { get; set; } = string.Empty;
 }
