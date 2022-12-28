@@ -5,7 +5,6 @@
     <h4>@Car.MakerName</h4>
     <h1>@Car.ModelName</h1>
 </div>
-<RadzenButton Click="@ButtonClicked" Text="hoge"></RadzenButton>
 <div class="row">
     <!-- Car -->
     <!-- 左列 -->
@@ -13,7 +12,12 @@
         <RadzenPanel>
             <div class="spec-container">
                 <SingleItem Name="ほげ" Value="ふが" />
-                <MultipleItem Name="ふが" VVValues=@TestValues />
+                <MultipleItem Name="ふが" KVPairs=@TestValues />
+                <EngineSpecItem FcrWltcTitle="燃料消費率WLTCモード(km/L)" FcrWltc="13" FcrWltcLTitle="市街地モード(WLTC-L)"
+                    FcrWltcL="10.2" FcrWltcMTitle="郊外モード(WLTC-M)" FcrWltcM="13.4" FcrWltcHTitle="高速道路(WLTC-H)"
+                    FcrWltcH="14.7" MpcWltcTitle="燃料消費率JC08モード(km/L)" MpcWltc="14.2" />
+
+
                 <div class="spec-item">
                     <div class="spec-title">
                         @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Car>
