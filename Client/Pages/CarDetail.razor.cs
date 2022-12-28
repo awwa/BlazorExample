@@ -32,6 +32,15 @@ public partial class CarDetail : IDisposable
         new KeyValuePair<string, string>("C", "c"),
     };
 
+    public List<KeyValuePair<string, string>> Numbers { get; set; } = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("全長", "4545"),
+        new KeyValuePair<string, string>("全幅", "1840"),
+        new KeyValuePair<string, string>("全高", "1690"),
+        new KeyValuePair<string, string>("ホイールベース", "2700"),
+        new KeyValuePair<string, string>("最低地上高", "210"),
+    };
+
     [Parameter]
     public int Id { get; set; }
 
