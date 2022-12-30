@@ -304,6 +304,41 @@ public partial class CarDetail// : IDisposable
             new KeyValuePair<string, string>($"後", ToString(Car.Transmission.ReductionRatioRear)),
         };
     }
+
+    public List<KeyValuePair<string, string>> OuterBody(Helpers.Car car)
+    {
+        return new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>($"全長", ToString(Car.Body.Length)),
+            new KeyValuePair<string, string>($"全幅", ToString(Car.Body.Width)),
+            new KeyValuePair<string, string>($"全高", ToString(Car.Body.Height)),
+            new KeyValuePair<string, string>($"トレッド前", ToString(Car.Body.TreadFront)),
+            new KeyValuePair<string, string>($"トレッド後", ToString(Car.Body.TreadRear)),
+            new KeyValuePair<string, string>($"最低地上高", ToString(Car.Body.MinRoadClearance)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> InteriorBody(Helpers.Car car)
+    {
+        return new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>($"室内長", ToString(Car.Interior.Length)),
+            new KeyValuePair<string, string>($"室内幅", ToString(Car.Interior.Width)),
+            new KeyValuePair<string, string>($"室内高", ToString(Car.Interior.Height)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> OtherBody(Helpers.Car car)
+    {
+        return new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>($"車両重量(kg)", ToString(Car.Body.Weight)),
+            new KeyValuePair<string, string>($"ドア数", ToString(Car.Body.DoorNum)),
+            new KeyValuePair<string, string>($"ラゲッジルーム容量(L)", ToString(Car.Interior.LuggageCap)),
+            new KeyValuePair<string, string>($"乗車定員(人)", ToString(Car.Interior.RidingCap)),
+        };
+    }
+
     // private async Task<Helpers.Car> GetCar(int id)
     // {
     //     return await CarRepo.GetCar(id);

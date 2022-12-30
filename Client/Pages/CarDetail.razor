@@ -185,106 +185,19 @@
             <RadzenPanel>
                 <img src="@Car.ImageUrl" width="100%" />
             </RadzenPanel>
-            @* <CarSize /> *@
+            <!-- 三面図 -->
+            <CarFigure Car=@Car />
             <RadzenPanel>
-                <h4>ボディ</h4>
-                <div class="spec-container">
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("Type"))</div>
-                        <div class="spec-value">@Car.Body.Type</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("Length"))</div>
-                        <div class="spec-value">@Car.Body.Length</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("Width"))</div>
-                        <div class="spec-value">@Car.Body.Width</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("Height"))</div>
-                        <div class="spec-value">@Car.Body.Height</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("WheelBase"))</div>
-                        <div class="spec-value">@Car.Body.WheelBase</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("TreadFront"))</div>
-                        <div class="spec-value">@Car.Body.TreadFront</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("TreadRear"))</div>
-                        <div class="spec-value">@Car.Body.TreadRear</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("MinRoadClearance"))</div>
-                        <div class="spec-value">@Car.Body.MinRoadClearance</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("Weight"))</div>
-                        <div class="spec-value">@Car.Body.Weight</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Body>
-                            ("DoorNum"))</div>
-                        <div class="spec-value">@Car.Body.DoorNum</div>
-                    </div>
-                </div>
+                <h4>外寸(mm)</h4>
+                <NumbersItem KVPairs=@OuterBody(Car) />
             </RadzenPanel>
             <RadzenPanel>
-                <h4>内装</h4>
-                <div class="spec-container">
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Interior>
-                            ("Length"))</div>
-                        <div class="spec-value">@Car.Interior.Length</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Interior>
-                            ("Width"))</div>
-                        <div class="spec-value">@Car.Interior.Width</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Interior>
-                            ("Height"))</div>
-                        <div class="spec-value">@Car.Interior.Height</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Interior>
-                            ("LuggageCap"))</div>
-                        <div class="spec-value">@Car.Interior.LuggageCap</div>
-                    </div>
-                    <div class="spec-item">
-                        <div class="spec-title">
-                            @(CommentHelper.GetCommentAttributeOnProperty<HogeBlazor.Shared.Models.Db.Interior>
-                            ("RidingCap"))</div>
-                        <div class="spec-value">@Car.Interior.RidingCap</div>
-                    </div>
-                </div>
+                <h4>内寸(mm)</h4>
+                <NumbersItem KVPairs=@InteriorBody(Car) />
+            </RadzenPanel>
+            <RadzenPanel>
+                <h4>その他</h4>
+                <NumbersItem KVPairs=@OtherBody(Car) />
             </RadzenPanel>
         </div>
     </div>
