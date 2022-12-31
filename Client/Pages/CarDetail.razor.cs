@@ -200,9 +200,9 @@ public partial class CarDetail// : IDisposable
         };
     }
 
-    public string ToString(float? value)
+    public string ToString(float? value, string format = "{0:#,0}")
     {
-        return String.Format("{0}", value);
+        return String.Format(format, value);
     }
 
     public List<KeyValuePair<string, string>> MaxOutputRpm(Helpers.Car car, string target)
@@ -290,9 +290,9 @@ public partial class CarDetail// : IDisposable
         var kvs = new List<KeyValuePair<string, string>>();
         for (int i = 0; i < Car.Transmission.GearRatiosFront.Count; i++)
         {
-            kvs.Add(new KeyValuePair<string, string>($"第{i}速", ToString(Car.Transmission.GearRatiosFront.ElementAt<float>(i))));
+            kvs.Add(new KeyValuePair<string, string>($"第{i}速", ToString(Car.Transmission.GearRatiosFront.ElementAt<float>(i), "{0:F3}")));
         }
-        kvs.Add(new KeyValuePair<string, string>($"後退", ToString(Car.Transmission.GearRatioRear)));
+        kvs.Add(new KeyValuePair<string, string>($"後退", ToString(Car.Transmission.GearRatioRear, "{0:F3}")));
         return kvs;
     }
 
@@ -300,8 +300,8 @@ public partial class CarDetail// : IDisposable
     {
         return new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>($"前", ToString(Car.Transmission.ReductionRatioFront)),
-            new KeyValuePair<string, string>($"後", ToString(Car.Transmission.ReductionRatioRear)),
+            new KeyValuePair<string, string>($"前", ToString(Car.Transmission.ReductionRatioFront, "{0:F3}")),
+            new KeyValuePair<string, string>($"後", ToString(Car.Transmission.ReductionRatioRear, "{0:F3}")),
         };
     }
 
@@ -332,10 +332,10 @@ public partial class CarDetail// : IDisposable
     {
         return new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>($"車両重量(kg)", ToString(Car.Body.Weight)),
-            new KeyValuePair<string, string>($"ドア数", ToString(Car.Body.DoorNum)),
-            new KeyValuePair<string, string>($"ラゲッジルーム容量(L)", ToString(Car.Interior.LuggageCap)),
-            new KeyValuePair<string, string>($"乗車定員(人)", ToString(Car.Interior.RidingCap)),
+            new KeyValuePair<string, string>($"車両重量(kg)", ToString(Car.Body.Weight, "{0}")),
+            new KeyValuePair<string, string>($"ドア数", ToString(Car.Body.DoorNum, "{0}")),
+            new KeyValuePair<string, string>($"ラゲッジルーム容量(L)", ToString(Car.Interior.LuggageCap, "{0}")),
+            new KeyValuePair<string, string>($"乗車定員(人)", ToString(Car.Interior.RidingCap, "{0}")),
         };
     }
 
