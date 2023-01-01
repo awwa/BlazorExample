@@ -7,13 +7,13 @@
     <h1>@Car.ModelName</h1>
     <div class="row pr-0">
         <!-- 左列 -->
-        <div class="col-md-7 pr-0">
+        <div class="col-md-9 pr-0">
             <!-- 基本情報 -->
             <RadzenPanel>
                 <h4>基本情報</h4>
                 <div class="spec-container">
-                    <SingleItem Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Body", "Type"))"
-                        Value=@Car.Body.Type />
+                    <SingleItem Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Body",
+                        "Type"))" Value=@Car.Body.Type />
                     <SingleItem
                         Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "DriveSystem"))"
                         Value=@Car.DriveSystem />
@@ -26,8 +26,8 @@
                     <SingleItem
                         Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "GradeName"))"
                         Value=@Car.GradeName />
-                    <SingleItem Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "Price"))"
-                        Value=@FormatAsPrice(Car.Price) />
+                    <SingleItem Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car",
+                        "Price"))" Value=@ToPrice(Car.Price) />
                     <MultipleItem Name="モデルチェンジ" KVPairs=@ModelChangeDates(Car) />
                 </div>
                 <div class="spec-container">
@@ -41,6 +41,7 @@
                         Values=@Car.FuelEfficiency />
                 </div>
             </RadzenPanel>
+            <!-- 性能 -->
             <RadzenPanel>
                 <h4>性能</h4>
                 <div class="spec-container">
@@ -57,6 +58,7 @@
                     }
                 </div>
             </RadzenPanel>
+            <!-- エンジン -->
             <RadzenPanel>
                 <h4>エンジン</h4>
                 <div class="spec-container">
@@ -105,7 +107,8 @@
                         Value=@ToString(Car.Engine.FuelTankCap) />
                 </div>
             </RadzenPanel>
-            @if (Car.MotorX != default)
+            <!-- モーター1 -->
+            @if (Car != null && Car.MotorX != default)
             {
                 <RadzenPanel>
                     <h4>モーター1</h4>
@@ -127,7 +130,8 @@
                     </div>
                 </RadzenPanel>
             }
-            @if (Car.MotorY != default)
+            <!-- モーター2 -->
+            @if (Car != null && Car.MotorY != default)
             {
                 <RadzenPanel>
                     <h4>モーター2</h4>
@@ -149,7 +153,8 @@
                     </div>
                 </RadzenPanel>
             }
-            @if (Car.Battery != default)
+            <!-- バッテリー -->
+            @if (Car != null && Car.Battery != default)
             {
                 <RadzenPanel>
                     <h4>バッテリー</h4>
@@ -161,6 +166,7 @@
                     </div>
                 </RadzenPanel>
             }
+            <!-- タイヤ -->
             <RadzenPanel>
                 <h4>タイヤ</h4>
                 <div class="spec-container">
@@ -169,6 +175,7 @@
                     <MultipleItem Name="ホイール径(インチ)" KVPairs=@WheelDiameter(Car) />
                 </div>
             </RadzenPanel>
+            <!-- トランスミッション -->
             <RadzenPanel>
                 <h4>トランスミッション</h4>
                 <div class="spec-container">
@@ -180,7 +187,7 @@
         </div>
 
         <!-- 右列 -->
-        <div class="col-md-5 px-0">
+        <div class="col-md-3 px-0">
             <!-- 画像 -->
             <RadzenPanel class="px-0 py-0">
                 <img src="@Car.ImageUrl" width="100%" />
