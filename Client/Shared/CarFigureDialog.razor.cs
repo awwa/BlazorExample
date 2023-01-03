@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 using Radzen;
 
 namespace HogeBlazor.Client.Shared;
-public partial class CarFigure
+public partial class CarFigureDialog
 {
     [Parameter]
     public CarDisp Car { get; set; } = default!;
@@ -25,21 +25,6 @@ public partial class CarFigure
             Car.OuterBody.TreadFront,
             Car.OuterBody.TreadRear,
             Car.OuterBody.MinRoadClearance
-        );
-    }
-
-    public async Task ShowDialog()
-    {
-        await DialogService.OpenAsync<CarFigureDialog>(
-            "",
-            new Dictionary<string, object>() { { "Car", Car } },
-            new DialogOptions()
-            {
-                ShowTitle = false,
-                CloseDialogOnEsc = true,
-                Resizable = true,
-                CloseDialogOnOverlayClick = true
-            }
         );
     }
 }

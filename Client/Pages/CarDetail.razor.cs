@@ -2,6 +2,9 @@ using HogeBlazor.Client.Repositories;
 using HogeBlazor.Client.Models;
 using Microsoft.AspNetCore.Components;
 using HogeBlazor.Client.Helpers;
+using HogeBlazor.Shared.Models.Db;
+using Radzen;
+using HogeBlazor.Client.Shared;
 
 namespace HogeBlazor.Client.Pages;
 public partial class CarDetail// : IDisposable
@@ -19,10 +22,18 @@ public partial class CarDetail// : IDisposable
 
     protected async override Task OnInitializedAsync()
     {
-        Console.WriteLine($"OnInitializedAsync()1 {Car}");
         // Interceptor.RegisterEvent();
         Car = await GetCar(this.Id);
-        Console.WriteLine("OnInitializedAsync()2");
+    }
+
+    public string PowerTrainType(string? powerTrain)
+    {
+        return CommentHelper.GetCommentAttributeOnField<PowerTrain>(powerTrain);
+    }
+
+    public string FuelType(string? fuelType)
+    {
+        return CommentHelper.GetCommentAttributeOnField<FuelType>(fuelType);
     }
 
     public string ToPrice(int? price)
@@ -77,7 +88,7 @@ public partial class CarDetail// : IDisposable
         return new List<KeyValuePair<string, string>>
         {
             new KeyValuePair<string, string>(HogeBlazor.Client.Models.MaxTorqueRpm.DisplayName("Upper"),ToString(rpm.Upper)),
-            new KeyValuePair<string, string>(HogeBlazor.Client.Models.MaxTorqueRpm.DisplayName( "Lower"),ToString(rpm.Lower)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.MaxTorqueRpm.DisplayName("Lower"),ToString(rpm.Lower)),
         };
     }
 
@@ -85,7 +96,7 @@ public partial class CarDetail// : IDisposable
     {
         return new List<KeyValuePair<string, string>>
         {
-            new KeyValuePair<string, string>(HogeBlazor.Client.Models.SectionWidth.DisplayName( "Front"),ToString(car.SectionWidth != null ? car.SectionWidth.Front : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.SectionWidth.DisplayName("Front"),ToString(car.SectionWidth != null ? car.SectionWidth.Front : null)),
             new KeyValuePair<string, string>(HogeBlazor.Client.Models.SectionWidth.DisplayName("Rear"),ToString(car.SectionWidth != null ? car.SectionWidth.Rear : null)),
         };
     }

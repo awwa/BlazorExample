@@ -40,10 +40,8 @@ public class ModelHelper
         {
             // 各プロパティの値がnullかチェック
             var v = prop.GetValue(obj);
-            Console.WriteLine(prop.Name);
             if (v is not null && v.ToString() != string.Empty)
             {
-                Console.WriteLine(v.ToString());
                 // nullでない場合、名前空間がnullの場合は実装ミス
                 if (v.GetType().Namespace == null) throw new NotImplementedException();
                 // nullでない場合、名前空間にHogeBlazorを含んでいなかったら有効な値があると判断

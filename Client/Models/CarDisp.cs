@@ -256,8 +256,12 @@ public class CarDisp
         {
             for (var i = 0; i < car.Transmission.GearRatiosFront.Count(); i++)
             {
-                Transmission.GearRatios.Add(new KeyValuePair<string, float?>($"第{i}速", car.Transmission.GearRatiosFront.ElementAt(i)));
+                Transmission.GearRatios.Add(new KeyValuePair<string, float?>($"第{i + 1}速", car.Transmission.GearRatiosFront.ElementAt(i)));
             }
+        }
+        if (car.Transmission.GearRatioRear != null)
+        {
+            Transmission.GearRatios.Add(new KeyValuePair<string, float?>($"後退", car.Transmission.GearRatioRear));
         }
         Transmission.ReductionRatio = new ReductionRatio()
         {
@@ -659,7 +663,7 @@ public class Transmission
     public string? TransmissionType { get; set; }
 
     [DisplayName("変速比")]
-    public List<KeyValuePair<string, float?>> GearRatios { get; set; } = new List<KeyValuePair<string, float?>>();//default!;
+    public List<KeyValuePair<string, float?>> GearRatios { get; set; } = new List<KeyValuePair<string, float?>>();
 
     [DisplayName("減速比")]
     public ReductionRatio ReductionRatio { get; set; } = new ReductionRatio();

@@ -1,7 +1,5 @@
 @page "/cars/{Id:int}"
-@* @using Helpers *@
 @using HogeBlazor.Client.Models
-@* @using HogeBlazor.Shared.Models.Db *@
 
 <div class="row">
     <h4>@Car.MakerName</h4>
@@ -15,7 +13,7 @@
                 <div class="spec-container">
                     <SingleItem Name="@(CarDisp.DisplayName("BodyType"))" Value=@Car.BodyType />
                     <SingleItem Name="@(CarDisp.DisplayName("DriveSystem"))" Value=@Car.DriveSystem />
-                    <SingleItem Name="@(CarDisp.DisplayName("PowerTrain"))" Value=@Car.PowerTrain />
+                    <SingleItem Name="@(CarDisp.DisplayName("PowerTrain"))" Value=@PowerTrainType(Car.PowerTrain) />
                     <SingleItem Name="@(CarDisp.DisplayName("ModelCode"))" Value=@Car.ModelCode />
                     <SingleItem Name="@(CarDisp.DisplayName("GradeName"))" Value=@Car.GradeName />
                     <SingleItem Name="@(CarDisp.DisplayName("Price"))" Value=@ToPrice(Car.Price) />
@@ -66,7 +64,7 @@
                         KVPairs=@MaxTorqueRpm(Car.Engine.MaxTorqueRpm) />
                     <SingleItem Name="@(Engine.DisplayName("MaxTorque"))" Value=@ToString(Car.Engine.MaxTorque) />
                     <SingleItem Name="@(Engine.DisplayName("FuelSystem"))" Value=@Car.Engine.FuelSystem />
-                    <SingleItem Name="@(Engine.DisplayName( "FuelType"))" Value=@Car.Engine.FuelType />
+                    <SingleItem Name="@(Engine.DisplayName( "FuelType"))" Value=@FuelType(Car.Engine.FuelType) />
                     <SingleItem Name="@(Engine.DisplayName("FuelTankCap"))" Value=@ToString(Car.Engine.FuelTankCap) />
                 </div>
             </RadzenPanel>
@@ -137,7 +135,9 @@
         <div class="col-md-3 px-0">
             <!-- 画像 -->
             <RadzenPanel class="px-0 py-0">
-                <img src="@Car.ImageUrl" width="100%" />
+                <a href="@Car.ImageUrl" target="_blank">
+                    <img src="@Car.ImageUrl" width="100%" />
+                </a>
             </RadzenPanel>
             <!-- 三面図 -->
             <CarFigure Car=@Car />
