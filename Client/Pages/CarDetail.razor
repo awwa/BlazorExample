@@ -1,6 +1,7 @@
 @page "/cars/{Id:int}"
-@using Helpers
-@using HogeBlazor.Shared.Models.Db
+@* @using Helpers *@
+@using HogeBlazor.Client.Models
+@* @using HogeBlazor.Shared.Models.Db *@
 
 <div class="row">
     <h4>@Car.MakerName</h4>
@@ -12,176 +13,122 @@
             <RadzenPanel>
                 <h4>基本情報</h4>
                 <div class="spec-container">
-                    <SingleItem Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Body",
-                        "Type"))" Value=@Car.Body.Type />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "DriveSystem"))"
-                        Value=@Car.DriveSystem />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "PowerTrain"))"
-                        Value=@Car.PowerTrain />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "ModelCode"))"
-                        Value=@Car.ModelCode />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "GradeName"))"
-                        Value=@Car.GradeName />
-                    <SingleItem Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car",
-                        "Price"))" Value=@ToPrice(Car.Price) />
-                    <MultipleItem Name="モデルチェンジ" KVPairs=@ModelChangeDates(Car) />
+                    <SingleItem Name="@(CarDisp.DisplayName("BodyType"))" Value=@Car.BodyType />
+                    <SingleItem Name="@(CarDisp.DisplayName("DriveSystem"))" Value=@Car.DriveSystem />
+                    <SingleItem Name="@(CarDisp.DisplayName("PowerTrain"))" Value=@Car.PowerTrain />
+                    <SingleItem Name="@(CarDisp.DisplayName("ModelCode"))" Value=@Car.ModelCode />
+                    <SingleItem Name="@(CarDisp.DisplayName("GradeName"))" Value=@Car.GradeName />
+                    <SingleItem Name="@(CarDisp.DisplayName("Price"))" Value=@ToPrice(Car.Price) />
+                    <MultipleItem Name="@(CarDisp.DisplayName("ModelChange"))" KVPairs=@ModelChangeDates(Car) />
                 </div>
                 <div class="spec-container">
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "Steering"))"
-                        Value=@Car.Steering />
-                    <MultipleItem Name="サスペンション形式" KVPairs=@SuspensionTypes(Car) />
-                    <MultipleItem Name="ブレーキ形式" KVPairs=@BrakeTypes(Car) />
-                    <ListItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Car", "FuelEfficiency"))"
-                        Values=@Car.FuelEfficiency />
+                    <SingleItem Name="@(CarDisp.DisplayName("Steering"))" Value=@Car.Steering />
+                    <MultipleItem Name="@(CarDisp.DisplayName("Suspension"))" KVPairs=@SuspensionTypes(Car) />
+                    <MultipleItem Name="@(CarDisp.DisplayName("Brake"))" KVPairs=@BrakeTypes(Car) />
+                    <ListItem Name="@(CarDisp.DisplayName("FuelEfficiency"))" Values=@Car.FuelEfficiency />
                 </div>
             </RadzenPanel>
             <!-- 性能 -->
             <RadzenPanel>
                 <h4>性能</h4>
                 <div class="spec-container">
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Performance", "MinTurningRadius"))"
-                        Value=@ToString(Car.Performance.MinTurningRadius) />
-                    @if (Car.PowerTrain != PowerTrain.BEV)
+                    <SingleItem Name="@(CarDisp.DisplayName("MinTurningRadius"))"
+                        Value=@ToString(Car.MinTurningRadius) />
+                    @if (Car.PowerTrain != HogeBlazor.Shared.Models.Db.PowerTrain.BEV)
                     {
-                        <EngineSpecItem Perf="@Car.Performance" />
+                        <EngineSpecItem Fcr="@Car.Fcr" />
                     }
                     else
                     {
-                        <MotorSpecItem Perf="@Car.Performance" />
+                        <MotorSpecItem Ecr="@Car.Ecr" />
                     }
                 </div>
             </RadzenPanel>
             <!-- エンジン -->
-            <RadzenPanel>
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.Engine)>
                 <h4>エンジン</h4>
                 <div class="spec-container">
-                    <SingleItem Name="型式" Value=@Car.Engine.Code />
-                    <SingleItem Name="種類" Value=@Car.Engine.Type />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "CylinderNum"))"
-                        Value=@ToString(Car.Engine.CylinderNum) />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "CylinderLayout"))"
-                        Value=@Car.Engine.CylinderLayout />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "ValveSystem"))"
-                        Value=@Car.Engine.ValveSystem />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "Displacement"))"
-                        Value=@ToString(Car.Engine.Displacement) />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "Bore"))"
-                        Value=@ToString(Car.Engine.Bore) />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "Stroke"))"
-                        Value=@ToString(Car.Engine.Stroke) />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "CompressionRatio"))"
+                    <SingleItem Name="@(Engine.DisplayName("Code"))" Value=@Car.Engine.Code />
+                    <SingleItem Name="@(Engine.DisplayName("Type"))" Value=@Car.Engine.Type />
+                    <SingleItem Name="@(Engine.DisplayName("CylinderNum"))" Value=@ToString(Car.Engine.CylinderNum) />
+                    <SingleItem Name="@(Engine.DisplayName("CylinderLayout"))" Value=@Car.Engine.CylinderLayout />
+                    <SingleItem Name="@(Engine.DisplayName("ValveSystem"))" Value=@Car.Engine.ValveSystem />
+                    <SingleItem Name="@(Engine.DisplayName("Displacement"))" Value=@ToString(Car.Engine.Displacement) />
+                    <SingleItem Name="@(Engine.DisplayName("Bore"))" Value=@ToString(Car.Engine.Bore) />
+                    <SingleItem Name="@(Engine.DisplayName("Stroke"))" Value=@ToString(Car.Engine.Stroke) />
+                    <SingleItem Name="@(Engine.DisplayName("CompressionRatio"))"
                         Value=@ToString(Car.Engine.CompressionRatio) />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "MaxOutput"))"
-                        Value=@ToString(Car.Engine.MaxOutput) />
-                    <MultipleItem Name="最高出力回転数(rpm)" KVPairs=@MaxOutputRpm(Car, "Engine") />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "MaxTorque"))"
-                        Value=@ToString(Car.Engine.MaxTorque) />
-                    <MultipleItem Name="最大トルク回転数(rpm)" KVPairs=@MaxTorqueRpm(Car, "Engine") />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "MaxTorque"))"
-                        Value=@ToString(Car.Engine.MaxTorque) />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "FuelSystem"))"
-                        Value=@Car.Engine.FuelSystem />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "FuelType"))"
-                        Value=@Car.Engine.FuelType />
-                    <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Engine", "FuelTankCap"))"
-                        Value=@ToString(Car.Engine.FuelTankCap) />
+                    <SingleItem Name="@(Engine.DisplayName("MaxOutput"))" Value=@ToString(Car.Engine.MaxOutput) />
+                    <MultipleItem Name="@(Engine.DisplayName("MaxOutputRpm"))"
+                        KVPairs=@MaxOutputRpm(Car.Engine.MaxOutputRpm) />
+                    <SingleItem Name="@(Engine.DisplayName("MaxTorque"))" Value=@ToString(Car.Engine.MaxTorque) />
+                    <MultipleItem Name="@(Engine.DisplayName("MaxTorqueRpm"))"
+                        KVPairs=@MaxTorqueRpm(Car.Engine.MaxTorqueRpm) />
+                    <SingleItem Name="@(Engine.DisplayName("MaxTorque"))" Value=@ToString(Car.Engine.MaxTorque) />
+                    <SingleItem Name="@(Engine.DisplayName("FuelSystem"))" Value=@Car.Engine.FuelSystem />
+                    <SingleItem Name="@(Engine.DisplayName( "FuelType"))" Value=@Car.Engine.FuelType />
+                    <SingleItem Name="@(Engine.DisplayName("FuelTankCap"))" Value=@ToString(Car.Engine.FuelTankCap) />
                 </div>
             </RadzenPanel>
             <!-- モーター1 -->
-            @if (Car != null && Car.MotorX != default)
-            {
-                <RadzenPanel>
-                    <h4>モーター1</h4>
-                    <div class="spec-container">
-                        <SingleItem Name="型式" Value=@Car.MotorX.Code />
-                        <SingleItem Name="種類" Value=@Car.MotorX.Type />
-                        <SingleItem Name="用途" Value=@Car.MotorX.Purpose />
-                        <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "RatedOutput"))"
-                        Value=@ToString(Car.MotorX.RatedOutput) />
-                        <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxOutput"))"
-                        Value=@ToString(Car.MotorX.MaxOutput) />
-                        <MultipleItem Name="最高出力回転数(rpm)" KVPairs=@MaxOutputRpm(Car, "MotorX") />
-                        <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxTorque"))"
-                        Value=@ToString(Car.MotorX.MaxTorque) />
-                        <MultipleItem Name="最高トルク回転数(rpm)" KVPairs=@MaxTorqueRpm(Car, "MotorX") />
-                    </div>
-                </RadzenPanel>
-            }
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.MotorX)>
+                <h4>モーター1</h4>
+                <div class="spec-container">
+                    <SingleItem Name="@(Motor.DisplayName("Code"))" Value=@Car.MotorX.Code />
+                    <SingleItem Name="@(Motor.DisplayName("Type"))" Value=@Car.MotorX.Type />
+                    <SingleItem Name="@(Motor.DisplayName("Purpose"))" Value=@Car.MotorX.Purpose />
+                    <SingleItem Name="@(Motor.DisplayName("RatedOutput"))" Value=@ToString(Car.MotorX.RatedOutput) />
+                    <SingleItem Name="@(Motor.DisplayName("MaxOutput"))" Value=@ToString(Car.MotorX.MaxOutput) />
+                    <MultipleItem Name="@(Motor.DisplayName("MaxOutputRpm"))"
+                        KVPairs=@MaxOutputRpm(Car.MotorX.MaxOutputRpm) />
+                    <SingleItem Name="@(Motor.DisplayName("MaxTorque"))" Value=@ToString(Car.MotorX.MaxTorque) />
+                    <MultipleItem Name="@(Motor.DisplayName("MaxTorqueRpm"))"
+                        KVPairs=@MaxTorqueRpm(Car.MotorX.MaxTorqueRpm) />
+                </div>
+            </RadzenPanel>
             <!-- モーター2 -->
-            @if (Car != null && Car.MotorY != default)
-            {
-                <RadzenPanel>
-                    <h4>モーター2</h4>
-                    <div class="spec-container">
-                        <SingleItem Name="型式" Value=@Car.MotorY.Code />
-                        <SingleItem Name="種類" Value=@Car.MotorY.Type />
-                        <SingleItem Name="用途" Value=@Car.MotorY.Purpose />
-                        <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "RatedOutput"))"
-                        Value=@ToString(Car.MotorY.RatedOutput) />
-                        <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxOutput"))"
-                        Value=@ToString(Car.MotorY.MaxOutput) />
-                        <MultipleItem Name="最高出力回転数(rpm)" KVPairs=@MaxOutputRpm(Car, "MotorY") />
-                        <SingleItem
-                        Name="@(CommentHelper.GetCommentOnProperty("HogeBlazor.Shared.Models.Db.Motor", "MaxTorque"))"
-                        Value=@ToString(Car.MotorY.MaxTorque) />
-                        <MultipleItem Name="最高トルク回転数(rpm)" KVPairs=@MaxTorqueRpm(Car, "MotorY") />
-                    </div>
-                </RadzenPanel>
-            }
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.MotorY)>
+                <h4>モーター2</h4>
+                <div class="spec-container">
+                    <SingleItem Name="@(Motor.DisplayName("Code"))" Value=@Car.MotorY.Code />
+                    <SingleItem Name="@(Motor.DisplayName("Type"))" Value=@Car.MotorY.Type />
+                    <SingleItem Name="@(Motor.DisplayName("Purpose"))" Value=@Car.MotorY.Purpose />
+                    <SingleItem Name="@(Motor.DisplayName("RatedOutput"))" Value=@ToString(Car.MotorY.RatedOutput) />
+                    <SingleItem Name="@(Motor.DisplayName("MaxOutput"))" Value=@ToString(Car.MotorY.MaxOutput) />
+                    <MultipleItem Name="@(Motor.DisplayName("MaxOutputRpm"))"
+                        KVPairs=@MaxOutputRpm(Car.MotorY.MaxOutputRpm) />
+                    <SingleItem Name="@(Motor.DisplayName("MaxTorque"))" Value=@ToString(Car.MotorY.MaxTorque) />
+                    <MultipleItem Name="@(Motor.DisplayName("MaxTorqueRpm"))"
+                        KVPairs=@MaxTorqueRpm(Car.MotorY.MaxTorqueRpm) />
+                </div>
+            </RadzenPanel>
             <!-- バッテリー -->
-            @if (Car != null && Car.Battery != default)
-            {
-                <RadzenPanel>
-                    <h4>バッテリー</h4>
-                    <div class="spec-container">
-                        <SingleItem Name="種類" Value=@Car.Battery.Type />
-                        <SingleItem Name="個数" Value=@ToString(Car.Battery.Quantity) />
-                        <SingleItem Name="電圧(V)" Value=@ToString(Car.Battery.Voltage) />
-                        <SingleItem Name="容量(Ah)" Value=@ToString(Car.Battery.Capacity) />
-                    </div>
-                </RadzenPanel>
-            }
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.Battery)>
+                <h4>バッテリー</h4>
+                <div class="spec-container">
+                    <SingleItem Name="@(Battery.DisplayName("Type"))" Value=@Car.Battery.Type />
+                    <SingleItem Name="@(Battery.DisplayName("Quantity"))" Value=@ToString(Car.Battery.Quantity) />
+                    <SingleItem Name="@(Battery.DisplayName("Voltage"))" Value=@ToString(Car.Battery.Voltage) />
+                    <SingleItem Name="@(Battery.DisplayName("Capacity"))" Value=@ToString(Car.Battery.Capacity) />
+                </div>
+            </RadzenPanel>
             <!-- タイヤ -->
             <RadzenPanel>
                 <h4>タイヤ</h4>
                 <div class="spec-container">
-                    <MultipleItem Name="幅(mm)" KVPairs=@SectionWidth(Car) />
-                    <MultipleItem Name="扁平率(%)" KVPairs=@AspectRatio(Car) />
-                    <MultipleItem Name="ホイール径(インチ)" KVPairs=@WheelDiameter(Car) />
+                    <MultipleItem Name="@(CarDisp.DisplayName("SectionWidth"))" KVPairs=@SectionWidth(Car) />
+                    <MultipleItem Name="@(CarDisp.DisplayName("AspectRatio"))" KVPairs=@AspectRatio(Car) />
+                    <MultipleItem Name="@(CarDisp.DisplayName("WheelDiameter"))" KVPairs=@WheelDiameter(Car) />
                 </div>
             </RadzenPanel>
             <!-- トランスミッション -->
-            <RadzenPanel>
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.Transmission)>
                 <h4>トランスミッション</h4>
                 <div class="spec-container">
-                    <SingleItem Name="種類" Value=@Car.Transmission.Type />
-                    <MultipleItem Name="変速比" KVPairs=@GearRatios(Car) />
-                    <MultipleItem Name="減速比" KVPairs=@ReductionRaios(Car) />
+                    <SingleItem Name="@(Transmission.DisplayName("TransmissionType"))"
+                        Value=@Car.Transmission.TransmissionType />
+                    <MultipleItem Name="@(Transmission.DisplayName("GearRatios"))" KVPairs=@GearRatios(Car) />
+                    <MultipleItem Name="@(Transmission.DisplayName("ReductionRatio"))" KVPairs=@ReductionRaio(Car) />
                 </div>
             </RadzenPanel>
         </div>

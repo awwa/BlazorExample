@@ -1,14 +1,14 @@
-using System.Reflection;
-using HogeBlazor.Client.Helpers;
+using HogeBlazor.Client.Models;
 using HogeBlazor.Client.Repositories;
 using Microsoft.AspNetCore.Components;
+using System.Linq;
 
 namespace HogeBlazor.Client.Pages;
 public partial class Cars
 {
-    public List<Car> CarList { get; set; } = new List<Car>();
+    public List<CarDisp> CarList { get; set; } = new List<CarDisp>();
 
-    bool BodyVisible = false;
+    bool OuterBodyVisible = false;
     bool InteriorVisible = false;
     bool PerformanceVisible = false;
     bool EngineVisible = false;
@@ -108,7 +108,7 @@ public partial class Cars
     [Inject]
     public ICarHttpRepository CarRepo { get; set; } = default!;
 
-    private string ConvertForDisplay<T>(string value)
+    private string ConvertForDisplay<T>(string? value)
     {
         return CommentHelper.GetCommentAttributeOnField<T>(value);
     }
@@ -125,6 +125,7 @@ public partial class Cars
 
     private async Task GetCars()
     {
-        CarList = await CarRepo.GetCars();
+        var list = await CarRepo.GetCars();
+        CarList = list.Select(c => new CarDisp(c)).ToList<CarDisp>();
     }
 }

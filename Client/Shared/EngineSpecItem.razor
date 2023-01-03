@@ -1,22 +1,27 @@
+@using HogeBlazor.Client.Models
+
 <div class="spec-item">
     <div class="spec-row">
-        <div class="spec-title">燃料消費率WLTCモード(km/L)</div>
-        <div class="spec-value">@ToString(Perf.FcrWltc)</div>
+        <div class="spec-title">@(Fcr.DisplayName("FcrWltc"))</div>
+        <div class="spec-value">@ToString(Fcr.FcrWltc)</div>
     </div>
     <div class="spec-row">
-        <div class="spec-sub-title">市街地モード(WLTC-L)</div>
-        <div class="spec-value">@ToString(Perf.FcrWltcL)</div>
+        <div class="spec-sub-title">@(Fcr.DisplayName("FcrWltcL"))
+        </div>
+        <div class="spec-value">@ToString(Fcr.FcrWltcL)</div>
     </div>
     <div class="spec-row">
-        <div class="spec-sub-title">郊外モード(WLTC-M)</div>
-        <div class="spec-value">@ToString(Perf.FcrWltcM)</div>
+        <div class="spec-sub-title">@(Fcr.DisplayName("FcrWltcM"))
+        </div>
+        <div class="spec-value">@ToString(Fcr.FcrWltcM)</div>
     </div>
     <div class="spec-row">
-        <div class="spec-sub-title">高速道路(WLTC-H)</div>
-        <div class="spec-value">@ToString(Perf.FcrWltcH)</div>
+        <div class="spec-sub-title">@(Fcr.DisplayName("FcrWltcH"))
+        </div>
+        <div class="spec-value">@ToString(Fcr.FcrWltcH)</div>
     </div>
     <div class="spec-row">
-        <div class="spec-title">燃料消費率JC08モード(km/L)</div>
-        <div class="spec-value">@ToString(Perf.FcrJc08)</div>
+        <div class="spec-title">@(Fcr.DisplayName("FcrJc08"))</div>
+        <div class="spec-value">@ToString(Fcr.FcrJc08)</div>
     </div>
 </div>

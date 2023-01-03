@@ -60,7 +60,7 @@ public static class CommentHelper
     /// <typeparam name="T">対象クラス</typeparam>
     /// <param name="field">フィールド名</param>
     /// <returns>CommentAttributeの値</returns>
-    public static string GetCommentAttributeOnField<T>(string field)
+    public static string GetCommentAttributeOnField<T>(string? field)
     {
         if (field == null)
         {

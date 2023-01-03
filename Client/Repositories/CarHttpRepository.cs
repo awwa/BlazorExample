@@ -1,5 +1,6 @@
 
 using HogeBlazor.Client.Helpers;
+using HogeBlazor.Shared.Models.Dto;
 
 namespace HogeBlazor.Client.Repositories;
 

@@ -1,10 +1,7 @@
-using System.Globalization;
-using System.Reflection;
-using HogeBlazor.Client.Helpers;
 using HogeBlazor.Client.Repositories;
-using HogeBlazor.Client.Services;
-using HogeBlazor.Shared.Models.Db;
+using HogeBlazor.Client.Models;
 using Microsoft.AspNetCore.Components;
+using HogeBlazor.Client.Helpers;
 
 namespace HogeBlazor.Client.Pages;
 public partial class CarDetail// : IDisposable
@@ -12,7 +9,7 @@ public partial class CarDetail// : IDisposable
     // [Inject]
     // public HttpInterceptorService Interceptor { get; set; } = default!;
 
-    public Helpers.Car Car { get; set; } = default!;
+    public CarDisp Car { get; set; } = new CarDisp();//default!;
 
     [Parameter]
     public int Id { get; set; }
@@ -35,172 +32,155 @@ public partial class CarDetail// : IDisposable
 
     public string ToString(float? value, string format = "{0:#,0}")
     {
-        return String.Format(format, value);
+        return value == null ? "ー" : String.Format(format, value);
     }
 
-    public List<KeyValuePair<string, string>> ModelChangeDates(Helpers.Car car)
+    public List<KeyValuePair<string, string?>> ModelChangeDates(CarDisp car)
     {
-        return new List<KeyValuePair<string, string>>
+        return new List<KeyValuePair<string, string?>>
         {
-            new KeyValuePair<string, string>("フル", car.ModelChangeFull),
-            new KeyValuePair<string, string>("最終", car.ModelChangeLast),
+            new KeyValuePair<string, string?>(ModelChange.DisplayName("Full"), car.ModelChange != null ? car.ModelChange.Full : null
+            ),
+            new KeyValuePair<string, string?>(ModelChange.DisplayName("Last"), car.ModelChange != null ? car.ModelChange.Last : null
+            ),
         };
     }
 
-    public List<KeyValuePair<string, string>> SuspensionTypes(Helpers.Car car)
+    public List<KeyValuePair<string, string?>> SuspensionTypes(CarDisp car)
     {
-        return new List<KeyValuePair<string, string>>
+        return new List<KeyValuePair<string, string?>>
         {
-            new KeyValuePair<string, string>("前", car.SuspensionFront),
-            new KeyValuePair<string, string>("後", car.SuspensionRear),
+            new KeyValuePair<string, string?>(Suspension.DisplayName("Front"), car.Suspension != null ? car.Suspension.Front : null),
+            new KeyValuePair<string, string?>(Suspension.DisplayName("Rear"), car.Suspension != null ? car.Suspension.Rear : null),
         };
     }
-    public List<KeyValuePair<string, string>> BrakeTypes(Helpers.Car car)
+    public List<KeyValuePair<string, string?>> BrakeTypes(CarDisp car)
     {
-        return new List<KeyValuePair<string, string>>
+        return new List<KeyValuePair<string, string?>>
         {
-            new KeyValuePair<string, string>("前", car.BrakeFront),
-            new KeyValuePair<string, string>("後", car.BrakeRear),
-        };
-    }
-
-    public List<KeyValuePair<string, string>> MaxOutputRpm(Helpers.Car car, string target)
-    {
-        switch (target)
-        {
-            case "Engine":
-                return new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("高", ToString(car.Engine.MaxOutputUpperRpm)),
-                    new KeyValuePair<string, string>("低", ToString(car.Engine.MaxOutputLowerRpm)),
-                };
-            case "MotorX":
-                return new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("高", ToString(car.MotorX.MaxOutputUpperRpm)),
-                    new KeyValuePair<string, string>("低", ToString(car.MotorX.MaxOutputLowerRpm)),
-                };
-            case "MotorY":
-                return new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("高", ToString(car.MotorY.MaxOutputUpperRpm)),
-                    new KeyValuePair<string, string>("低", ToString(car.MotorY.MaxOutputLowerRpm)),
-                };
-            default:
-                throw new NotImplementedException();
-        }
-    }
-    public List<KeyValuePair<string, string>> MaxTorqueRpm(Helpers.Car car, string target)
-    {
-        switch (target)
-        {
-            case "Engine":
-                return new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("高", ToString(car.Engine.MaxTorqueUpperRpm)),
-                    new KeyValuePair<string, string>("低", ToString(car.Engine.MaxTorqueLowerRpm)),
-                };
-            case "MotorX":
-                return new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("高", ToString(car.MotorX.MaxTorqueUpperRpm)),
-                    new KeyValuePair<string, string>("低", ToString(car.MotorX.MaxTorqueLowerRpm)),
-                };
-            case "MotorY":
-                return new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("高", ToString(car.MotorY.MaxTorqueUpperRpm)),
-                    new KeyValuePair<string, string>("低", ToString(car.MotorY.MaxTorqueLowerRpm)),
-                };
-            default:
-                throw new NotImplementedException();
-        }
-    }
-
-    public List<KeyValuePair<string, string>> SectionWidth(Helpers.Car car)
-    {
-        return new List<KeyValuePair<string, string>>
-        {
-            new KeyValuePair<string, string>("前", ToString(car.TireFront.SectionWidth)),
-            new KeyValuePair<string, string>("後", ToString(car.TireRear.SectionWidth)),
+            new KeyValuePair<string, string?>(Brake.DisplayName("Front"), car.Brake != null ? car.Brake.Front : null),
+            new KeyValuePair<string, string?>(Brake.DisplayName("Rear"), car.Brake != null ? car.Brake.Rear: null),
         };
     }
 
-    public List<KeyValuePair<string, string>> AspectRatio(Helpers.Car car)
+    public List<KeyValuePair<string, string>> MaxOutputRpm(HogeBlazor.Client.Models.MaxOutputRpm rpm)
     {
         return new List<KeyValuePair<string, string>>
         {
-            new KeyValuePair<string, string>("前", ToString(car.TireFront.AspectRatio)),
-            new KeyValuePair<string, string>("後", ToString(car.TireRear.AspectRatio)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.MaxOutputRpm.DisplayName("Upper"),ToString(rpm.Upper)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.MaxOutputRpm.DisplayName("Lower") ,ToString(rpm.Lower)),
         };
     }
 
-    public List<KeyValuePair<string, string>> WheelDiameter(Helpers.Car car)
+    public List<KeyValuePair<string, string>> MaxTorqueRpm(HogeBlazor.Client.Models.MaxTorqueRpm rpm)
     {
         return new List<KeyValuePair<string, string>>
         {
-            new KeyValuePair<string, string>("前", ToString(car.TireFront.WheelDiameter)),
-            new KeyValuePair<string, string>("後", ToString(car.TireRear.WheelDiameter)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.MaxTorqueRpm.DisplayName("Upper"),ToString(rpm.Upper)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.MaxTorqueRpm.DisplayName( "Lower"),ToString(rpm.Lower)),
         };
     }
 
-    public List<KeyValuePair<string, string>> GearRatios(Helpers.Car car)
+    public List<KeyValuePair<string, string>> SectionWidth(CarDisp car)
+    {
+        return new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.SectionWidth.DisplayName( "Front"),ToString(car.SectionWidth != null ? car.SectionWidth.Front : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.SectionWidth.DisplayName("Rear"),ToString(car.SectionWidth != null ? car.SectionWidth.Rear : null)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> AspectRatio(CarDisp car)
+    {
+        return new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.AspectRatio.DisplayName("Front"),ToString(car.AspectRatio != null ? car.AspectRatio.Front : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.AspectRatio.DisplayName("Rear"),ToString(car.AspectRatio != null ? car.AspectRatio.Rear : null)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> WheelDiameter(CarDisp car)
+    {
+        return new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.WheelDiameter.DisplayName("Front"),ToString(car.WheelDiameter != null ? car.WheelDiameter.Front : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.WheelDiameter.DisplayName("Rear"),ToString(car.WheelDiameter != null ? car.WheelDiameter.Rear : null)),
+        };
+    }
+
+    public List<KeyValuePair<string, string>> GearRatios(CarDisp car)
     {
         var kvs = new List<KeyValuePair<string, string>>();
-        for (int i = 0; i < Car.Transmission.GearRatiosFront.Count; i++)
+        foreach (var item in Car.Transmission.GearRatios)
         {
-            kvs.Add(new KeyValuePair<string, string>($"第{i}速", ToString(Car.Transmission.GearRatiosFront.ElementAt<float>(i), "{0:F3}")));
+            kvs.Add(new KeyValuePair<string, string>(item.Key, ToString(item.Value, "{0:F3}")));
         }
-        kvs.Add(new KeyValuePair<string, string>($"後退", ToString(Car.Transmission.GearRatioRear, "{0:F3}")));
         return kvs;
     }
 
-    public List<KeyValuePair<string, string>> ReductionRaios(Helpers.Car car)
+    public List<KeyValuePair<string, string>> ReductionRaio(CarDisp car)
     {
         return new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>($"前", ToString(Car.Transmission.ReductionRatioFront, "{0:F3}")),
-            new KeyValuePair<string, string>($"後", ToString(Car.Transmission.ReductionRatioRear, "{0:F3}")),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.ReductionRatio.DisplayName("Front"),ToString(car.Transmission.ReductionRatio != null ? Car.Transmission.ReductionRatio.Front : null, "{0:F3}")),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.ReductionRatio.DisplayName("Rear"),ToString(car.Transmission.ReductionRatio != null ? car.Transmission.ReductionRatio.Rear : null, "{0:F3}")),
         };
     }
 
-    public List<KeyValuePair<string, string>> OuterBody(Helpers.Car car)
+    public List<KeyValuePair<string, string>> OuterBody(CarDisp car)
     {
         return new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>($"全長", ToString(Car.Body.Length)),
-            new KeyValuePair<string, string>($"全幅", ToString(Car.Body.Width)),
-            new KeyValuePair<string, string>($"全高", ToString(Car.Body.Height)),
-            new KeyValuePair<string, string>($"トレッド前", ToString(Car.Body.TreadFront)),
-            new KeyValuePair<string, string>($"トレッド後", ToString(Car.Body.TreadRear)),
-            new KeyValuePair<string, string>($"最低地上高", ToString(Car.Body.MinRoadClearance)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.OuterBody.DisplayName("Length"),ToString(car.OuterBody != null ? car.OuterBody.Length : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.OuterBody.DisplayName("Width"),ToString(car.OuterBody != null ? car.OuterBody.Width : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.OuterBody.DisplayName("Height"),ToString(car.OuterBody != null ? car.OuterBody.Height : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.OuterBody.DisplayName("TreadFront"),ToString(car.OuterBody != null ? car.OuterBody.TreadFront : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.OuterBody.DisplayName("TreadRear"),ToString(car.OuterBody != null ? car.OuterBody.TreadRear : null)),
+            new KeyValuePair<string, string>(HogeBlazor.Client.Models.OuterBody.DisplayName("MinRoadClearance"),ToString(car.OuterBody != null ? car.OuterBody.MinRoadClearance : null)),
         };
     }
 
-    public List<KeyValuePair<string, string>> InteriorBody(Helpers.Car car)
+    public List<KeyValuePair<string, string>> InteriorBody(CarDisp car)
     {
         return new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>($"室内長", ToString(Car.Interior.Length)),
-            new KeyValuePair<string, string>($"室内幅", ToString(Car.Interior.Width)),
-            new KeyValuePair<string, string>($"室内高", ToString(Car.Interior.Height)),
+            new KeyValuePair<string, string>(
+                HogeBlazor.Client.Models.InteriorBody.DisplayName("Length"),
+                ToString(car.InteriorBody != null ? car.InteriorBody.Length : null)
+            ),
+            new KeyValuePair<string, string>(
+                HogeBlazor.Client.Models.InteriorBody.DisplayName("Width"),
+                ToString(car.InteriorBody != null ? car.InteriorBody.Width : null)
+            ),
+            new KeyValuePair<string, string>(
+                HogeBlazor.Client.Models.InteriorBody.DisplayName("Height"),
+                ToString(car.InteriorBody != null ? car.InteriorBody.Height : null)
+            ),
         };
     }
 
-    public List<KeyValuePair<string, string>> OtherBody(Helpers.Car car)
+    public List<KeyValuePair<string, string>> OtherBody(CarDisp car)
     {
         return new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>($"車両重量(kg)", ToString(Car.Body.Weight, "{0}")),
-            new KeyValuePair<string, string>($"ドア数", ToString(Car.Body.DoorNum, "{0}")),
-            new KeyValuePair<string, string>($"ラゲッジルーム容量(L)", ToString(Car.Interior.LuggageCap, "{0}")),
-            new KeyValuePair<string, string>($"乗車定員(人)", ToString(Car.Interior.RidingCap, "{0}")),
+            new KeyValuePair<string, string>(
+                HogeBlazor.Client.Models.OtherBody.DisplayName("Weight"),
+                ToString(car.OtherBody != null ? car.OtherBody.Weight : null, "{0}")),
+            new KeyValuePair<string, string>(
+                HogeBlazor.Client.Models.OtherBody.DisplayName("DoorNum"),
+                ToString(car.OtherBody != null ? car.OtherBody.DoorNum : null, "{0}")),
+            new KeyValuePair<string, string>(
+                HogeBlazor.Client.Models.OtherBody.DisplayName("LuggageCap"),
+                ToString(car.OtherBody != null ? car.OtherBody.LuggageCap : null, "{0}")),
+            new KeyValuePair<string, string>(
+                HogeBlazor.Client.Models.OtherBody.DisplayName("RidingCap"),
+                ToString(car.OtherBody != null ? car.OtherBody.RidingCap : null, "{0}")),
         };
     }
 
-    private async Task<Helpers.Car> GetCar(int id)
+    private async Task<CarDisp> GetCar(int id)
     {
-        return await CarRepo.GetCar(id);
+        return new CarDisp(await CarRepo.GetCar(id));
     }
 
     // async void ButtonClicked()
