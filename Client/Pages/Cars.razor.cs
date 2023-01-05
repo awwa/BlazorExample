@@ -17,6 +17,9 @@ public partial class Cars
     [Inject]
     public ICarHttpRepository CarRepo { get; set; } = default!;
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
+
     private string ConvertForDisplay<T>(string? value)
     {
         return CommentHelper.GetCommentAttributeOnField<T>(value);
@@ -36,5 +39,13 @@ public partial class Cars
     {
         var list = await CarRepo.GetCars();
         CarList = list.Select(c => new CarDisp(c)).ToList<CarDisp>();
+    }
+
+    public void OnRowSelect(object value)
+    {
+        if (value is CarDisp)
+        {
+            NavigationManager.NavigateTo($"/cars/{((CarDisp)value).Id}");
+        }
     }
 }

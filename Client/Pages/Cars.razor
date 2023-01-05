@@ -20,9 +20,10 @@
 </div>
 <div>
     <RadzenDataGrid Data="@CarList" TItem="CarDisp" AllowColumnResize="true" ColumnWidth="80px" AllowFiltering="true"
-        AllowSorting="true" EqualsText="一致" NotEqualsText="不一致" ContainsText="含む" DoesNotContainText="含まない"
-        StartsWithText="先頭" EndsWithText="末尾" IsNullText="データなし" IsNotNullText="データあり" AndOperatorText="かつ"
-        OrOperatorText="または" ClearFilterText="クリア" ApplyFilterText="適用" FilterText="フィルタ">
+        AllowSorting="true" AllowRowSelectOnRowClick="true" EqualsText="一致" NotEqualsText="不一致" ContainsText="含む"
+        DoesNotContainText="含まない" StartsWithText="先頭" EndsWithText="末尾" IsNullText="データなし" IsNotNullText="データあり"
+        AndOperatorText="かつ" OrOperatorText="または" ClearFilterText="クリア" ApplyFilterText="適用" FilterText="フィルタ"
+        SelectionMode="DataGridSelectionMode.Single" RowSelect=@OnRowSelect>
         <Columns>
             <!-- 基本情報 -->
             <RadzenDataGridColumn TItem="CarDisp" Property="MakerName" Frozen="true" Filterable="false"
@@ -73,14 +74,14 @@
 
             <!-- Performance -->
             <RadzenDataGridColumn TItem="CarDisp" Property="MinTurningRadius"
-                Title=@CarDisp.DisplayName("MinTurningRadius") FormatString="{0:F1}"
-                TextAlign="TextAlign.Right" Width="40px" Visible=@PerformanceVisible />
+                Title=@CarDisp.DisplayName("MinTurningRadius") FormatString="{0:F1}" TextAlign="TextAlign.Right"
+                Width="40px" Visible=@PerformanceVisible />
             <RadzenDataGridColumn TItem="CarDisp" Property="Fcr.FcrWltc" Title=@Fcr.DisplayName("FcrWltc")
                 FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px" Visible=@PerformanceVisible />
             <RadzenDataGridColumn TItem="CarDisp" Property="Ecr.MpcWltc" Title=@Ecr.DisplayName("MpcWltc")
-                FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px"Visible=@PerformanceVisible  />
+                FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px" Visible=@PerformanceVisible />
             <RadzenDataGridColumn TItem="CarDisp" Property="Ecr.EcrWltc" Title=@Ecr.DisplayName("EcrWltc")
-                FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px"Visible=@PerformanceVisible  />
+                FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px" Visible=@PerformanceVisible />
 
             <!-- Engine -->
             <RadzenDataGridColumn TItem="CarDisp" Property="Engine.Type" Title=@(CarDisp.DisplayName("Engine") +
