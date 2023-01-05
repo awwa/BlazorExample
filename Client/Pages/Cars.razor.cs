@@ -30,11 +30,6 @@ public partial class Cars
         await GetCars();
     }
 
-    private async Task SelectedPage(int page)
-    {
-        await GetCars();
-    }
-
     private async Task GetCars()
     {
         var list = await CarRepo.GetCars();

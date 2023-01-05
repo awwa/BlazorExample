@@ -2,6 +2,7 @@
 @using Helpers
 @using HogeBlazor.Client.Models
 
+<BreadCrumb />
 <div>
     <RadzenCheckBox Name="OuterBodyVisibleCheckBox" Change=@((bool v) => OuterBodyVisible = !OuterBodyVisible) />
     <RadzenLabel Text="外寸" Component="OuterBodyVisibleCheckBox" />

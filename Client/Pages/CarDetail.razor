@@ -1,6 +1,7 @@
 @page "/cars/{Id:int}"
 @using HogeBlazor.Client.Models
 
+<BreadCrumb />
 <div class="row">
     <h4>@Car.MakerName</h4>
     <h1>@Car.ModelName</h1>
@@ -30,8 +31,7 @@
             <RadzenPanel>
                 <h4>性能</h4>
                 <div class="spec-container">
-                    <SingleItem Name=@CarDisp.DisplayName("MinTurningRadius")
-                        Value=@ToString(Car.MinTurningRadius) />
+                    <SingleItem Name=@CarDisp.DisplayName("MinTurningRadius") Value=@ToString(Car.MinTurningRadius) />
                     @if (Car.PowerTrain != HogeBlazor.Shared.Models.Db.PowerTrain.BEV)
                     {
                         <EngineSpecItem Fcr="@Car.Fcr" />

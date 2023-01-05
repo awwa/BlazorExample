@@ -12,7 +12,7 @@ public partial class CarDetail// : IDisposable
     // [Inject]
     // public HttpInterceptorService Interceptor { get; set; } = default!;
 
-    public CarDisp Car { get; set; } = new CarDisp();//default!;
+    public CarDisp Car { get; set; } = new CarDisp();
 
     [Parameter]
     public int Id { get; set; }
@@ -193,15 +193,4 @@ public partial class CarDetail// : IDisposable
     {
         return new CarDisp(await CarRepo.GetCar(id));
     }
-
-    // async void ButtonClicked()
-    // {
-    //     //
-    //     //CultureInfo ci = new CultureInfo("es-MX", false);
-    //     //CultureInfo.CurrentCulture = ci;
-    //     Console.WriteLine(CultureInfo.CurrentCulture.ToString());
-    //     Car = await GetCar(this.Id);
-    // }
-
-    // public void Dispose() => Interceptor.DisposeEvent();
 }
