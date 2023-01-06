@@ -16,6 +16,7 @@ public class BaseTestContext : TestContext
         this.Services.AddBlazoredLocalStorage();
         this.Services.AddAuthorizationCore();
         this.Services.AddHttpClientInterceptor();
+        this.Services.AddScoped<ICarHttpRepository, CarHttpRepository>();
         this.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
         this.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         this.Services.AddScoped<RefreshTokenService>();

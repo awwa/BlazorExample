@@ -31,3 +31,7 @@
     text-transform: none !important;
     white-space: pre-wrap !important;
 }
+
+::deep .rz-data-row {
+    cursor: pointer;
+}

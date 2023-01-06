@@ -1,0 +1,17 @@
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px 8px 16px;
+    width: 332px;
+    gap: 0px;
+    border-left: 4px solid #8C82FF;
+}
+
+.spec-title {
+    padding-left: 0px;
+}
+
+.spec-value {
+    font-weight: bold;
+    text-align: right;
+}

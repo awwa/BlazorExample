@@ -1,24 +1,19 @@
 @inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main class="col-12">
-        <div class="top-row px-4">
-            <!-- <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a> -->
-            <AuthLinks />
+<RadzenDialog />
+<RadzenLayout>
+    <RadzenHeader>
+        <div class="d-flex align-items-center">
+            <RadzenSidebarToggle Click="@(() => SidebarExpanded = !SidebarExpanded)" />
+            <RadzenLabel Text="Mincuru" />
         </div>
-
-        <article class="content px-4">
-            <CascadingValue Name="HeadingColor" Value="@_color">
-                @Body
-            </CascadingValue>
-        </article>
-    </main>
-</div>
-
-@code {
-    private readonly string _color = "#0505b5";
-}
+    </RadzenHeader>
+    <RadzenSidebar @bind-Expanded=SidebarExpanded>
+        <RadzenPanelMenu>
+            <RadzenPanelMenuItem Text="Cars" Icon="directions_car" Path="/cars" />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        @Body
+    </RadzenBody>
+</RadzenLayout>

@@ -1,0 +1,10 @@
+<div class="spec-item">
+    <div class="spec-title">@Name</div>
+    @foreach (var item in KVPairs)
+    {
+        <div class="spec-row">
+            <div class="spec-sub-title">@item.Key</div>
+            <div class="spec-value">@item.Value</div>
+        </div>
+    }
+</div>

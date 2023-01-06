@@ -28,6 +28,38 @@
             "name": "Client(Blazor WebAssembly Application",
             "type": "blazorwasm",
             "request": "launch"
+        },
+        {
+            "name": "Watch",
+            "type": "coreclr",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "dotnet",
+            "args": [
+                "watch",
+                "--project",
+                "./Client",
+                "--verbose"
+            ],
+            "preLaunchTask": "build",
+        },
+        {
+            "name": "Attach",
+            "type": "blazorwasm",
+            "request": "attach",
+            "cwd": "${workspaceFolder}",
+            "browser": "chrome",
+            "url": "http://localhost:5000",
+            "timeout": 120000,
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Client only with Hot Reload",
+            "configurations": [
+                "Watch",
+                "Attach"
+            ]
         }
     ]
 }

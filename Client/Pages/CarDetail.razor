@@ -1,0 +1,158 @@
+@page "/cars/{Id:int}"
+@using HogeBlazor.Client.Models
+
+<BreadCrumb />
+<div class="row">
+    <h4>@Car.MakerName</h4>
+    <h1>@Car.ModelName</h1>
+    <div class="row pr-0">
+        <!-- 左列 -->
+        <div class="col-md-9 pr-0">
+            <!-- 基本情報 -->
+            <RadzenPanel>
+                <h4>基本情報</h4>
+                <div class="spec-container">
+                    <SingleItem Name=@CarDisp.DisplayName("BodyType") Value=@Car.BodyType />
+                    <SingleItem Name=@CarDisp.DisplayName("DriveSystem") Value=@Car.DriveSystem />
+                    <SingleItem Name=@CarDisp.DisplayName("PowerTrain") Value=@PowerTrainType(Car.PowerTrain) />
+                    <SingleItem Name=@CarDisp.DisplayName("ModelCode") Value=@Car.ModelCode />
+                    <SingleItem Name=@CarDisp.DisplayName("GradeName") Value=@Car.GradeName />
+                    <SingleItem Name=@CarDisp.DisplayName("Price") Value=@ToPrice(Car.Price) />
+                    <MultipleItem Name=@CarDisp.DisplayName("ModelChange") KVPairs=@ModelChangeDates(Car) />
+                </div>
+                <div class="spec-container">
+                    <SingleItem Name=@CarDisp.DisplayName("Steering") Value=@Car.Steering />
+                    <MultipleItem Name=@CarDisp.DisplayName("Suspension") KVPairs=@SuspensionTypes(Car) />
+                    <MultipleItem Name=@CarDisp.DisplayName("Brake") KVPairs=@BrakeTypes(Car) />
+                    <ListItem Name=@CarDisp.DisplayName("FuelEfficiency") Values=@Car.FuelEfficiency />
+                </div>
+            </RadzenPanel>
+            <!-- 性能 -->
+            <RadzenPanel>
+                <h4>性能</h4>
+                <div class="spec-container">
+                    <SingleItem Name=@CarDisp.DisplayName("MinTurningRadius") Value=@ToString(Car.MinTurningRadius) />
+                    @if (Car.PowerTrain != HogeBlazor.Shared.Models.Db.PowerTrain.BEV)
+                    {
+                        <EngineSpecItem Fcr="@Car.Fcr" />
+                    }
+                    else
+                    {
+                        <MotorSpecItem Ecr="@Car.Ecr" />
+                    }
+                </div>
+            </RadzenPanel>
+            <!-- エンジン -->
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.Engine)>
+                <h4>エンジン</h4>
+                <div class="spec-container">
+                    <SingleItem Name=@Engine.DisplayName("Code") Value=@Car.Engine.Code />
+                    <SingleItem Name=@Engine.DisplayName("Type") Value=@Car.Engine.Type />
+                    <SingleItem Name=@Engine.DisplayName("CylinderNum") Value=@ToString(Car.Engine.CylinderNum) />
+                    <SingleItem Name=@Engine.DisplayName("CylinderLayout") Value=@Car.Engine.CylinderLayout />
+                    <SingleItem Name=@Engine.DisplayName("ValveSystem") Value=@Car.Engine.ValveSystem />
+                    <SingleItem Name=@Engine.DisplayName("Displacement") Value=@ToString(Car.Engine.Displacement) />
+                    <SingleItem Name=@Engine.DisplayName("Bore") Value=@ToString(Car.Engine.Bore) />
+                    <SingleItem Name=@Engine.DisplayName("Stroke") Value=@ToString(Car.Engine.Stroke) />
+                    <SingleItem Name=@Engine.DisplayName("CompressionRatio")
+                        Value=@ToString(Car.Engine.CompressionRatio) />
+                    <SingleItem Name=@Engine.DisplayName("MaxOutput") Value=@ToString(Car.Engine.MaxOutput) />
+                    <MultipleItem Name=@Engine.DisplayName("MaxOutputRpm")
+                        KVPairs=@MaxOutputRpm(Car.Engine.MaxOutputRpm) />
+                    <SingleItem Name=@Engine.DisplayName("MaxTorque") Value=@ToString(Car.Engine.MaxTorque) />
+                    <MultipleItem Name=@Engine.DisplayName("MaxTorqueRpm")
+                        KVPairs=@MaxTorqueRpm(Car.Engine.MaxTorqueRpm) />
+                    <SingleItem Name=@Engine.DisplayName("MaxTorque") Value=@ToString(Car.Engine.MaxTorque) />
+                    <SingleItem Name=@Engine.DisplayName("FuelSystem") Value=@Car.Engine.FuelSystem />
+                    <SingleItem Name=@Engine.DisplayName( "FuelType") Value=@FuelType(Car.Engine.FuelType) />
+                    <SingleItem Name=@Engine.DisplayName("FuelTankCap") Value=@ToString(Car.Engine.FuelTankCap) />
+                </div>
+            </RadzenPanel>
+            <!-- モーター1 -->
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.MotorX)>
+                <h4>モーター1</h4>
+                <div class="spec-container">
+                    <SingleItem Name=@Motor.DisplayName("Code") Value=@Car.MotorX.Code />
+                    <SingleItem Name=@Motor.DisplayName("Type") Value=@Car.MotorX.Type />
+                    <SingleItem Name=@Motor.DisplayName("Purpose") Value=@Car.MotorX.Purpose />
+                    <SingleItem Name=@Motor.DisplayName("RatedOutput") Value=@ToString(Car.MotorX.RatedOutput) />
+                    <SingleItem Name=@Motor.DisplayName("MaxOutput") Value=@ToString(Car.MotorX.MaxOutput) />
+                    <MultipleItem Name=@Motor.DisplayName("MaxOutputRpm")
+                        KVPairs=@MaxOutputRpm(Car.MotorX.MaxOutputRpm) />
+                    <SingleItem Name=@Motor.DisplayName("MaxTorque") Value=@ToString(Car.MotorX.MaxTorque) />
+                    <MultipleItem Name=@Motor.DisplayName("MaxTorqueRpm")
+                        KVPairs=@MaxTorqueRpm(Car.MotorX.MaxTorqueRpm) />
+                </div>
+            </RadzenPanel>
+            <!-- モーター2 -->
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.MotorY)>
+                <h4>モーター2</h4>
+                <div class="spec-container">
+                    <SingleItem Name=@Motor.DisplayName("Code") Value=@Car.MotorY.Code />
+                    <SingleItem Name=@Motor.DisplayName("Type") Value=@Car.MotorY.Type />
+                    <SingleItem Name=@Motor.DisplayName("Purpose") Value=@Car.MotorY.Purpose />
+                    <SingleItem Name=@Motor.DisplayName("RatedOutput") Value=@ToString(Car.MotorY.RatedOutput) />
+                    <SingleItem Name=@Motor.DisplayName("MaxOutput") Value=@ToString(Car.MotorY.MaxOutput) />
+                    <MultipleItem Name=@Motor.DisplayName("MaxOutputRpm")
+                        KVPairs=@MaxOutputRpm(Car.MotorY.MaxOutputRpm) />
+                    <SingleItem Name=@Motor.DisplayName("MaxTorque") Value=@ToString(Car.MotorY.MaxTorque) />
+                    <MultipleItem Name=@Motor.DisplayName("MaxTorqueRpm")
+                        KVPairs=@MaxTorqueRpm(Car.MotorY.MaxTorqueRpm) />
+                </div>
+            </RadzenPanel>
+            <!-- バッテリー -->
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.Battery)>
+                <h4>バッテリー</h4>
+                <div class="spec-container">
+                    <SingleItem Name=@Battery.DisplayName("Type") Value=@Car.Battery.Type />
+                    <SingleItem Name=@Battery.DisplayName("Quantity") Value=@ToString(Car.Battery.Quantity) />
+                    <SingleItem Name=@Battery.DisplayName("Voltage") Value=@ToString(Car.Battery.Voltage) />
+                    <SingleItem Name=@Battery.DisplayName("Capacity") Value=@ToString(Car.Battery.Capacity) />
+                </div>
+            </RadzenPanel>
+            <!-- タイヤ -->
+            <RadzenPanel>
+                <h4>タイヤ</h4>
+                <div class="spec-container">
+                    <MultipleItem Name=@CarDisp.DisplayName("SectionWidth") KVPairs=@SectionWidth(Car) />
+                    <MultipleItem Name=@CarDisp.DisplayName("AspectRatio") KVPairs=@AspectRatio(Car) />
+                    <MultipleItem Name=@CarDisp.DisplayName("WheelDiameter") KVPairs=@WheelDiameter(Car) />
+                </div>
+            </RadzenPanel>
+            <!-- トランスミッション -->
+            <RadzenPanel Visible=@Helpers.ModelHelper.HasValidPropertyValue(Car.Transmission)>
+                <h4>トランスミッション</h4>
+                <div class="spec-container">
+                    <SingleItem Name=@Transmission.DisplayName("TransmissionType")
+                        Value=@Car.Transmission.TransmissionType />
+                    <MultipleItem Name=@Transmission.DisplayName("GearRatios") KVPairs=@GearRatios(Car) />
+                    <MultipleItem Name=@Transmission.DisplayName("ReductionRatio") KVPairs=@ReductionRaio(Car) />
+                </div>
+            </RadzenPanel>
+        </div>
+
+        <!-- 右列 -->
+        <div class="col-md-3 px-0">
+            <!-- 画像 -->
+            <RadzenPanel class="px-0 py-0">
+                <a href="@Car.ImageUrl" target="_blank">
+                    <img src="@Car.ImageUrl" width="100%" />
+                </a>
+            </RadzenPanel>
+            <!-- 三面図 -->
+            <CarFigure Car=@Car />
+            <RadzenPanel>
+                <h4>外寸(mm)</h4>
+                <NumbersItem KVPairs=@OuterBody(Car) />
+            </RadzenPanel>
+            <RadzenPanel>
+                <h4>内寸(mm)</h4>
+                <NumbersItem KVPairs=@InteriorBody(Car) />
+            </RadzenPanel>
+            <RadzenPanel>
+                <h4>その他</h4>
+                <NumbersItem KVPairs=@OtherBody(Car) />
+            </RadzenPanel>
+        </div>
+    </div>
+</div>
