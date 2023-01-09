@@ -254,13 +254,13 @@ VSCodeでプロジェクトを開きF5。
     ```
 
 ## デプロイ手順
-mainブランチを更新。
-あとは`.github/workflows/deploy_ecs_aws.yml`に従ってAmazon ECSにデプロイが実行される。
-（余分な料金がかからないよう、普段はECSを削除してある）
+### Server
+APIServerはLambdaにデプロイ。
 
-- 参考
-    - [Amazon Elastic Container Serviceへのデプロイ](https://docs.github.com/ja/actions/deployment/deploying-to-your-cloud-provider/deploying-to-amazon-elastic-container-service)
-    - [GitHub ActionsからECSとECRへのCI/CDを最小権限で実行したい](https://dev.classmethod.jp/articles/github-actions-ecs-ecr-minimum-iam-policy/)
+```
+$ dotnet lambda deploy-serverless --profile awwa500 --project-location Server --stack-name mincuru-api-server --s3-bucket mincuru-deploy --template serverless.template
+```
+
 
 ## 環境の説明
 - ローカル開発環境

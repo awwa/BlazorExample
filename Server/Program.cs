@@ -13,6 +13,7 @@ using HogeBlazor.Server.Db;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
