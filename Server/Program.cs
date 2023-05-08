@@ -56,6 +56,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 // リポジトリの登録
 builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<IDynamoCarRepository, DynamoCarRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 

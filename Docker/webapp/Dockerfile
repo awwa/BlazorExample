@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
 
-RUN dotnet tool install -g Microsoft.dotnet-openapi
+RUN dotnet tool install -g Microsoft.dotnet-openapi  --version 6.0.16
 
 # copy csproj and restore as distinct layers
 COPY Client/. ./Client/

@@ -12,6 +12,15 @@ services:
     links:
       - postgres
     command: [ "dotnet", "watch", "run" ]
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./Docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
   postgres:
     container_name: hoge-blazor-postgres
     hostname: hoge-blazor-postgres

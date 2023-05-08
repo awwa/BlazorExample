@@ -139,11 +139,16 @@ Sharedプロジェクトに実装を追加したタイミングでテストも�
     $ dotnet build
     ```
 5. データベースの構築と起動
-    `up` することで`Docker/init/init-user-db.sh`スクリプトが実行され、DBの初期設定が完了する。
-    ```
-    $ docker compose build postgres
-    $ docker compose up -d postgres
-    ```
+    - PostgreSQL
+        `up` することで`Docker/init/init-user-db.sh`スクリプトが実行され、DBの初期設定が完了する。
+        ```
+        $ docker compose build postgres
+        $ docker compose up -d postgres
+        ```
+    - DynamoDB local
+        ```
+        $ docker compose up -d dynamodb-local
+        ```
 6. データベース起動確認
     DBの初期設定完了まで少し時間がかかるので、起動を確認する。
     ```
@@ -159,10 +164,15 @@ Sharedプロジェクトに実装を追加したタイミングでテストも�
     2022-05-05 16:02:29.399 UTC [1] LOG: データベースシステムの接続受け付け準備が整いました
     ```
 7. データベースの構築
-    マイグレーションを実行する。これにより`hoge_blazor`DBが作成され、アプリケーション起動の準備が完了する。
-    ```
-    $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj
-    ```
+    - PostgreSQL
+        マイグレーションを実行する。これにより`hoge_blazor`DBが作成され、アプリケーション起動の準備が完了する。
+        ```
+        $ dotnet ef database update --project ./Server/HogeBlazor.Server.csproj
+        ```
+    - DynamoDB local
+        ```
+        $ ./DynamoDB/bin/create.sh
+        ```
 
 ## デバッグ
 ### データベース接続
@@ -368,5 +378,9 @@ $ dotnet lambda deploy-serverless --profile awwa500 --project-location Server --
 - [Refresh Token with Blazor WebAssembly and ASP.NET Core Web API](https://code-maze.com/refresh-token-with-blazor-webassembly-and-asp-net-core-web-api/)
 
 ## TODO
-- 認証機能を入れたことにより、Client.Testが通らなくなっているので修正したい
 - `Client/Helpers/ApiClient.cs`や`OpenApi/openapi.json`などの自動生成されるファイルはGit管理から外しておきたい（ビルド時に確実に更新されるのであれば外さなくても良いが）
+- Lambda版のデプロイフロー
+    - チェックアウト
+    - マイグレーションバンドルの生成
+    - ECSへマイグレーションバンドルのデプロイ
+    - run-one-off-task-on-ecsによるマイグレーションコンテナの実行
