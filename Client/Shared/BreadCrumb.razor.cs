@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using HogeBlazor.Client.Repositories;
+using HogeBlazor.Shared.Models.Dto;
 
 namespace HogeBlazor.Client.Shared;
 
@@ -31,10 +32,10 @@ public partial class BreadCrumb
         ret.Add(new BreadCrumbItem() { Path = "/", Text = "ホーム" });
 
         var path = "/";
-        var items = relativePath.Split('/', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        string[] items = relativePath.Split('/', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         for (var i = 0; i < items.Count(); i++)
         {
-            var text = _pages.ContainsKey(items[i]) ? _pages[items[i]] : items[i];
+            string text = _pages.ContainsKey(items[i]) ? _pages[items[i]] : items[i];
             if (i == 0)
             {
                 path += items[i];
@@ -43,11 +44,10 @@ public partial class BreadCrumb
             {
                 path += "/" + items[i];
             }
-            int v = 0;
-            if (int.TryParse(items[i], out v))
+            if (items[i].StartsWith("car_"))
             {
-                var car = await CarRepo.GetCar(v);
-                text = car.ModelName;
+                CarDto car = await CarRepo.GetCarAsync(items[i]);
+                text = car.ModelName ?? string.Empty;
             }
             // 末尾のリンクは無効
             if (i == items.Count() - 1) path = "";

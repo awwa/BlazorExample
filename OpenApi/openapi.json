@@ -1,109 +1,25 @@
 {
-  "x-generator": "NSwag v13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "My Title",
     "version": "1.0.0"
   },
   "paths": {
-    "/api/v1/accounts/register": {
-      "post": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_RegisterUser",
-        "requestBody": {
-          "x-name": "userForRegistration",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserForRegistrationDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponseDto"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/accounts/login": {
-      "post": {
-        "tags": [
-          "Accounts"
-        ],
-        "operationId": "Accounts_Login",
-        "requestBody": {
-          "x-name": "userForAuthentication",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserForAuthenticationDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthResponseDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/cars/{id}": {
       "get": {
         "tags": [
           "Cars"
         ],
-        "operationId": "Cars_Get",
+        "operationId": "Cars_GetCar",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "nullable": true
             },
             "x-position": 1
           }
@@ -114,7 +30,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Car"
+                  "$ref": "#/components/schemas/CarDto"
                 }
               }
             }
@@ -137,15 +53,16 @@
         "tags": [
           "Cars"
         ],
-        "operationId": "Cars_GetCars",
+        "operationId": "Cars_QueryCars",
         "parameters": [
           {
-            "name": "makerNames",
+            "name": "MakerNames",
             "in": "query",
             "style": "form",
             "explode": true,
             "schema": {
               "type": "array",
+              "nullable": true,
               "items": {
                 "type": "string"
               }
@@ -153,27 +70,27 @@
             "x-position": 1
           },
           {
-            "name": "priceLower",
+            "name": "Price.Lower",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 2
           },
           {
-            "name": "priceUpper",
+            "name": "Price.Upper",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 3
           },
           {
-            "name": "powerTrain",
+            "name": "PowerTrain",
             "in": "query",
             "schema": {
               "type": "string",
@@ -182,7 +99,7 @@
             "x-position": 4
           },
           {
-            "name": "driveSystem",
+            "name": "DriveSystem",
             "in": "query",
             "schema": {
               "type": "string",
@@ -191,7 +108,7 @@
             "x-position": 5
           },
           {
-            "name": "bodyType",
+            "name": "BodyType",
             "in": "query",
             "schema": {
               "type": "string",
@@ -200,107 +117,107 @@
             "x-position": 6
           },
           {
-            "name": "lengthLower",
+            "name": "BodyLength.Lower",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 7
           },
           {
-            "name": "lengthUpper",
+            "name": "BodyLength.Upper",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 8
           },
           {
-            "name": "widthLower",
+            "name": "BodyWidth.Lower",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 9
           },
           {
-            "name": "widthUpper",
+            "name": "BodyWidth.Upper",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 10
           },
           {
-            "name": "heightLower",
+            "name": "BodyHeight.Lower",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 11
           },
           {
-            "name": "heightUpper",
+            "name": "BodyHeight.Upper",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 12
           },
           {
-            "name": "weightUpper",
+            "name": "Weight.Lower",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 13
           },
           {
-            "name": "doorNumLower",
+            "name": "Weight.Upper",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 14
           },
           {
-            "name": "ridingCapLower",
+            "name": "DoorNum.Lower",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 15
           },
           {
-            "name": "ridingCapUpper",
+            "name": "DoorNum.Upper",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "number",
+              "format": "float",
               "nullable": true
             },
             "x-position": 16
           },
           {
-            "name": "fcrWltcLower",
+            "name": "RidingCap.Lower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -310,7 +227,7 @@
             "x-position": 17
           },
           {
-            "name": "fcrJc08Lower",
+            "name": "RidingCap.Upper",
             "in": "query",
             "schema": {
               "type": "number",
@@ -320,7 +237,7 @@
             "x-position": 18
           },
           {
-            "name": "mpcWltcLower",
+            "name": "FcrWltc.Lower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -330,7 +247,7 @@
             "x-position": 19
           },
           {
-            "name": "ecrWltcLower",
+            "name": "FcrWltc.Upper",
             "in": "query",
             "schema": {
               "type": "number",
@@ -340,7 +257,7 @@
             "x-position": 20
           },
           {
-            "name": "ecrJc08Lower",
+            "name": "FcrJc08.Lower",
             "in": "query",
             "schema": {
               "type": "number",
@@ -350,7 +267,7 @@
             "x-position": 21
           },
           {
-            "name": "mpcJc08Lower",
+            "name": "FcrJc08.Upper",
             "in": "query",
             "schema": {
               "type": "number",
@@ -360,13 +277,127 @@
             "x-position": 22
           },
           {
-            "name": "fuelType",
+            "name": "MpcWltc.Lower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 23
+          },
+          {
+            "name": "MpcWltc.Upper",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 24
+          },
+          {
+            "name": "EcrWltc.Lower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 25
+          },
+          {
+            "name": "EcrWltc.Upper",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 26
+          },
+          {
+            "name": "EcrJc08.Lower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 27
+          },
+          {
+            "name": "EcrJc08.Upper",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 28
+          },
+          {
+            "name": "MpcJc08.Lower",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 29
+          },
+          {
+            "name": "MpcJc08.Upper",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "nullable": true
+            },
+            "x-position": 30
+          },
+          {
+            "name": "FuelType",
             "in": "query",
             "schema": {
               "type": "string",
               "nullable": true
             },
-            "x-position": 23
+            "x-position": 31
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/CarDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cars/attributes": {
+      "get": {
+        "tags": [
+          "Cars"
+        ],
+        "operationId": "Cars_GetCarAttributeValues",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
           }
         ],
         "responses": {
@@ -377,7 +408,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Car"
+                    "type": "string"
                   }
                 }
               }
@@ -427,218 +458,23 @@
           }
         }
       }
-    },
-    "/api/v1/token/refresh": {
-      "post": {
-        "tags": [
-          "Token"
-        ],
-        "operationId": "Token_Refresh",
-        "requestBody": {
-          "x-name": "tokenDto",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RefreshTokenDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthResponseDto"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
-      "RegistrationResponseDto": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "ValidationProblemDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/HttpValidationProblemDetails"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
-              "nullable": true
-            },
-            "properties": {
-              "errors": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        ]
-      },
-      "HttpValidationProblemDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ProblemDetails"
-          },
-          {
-            "type": "object",
-            "additionalProperties": {
-              "nullable": true
-            },
-            "properties": {
-              "errors": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        ]
-      },
-      "ProblemDetails": {
-        "type": "object",
-        "additionalProperties": {
-          "nullable": true
-        },
-        "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "UserForRegistrationDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "email",
-          "password",
-          "confirmPassword"
-        ],
-        "properties": {
-          "email": {
-            "type": "string",
-            "minLength": 1
-          },
-          "password": {
-            "type": "string",
-            "minLength": 1
-          },
-          "confirmPassword": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
-      "AuthResponseDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "isAuthSuccessful": {
-            "type": "boolean"
-          },
-          "errorMessage": {
-            "type": "string"
-          },
-          "token": {
-            "type": "string"
-          },
-          "refreshToken": {
-            "type": "string"
-          }
-        }
-      },
-      "UserForAuthenticationDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "email",
-          "password"
-        ],
-        "properties": {
-          "email": {
-            "type": "string",
-            "minLength": 1
-          },
-          "password": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
-      "Car": {
+      "CarDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "deletedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
           },
           "makerName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "modelName": {
-            "type": "string"
-          },
-          "gradeName": {
-            "type": "string"
-          },
-          "modelCode": {
-            "type": "string"
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32",
+            "type": "string",
             "nullable": true
           },
           "url": {
@@ -649,30 +485,60 @@
             "type": "string",
             "nullable": true
           },
-          "modelChangeFull": {
-            "type": "string",
-            "nullable": true
-          },
-          "modelChangeLast": {
-            "type": "string",
-            "nullable": true
-          },
-          "body": {
-            "$ref": "#/components/schemas/Body"
-          },
-          "interior": {
-            "$ref": "#/components/schemas/Interior"
-          },
-          "performance": {
-            "$ref": "#/components/schemas/Performance"
-          },
-          "powerTrain": {
+          "bodyType": {
             "type": "string",
             "nullable": true
           },
           "driveSystem": {
             "type": "string",
             "nullable": true
+          },
+          "powerTrain": {
+            "type": "string",
+            "nullable": true
+          },
+          "modelCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "gradeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "modelChange": {
+            "$ref": "#/components/schemas/ModelChange"
+          },
+          "steering": {
+            "type": "string",
+            "nullable": true
+          },
+          "suspension": {
+            "$ref": "#/components/schemas/Suspension"
+          },
+          "break": {
+            "$ref": "#/components/schemas/Break"
+          },
+          "fuelEfficiency": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minTurningRadius": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "fcr": {
+            "$ref": "#/components/schemas/Fcr"
+          },
+          "ecr": {
+            "$ref": "#/components/schemas/Ecr"
           },
           "engine": {
             "$ref": "#/components/schemas/Engine"
@@ -686,164 +552,126 @@
           "battery": {
             "$ref": "#/components/schemas/Battery"
           },
-          "steering": {
-            "type": "string",
-            "nullable": true
-          },
-          "suspensionFront": {
-            "type": "string",
-            "nullable": true
-          },
-          "suspensionRear": {
-            "type": "string",
-            "nullable": true
-          },
-          "brakeFront": {
-            "type": "string",
-            "nullable": true
-          },
-          "brakeRear": {
-            "type": "string",
-            "nullable": true
-          },
-          "tireFront": {
-            "$ref": "#/components/schemas/Tire"
-          },
-          "tireRear": {
+          "tire": {
             "$ref": "#/components/schemas/Tire"
           },
           "transmission": {
             "$ref": "#/components/schemas/Transmission"
           },
-          "fuelEfficiency": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "outerBody": {
+            "$ref": "#/components/schemas/OuterBody"
+          },
+          "interiorBody": {
+            "$ref": "#/components/schemas/InteriorBody"
+          },
+          "otherBody": {
+            "$ref": "#/components/schemas/OtherBody"
           }
         }
       },
-      "Body": {
+      "ModelChange": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "type": {
+          "full": {
             "type": "string",
             "nullable": true
           },
-          "length": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "width": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "height": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "wheelBase": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "treadFront": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "treadRear": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "minRoadClearance": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "weight": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "doorNum": {
-            "type": "integer",
-            "format": "int32",
+          "last": {
+            "type": "string",
             "nullable": true
           }
         }
       },
-      "Interior": {
+      "Suspension": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "length": {
-            "type": "integer",
-            "format": "int32",
+          "front": {
+            "type": "string",
             "nullable": true
           },
-          "width": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "height": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "luggageCap": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "ridingCap": {
-            "type": "integer",
-            "format": "int32",
+          "rear": {
+            "type": "string",
             "nullable": true
           }
         }
       },
-      "Performance": {
+      "Break": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "minTurningRadius": {
+          "front": {
+            "type": "string",
+            "nullable": true
+          },
+          "rear": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Fcr": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "wltc": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "fcrWltc": {
+          "wltcL": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "fcrWltcL": {
+          "wltcM": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "fcrWltcM": {
+          "wltcH": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "fcrWltcH": {
+          "wltcExH": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "fcrWltcExh": {
+          "jc08": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "Ecr": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "wltc": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "fcrJc08": {
+          "wltcL": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "wltcM": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "wltcH": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "wltcExH": {
             "type": "number",
             "format": "float",
             "nullable": true
@@ -853,32 +681,7 @@
             "format": "float",
             "nullable": true
           },
-          "ecrWltc": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "ecrWltcL": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "ecrWltcM": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "ecrWltcH": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "ecrWltcExh": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "ecrJc08": {
+          "jc08": {
             "type": "number",
             "format": "float",
             "nullable": true
@@ -940,30 +743,16 @@
             "format": "float",
             "nullable": true
           },
-          "maxOutputLowerRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "maxOutputUpperRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "maxOutputRpm": {
+            "$ref": "#/components/schemas/MaxOutputRpm"
           },
           "maxTorque": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "maxTorqueLowerRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "maxTorqueUpperRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "maxTorqueRpm": {
+            "$ref": "#/components/schemas/MaxTorqueRpm"
           },
           "fuelSystem": {
             "type": "string",
@@ -974,6 +763,38 @@
             "nullable": true
           },
           "fuelTankCap": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "MaxOutputRpm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lower": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "upper": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "MaxTorqueRpm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lower": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "upper": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -1006,30 +827,16 @@
             "format": "float",
             "nullable": true
           },
-          "maxOutputLowerRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "maxOutputUpperRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "maxOutputRpm": {
+            "$ref": "#/components/schemas/MaxOutputRpm"
           },
           "maxTorque": {
             "type": "number",
             "format": "float",
             "nullable": true
           },
-          "maxTorqueLowerRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "maxTorqueUpperRpm": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "maxTorqueRpm": {
+            "$ref": "#/components/schemas/MaxTorqueRpm"
           }
         }
       },
@@ -1063,16 +870,58 @@
         "additionalProperties": false,
         "properties": {
           "sectionWidth": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "$ref": "#/components/schemas/SectionWidth"
           },
           "aspectRatio": {
+            "$ref": "#/components/schemas/AspectRatio"
+          },
+          "wheelDiameter": {
+            "$ref": "#/components/schemas/WheelDiameter"
+          }
+        }
+      },
+      "SectionWidth": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "front": {
             "type": "integer",
             "format": "int32",
             "nullable": true
           },
-          "wheelDiameter": {
+          "rear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "AspectRatio": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "front": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "WheelDiameter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "front": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rear": {
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -1087,40 +936,171 @@
             "type": "string",
             "nullable": true
           },
-          "gearRatiosFront": {
+          "gearRatio": {
+            "$ref": "#/components/schemas/GearRatio"
+          },
+          "reductionRatio": {
+            "$ref": "#/components/schemas/ReductionRatio"
+          }
+        }
+      },
+      "GearRatio": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "front": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "number",
               "format": "float"
             }
           },
-          "gearRatioRear": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "reductionRatioFront": {
-            "type": "number",
-            "format": "float",
-            "nullable": true
-          },
-          "reductionRatioRear": {
+          "rear": {
             "type": "number",
             "format": "float",
             "nullable": true
           }
         }
       },
-      "RefreshTokenDto": {
+      "ReductionRatio": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "token": {
-            "type": "string"
+          "front": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
           },
-          "refreshToken": {
-            "type": "string"
+          "rear": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        }
+      },
+      "OuterBody": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "length": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "wheelBase": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tread": {
+            "$ref": "#/components/schemas/Tread"
+          },
+          "minRoadClearance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "Tread": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "front": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "InteriorBody": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "length": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "OtherBody": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "weight": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "doorNum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "luggageCap": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ridingCap": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
           }
         }
       }

@@ -1,4 +1,4 @@
-using HogeBlazor.Client.Models;
+using HogeBlazor.Client.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Radzen;
@@ -7,7 +7,7 @@ namespace HogeBlazor.Client.Shared;
 public partial class CarFigureDialog
 {
     [Parameter]
-    public CarDisp Car { get; set; } = default!;
+    public CarDto Car { get; set; } = default!;
 
     [Inject]
     public DialogService DialogService { get; set; } = default!;
@@ -22,8 +22,8 @@ public partial class CarFigureDialog
             Car.OuterBody.Width,
             Car.OuterBody.Height,
             Car.OuterBody.WheelBase,
-            Car.OuterBody.TreadFront,
-            Car.OuterBody.TreadRear,
+            Car.OuterBody.Tread.Front,
+            Car.OuterBody.Tread.Rear,
             Car.OuterBody.MinRoadClearance
         );
     }

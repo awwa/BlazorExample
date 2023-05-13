@@ -4,18 +4,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
 using HogeBlazor.Server.Models;
-using HogeBlazor.Shared.Models.Db;
 using HogeBlazor.Server.Repositories;
-using HogeBlazor.Server.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
 
 // Blazor WebAssembly Authentication with ASP.NET Core Identity
 // https://code-maze.com/blazor-webassembly-authentication-aspnetcore-identity/
@@ -45,20 +40,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddOpenApiDocument();
 
-// PostgreSQLの設定
-string npgsqlConnString = builder.Configuration.GetConnectionString("PostgresDatabase");
-builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseNpgsql(connectionString: npgsqlConnString)
-);
-
 // ControllerのURLを小文字に変換
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 // リポジトリの登録
 builder.Services.AddScoped<ICarRepository, CarRepository>();
-builder.Services.AddScoped<IDynamoCarRepository, DynamoCarRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

@@ -1,27 +1,30 @@
 @using HogeBlazor.Client.Models
 
 <div class="spec-item">
-    <div class="spec-row">
-        <div class="spec-title">@(Fcr.DisplayName("FcrWltc"))</div>
-        <div class="spec-value">@ToString(Fcr.FcrWltc)</div>
+    <div class="spac-row">
+        <div class="spec-title">@CarLabel.Fcr</div>
     </div>
     <div class="spec-row">
-        <div class="spec-sub-title">@(Fcr.DisplayName("FcrWltcL"))
+        <div class="spec-title">@CarLabel.Wltc</div>
+        <div class="spec-value">@ToString(Fcr.Wltc)</div>
+    </div>
+    <div class="spec-row">
+        <div class="spec-sub-title">@CarLabel.WltcL
         </div>
-        <div class="spec-value">@ToString(Fcr.FcrWltcL)</div>
+        <div class="spec-value">@ToString(Fcr.WltcL)</div>
     </div>
     <div class="spec-row">
-        <div class="spec-sub-title">@(Fcr.DisplayName("FcrWltcM"))
+        <div class="spec-sub-title">@CarLabel.WltcM
         </div>
-        <div class="spec-value">@ToString(Fcr.FcrWltcM)</div>
+        <div class="spec-value">@ToString(Fcr.WltcM)</div>
     </div>
     <div class="spec-row">
-        <div class="spec-sub-title">@(Fcr.DisplayName("FcrWltcH"))
+        <div class="spec-sub-title">@CarLabel.WltcH
         </div>
-        <div class="spec-value">@ToString(Fcr.FcrWltcH)</div>
+        <div class="spec-value">@ToString(Fcr.WltcH)</div>
     </div>
     <div class="spec-row">
-        <div class="spec-title">@(Fcr.DisplayName("FcrJc08"))</div>
-        <div class="spec-value">@ToString(Fcr.FcrJc08)</div>
+        <div class="spec-title">@CarLabel.Jc08</div>
+        <div class="spec-value">@ToString(Fcr.Jc08)</div>
     </div>
 </div>

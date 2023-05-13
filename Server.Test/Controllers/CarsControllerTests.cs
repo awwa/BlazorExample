@@ -21,7 +21,7 @@ public class CarsControllerTests
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    services.AddScoped<IDynamoCarRepository, MockDynamoCarRepository>();
+                    services.AddScoped<ICarRepository, MockDynamoCarRepository>();
                 });
             }).CreateClient();
     }

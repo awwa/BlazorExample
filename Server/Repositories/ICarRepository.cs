@@ -1,15 +1,16 @@
-using HogeBlazor.Shared.Models.Db;
-using Microsoft.AspNetCore.Mvc;
+using HogeBlazor.Shared.Models.Dto;
 using static HogeBlazor.Server.Repositories.CarRepository;
 
 namespace HogeBlazor.Server.Repositories;
 
 public interface ICarRepository
 {
-    Task<Car?> GetCar(int id);
-    Task<List<Car>> GetCars(CarParameters p);
-
-    // Task CreateCar(Car car);
-    // Task UpdateCar(Car car);
-    // Task DeleteCar(Car car);
+    Task CreateTableAsync();
+    Task DeleteTableAsync();
+    Task DescribeTableAsync();
+    Task<CarDto> GetAsync(string id);
+    Task<Dictionary<string, CarDto>> QueryAsync(CarQuery query);
+    Task<HashSet<string>> GetAttributeValuesAsync(string dataType);
+    Task PutAsync(CarDto car);
+    Task DeleteAsync(string id);
 }

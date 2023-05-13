@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
-using HogeBlazor.Client.Models;
-// using HogeBlazor.Client.Helpers;
+using HogeBlazor.Client.Helpers;
 
 namespace HogeBlazor.Client.Test.Features;
 
@@ -34,7 +31,8 @@ public class ModelHelperTests : TestContext
     public void HasValidPropertyValueReturnsFalseIfNull()
     {
         // Arrang & Act
-        var actual = Helpers.ModelHelper.HasValidPropertyValue(null);
+        string? nullValue = null;
+        var actual = Helpers.ModelHelper.HasValidPropertyValue(nullValue);
         // Assert
         Assert.False(actual);
     }

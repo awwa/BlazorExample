@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- <ProjectReference Include="..\Client\HogeBlazor.Client.csproj" /> -->
+    <ProjectReference Include="..\Client\HogeBlazor.Client.csproj" />
     <ProjectReference Include="..\Shared\HogeBlazor.Shared.csproj" />
   </ItemGroup>
 

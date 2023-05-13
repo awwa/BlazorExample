@@ -1,10 +1,11 @@
 
-using HogeBlazor.Client.Helpers;
+using HogeBlazor.Shared.Models.Dto;
 
 namespace HogeBlazor.Client.Repositories;
 
 public interface ICarHttpRepository
 {
-    Task<Car> GetCar(int id);
-    Task<List<Car>> GetCars();
+    Task<IDictionary<string, CarDto>> QueryCarsAsync(CarQuery query);
+    Task<CarDto> GetCarAsync(string id);
+    Task<IEnumerable<string>> GetCarAttributeValuesAsync(string dataType);
 }

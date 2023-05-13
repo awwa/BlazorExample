@@ -2,7 +2,7 @@ using HogeBlazor.Server.Helpers;
 using HogeBlazor.Server.Repositories;
 using HogeBlazor.Shared.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
-using static HogeBlazor.Server.Repositories.DynamoCarRepository;
+using static HogeBlazor.Server.Repositories.CarRepository;
 
 namespace HogeBlazor.Server.Controllers;
 
@@ -10,9 +10,9 @@ namespace HogeBlazor.Server.Controllers;
 [ApiController]
 public class CarsController : ControllerBase
 {
-    private readonly IDynamoCarRepository _repo;
+    private readonly ICarRepository _repo;
 
-    public CarsController(IDynamoCarRepository repo)
+    public CarsController(ICarRepository repo)
     {
         _repo = repo;
     }
@@ -42,8 +42,6 @@ public class CarsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Dictionary<string, CarDto>))]
     public async Task<ActionResult<Dictionary<string, CarDto>>> QueryCarsAsync([FromQuery] CarQuery query)
     {
-        Console.WriteLine("QueryCarsAsync()");
-        query.MakerNames.ForEach(x => Console.WriteLine($"makerName: {x}"));
         return Ok(await _repo.QueryAsync(query));
     }
 
@@ -55,7 +53,7 @@ public class CarsController : ControllerBase
     [HttpGet]
     [Route("attributes")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HashSet<string>))]
-    public async Task<ActionResult<HashSet<string>>> GetAttributeValuesAsync([FromQuery] string dataType)
+    public async Task<ActionResult<HashSet<string>>> GetCarAttributeValuesAsync([FromQuery] string dataType)
     {
         return Ok(await _repo.GetAttributeValuesAsync(dataType));
     }

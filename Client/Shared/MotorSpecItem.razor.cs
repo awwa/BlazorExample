@@ -1,5 +1,4 @@
-// using HogeBlazor.Shared.Models.Dto;
-using HogeBlazor.Client.Models;
+using HogeBlazor.Shared.Models.Dto;
 using Microsoft.AspNetCore.Components;
 
 namespace HogeBlazor.Client.Shared;

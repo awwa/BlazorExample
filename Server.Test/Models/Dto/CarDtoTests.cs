@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using HogeBlazor.Shared.Models.Dto;
 
-namespace HogeBlazor.Shared.Test.Models.Dto;
+namespace HogeBlazor.Server.Test.Models.Dto;
 
 public class CarDtoTests
 {

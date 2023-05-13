@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogeBlazor.Server.Repositories;
-using HogeBlazor.Shared.Models.Db;
 using HogeBlazor.Shared.Models.Dto;
-using static HogeBlazor.Server.Repositories.DynamoCarRepository;
+using static HogeBlazor.Server.Repositories.CarRepository;
 
 namespace HogeBlazor.Server.Test.Repositories;
 
-public class MockDynamoCarRepository : IDynamoCarRepository
+public class MockDynamoCarRepository : ICarRepository
 {
-    Task<CarDto> IDynamoCarRepository.GetAsync(string id)
+    Task<CarDto> ICarRepository.GetAsync(string id)
     {
         var ret = new CarDto("car_1")
                 .Set("MakerName", "マツダ")
@@ -23,7 +22,7 @@ public class MockDynamoCarRepository : IDynamoCarRepository
         return Task.FromResult<CarDto>(ret);
     }
 
-    Task<Dictionary<string, CarDto>> IDynamoCarRepository.QueryAsync(CarQuery query)
+    Task<Dictionary<string, CarDto>> ICarRepository.QueryAsync(CarQuery query)
     {
         var ret = new Dictionary<string, CarDto>();
         ret.Add(
@@ -40,7 +39,7 @@ public class MockDynamoCarRepository : IDynamoCarRepository
         return Task.FromResult<Dictionary<string, CarDto>>(ret);
     }
 
-    Task<HashSet<string>> IDynamoCarRepository.GetAttributeValuesAsync(string dataType)
+    Task<HashSet<string>> ICarRepository.GetAttributeValuesAsync(string dataType)
     {
         return Task.FromResult<HashSet<string>>(new HashSet<string>
         {
@@ -50,27 +49,27 @@ public class MockDynamoCarRepository : IDynamoCarRepository
         });
     }
 
-    Task IDynamoCarRepository.PutAsync(CarDto car)
+    Task ICarRepository.PutAsync(CarDto car)
     {
         throw new System.NotImplementedException();
     }
 
-    Task IDynamoCarRepository.DeleteAsync(string id)
+    Task ICarRepository.DeleteAsync(string id)
     {
         throw new System.NotImplementedException();
     }
 
-    Task IDynamoCarRepository.CreateTableAsync()
+    Task ICarRepository.CreateTableAsync()
     {
         throw new System.NotImplementedException();
     }
 
-    Task IDynamoCarRepository.DeleteTableAsync()
+    Task ICarRepository.DeleteTableAsync()
     {
         throw new System.NotImplementedException();
     }
 
-    Task IDynamoCarRepository.DescribeTableAsync()
+    Task ICarRepository.DescribeTableAsync()
     {
         throw new System.NotImplementedException();
     }

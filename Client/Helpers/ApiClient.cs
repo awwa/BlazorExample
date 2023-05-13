@@ -18,320 +18,6 @@ namespace HogeBlazor.Client.Helpers
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AccountsClient 
-    {
-        private string _baseUrl = "";
-        private System.Net.Http.HttpClient _httpClient;
-        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
-        public AccountsClient(string baseUrl, System.Net.Http.HttpClient httpClient)
-        {
-            BaseUrl = baseUrl;
-            _httpClient = httpClient;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
-        }
-
-        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
-        {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
-            UpdateJsonSerializerSettings(settings);
-            return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
-        }
-
-        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
-        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
-
-        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
-        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
-        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<RegistrationResponseDto> RegisterUserAsync(UserForRegistrationDto userForRegistration)
-        {
-            return RegisterUserAsync(userForRegistration, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<RegistrationResponseDto> RegisterUserAsync(UserForRegistrationDto userForRegistration, System.Threading.CancellationToken cancellationToken)
-        {
-            if (userForRegistration == null)
-                throw new System.ArgumentNullException("userForRegistration");
-
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/accounts/register");
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(userForRegistration, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<RegistrationResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ValidationProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ValidationProblemDetails>("A server side error occurred.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<AuthResponseDto> LoginAsync(UserForAuthenticationDto userForAuthentication)
-        {
-            return LoginAsync(userForAuthentication, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AuthResponseDto> LoginAsync(UserForAuthenticationDto userForAuthentication, System.Threading.CancellationToken cancellationToken)
-        {
-            if (userForAuthentication == null)
-                throw new System.ArgumentNullException("userForAuthentication");
-
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/accounts/login");
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(userForAuthentication, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<AuthResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 401)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<AuthResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<AuthResponseDto>("A server side error occurred.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        protected struct ObjectResponseResult<T>
-        {
-            public ObjectResponseResult(T responseObject, string responseText)
-            {
-                this.Object = responseObject;
-                this.Text = responseText;
-            }
-
-            public T Object { get; }
-
-            public string Text { get; }
-        }
-
-        public bool ReadResponseAsString { get; set; }
-
-        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
-        {
-            if (response == null || response.Content == null)
-            {
-                return new ObjectResponseResult<T>(default(T), string.Empty);
-            }
-
-            if (ReadResponseAsString)
-            {
-                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
-                    return new ObjectResponseResult<T>(typedBody, responseText);
-                }
-                catch (Newtonsoft.Json.JsonException exception)
-                {
-                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
-                }
-            }
-            else
-            {
-                try
-                {
-                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                    using (var streamReader = new System.IO.StreamReader(responseStream))
-                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
-                    {
-                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
-                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
-                        return new ObjectResponseResult<T>(typedBody, string.Empty);
-                    }
-                }
-                catch (Newtonsoft.Json.JsonException exception)
-                {
-                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
-                }
-            }
-        }
-
-        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
-        {
-            if (value == null)
-            {
-                return "";
-            }
-
-            if (value is System.Enum)
-            {
-                var name = System.Enum.GetName(value.GetType(), value);
-                if (name != null)
-                {
-                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
-                    if (field != null)
-                    {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
-                            as System.Runtime.Serialization.EnumMemberAttribute;
-                        if (attribute != null)
-                        {
-                            return attribute.Value != null ? attribute.Value : name;
-                        }
-                    }
-
-                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
-                    return converted == null ? string.Empty : converted;
-                }
-            }
-            else if (value is bool) 
-            {
-                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
-            }
-            else if (value is byte[])
-            {
-                return System.Convert.ToBase64String((byte[]) value);
-            }
-            else if (value.GetType().IsArray)
-            {
-                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
-                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
-            }
-
-            var result = System.Convert.ToString(value, cultureInfo);
-            return result == null ? "" : result;
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CarsClient 
     {
         private string _baseUrl = "";
@@ -367,18 +53,15 @@ namespace HogeBlazor.Client.Helpers
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Car> GetAsync(int id)
+        public virtual System.Threading.Tasks.Task<CarDto> GetCarAsync(string id)
         {
-            return GetAsync(id, System.Threading.CancellationToken.None);
+            return GetCarAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Car> GetAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<CarDto> GetCarAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
-            if (id == null)
-                throw new System.ArgumentNullException("id");
-
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/cars/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -415,7 +98,7 @@ namespace HogeBlazor.Client.Helpers
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Car>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<CarDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -453,108 +136,140 @@ namespace HogeBlazor.Client.Helpers
         }
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Car>> GetCarsAsync(System.Collections.Generic.IEnumerable<string> makerNames, int? priceLower, int? priceUpper, string powerTrain, string driveSystem, string bodyType, int? lengthLower, int? lengthUpper, int? widthLower, int? widthUpper, int? heightLower, int? heightUpper, int? weightUpper, int? doorNumLower, int? ridingCapLower, int? ridingCapUpper, float? fcrWltcLower, float? fcrJc08Lower, float? mpcWltcLower, float? ecrWltcLower, float? ecrJc08Lower, float? mpcJc08Lower, string fuelType)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, CarDto>> QueryCarsAsync(System.Collections.Generic.IEnumerable<string> makerNames, float? price_Lower, float? price_Upper, string powerTrain, string driveSystem, string bodyType, float? bodyLength_Lower, float? bodyLength_Upper, float? bodyWidth_Lower, float? bodyWidth_Upper, float? bodyHeight_Lower, float? bodyHeight_Upper, float? weight_Lower, float? weight_Upper, float? doorNum_Lower, float? doorNum_Upper, float? ridingCap_Lower, float? ridingCap_Upper, float? fcrWltc_Lower, float? fcrWltc_Upper, float? fcrJc08_Lower, float? fcrJc08_Upper, float? mpcWltc_Lower, float? mpcWltc_Upper, float? ecrWltc_Lower, float? ecrWltc_Upper, float? ecrJc08_Lower, float? ecrJc08_Upper, float? mpcJc08_Lower, float? mpcJc08_Upper, string fuelType)
         {
-            return GetCarsAsync(makerNames, priceLower, priceUpper, powerTrain, driveSystem, bodyType, lengthLower, lengthUpper, widthLower, widthUpper, heightLower, heightUpper, weightUpper, doorNumLower, ridingCapLower, ridingCapUpper, fcrWltcLower, fcrJc08Lower, mpcWltcLower, ecrWltcLower, ecrJc08Lower, mpcJc08Lower, fuelType, System.Threading.CancellationToken.None);
+            return QueryCarsAsync(makerNames, price_Lower, price_Upper, powerTrain, driveSystem, bodyType, bodyLength_Lower, bodyLength_Upper, bodyWidth_Lower, bodyWidth_Upper, bodyHeight_Lower, bodyHeight_Upper, weight_Lower, weight_Upper, doorNum_Lower, doorNum_Upper, ridingCap_Lower, ridingCap_Upper, fcrWltc_Lower, fcrWltc_Upper, fcrJc08_Lower, fcrJc08_Upper, mpcWltc_Lower, mpcWltc_Upper, ecrWltc_Lower, ecrWltc_Upper, ecrJc08_Lower, ecrJc08_Upper, mpcJc08_Lower, mpcJc08_Upper, fuelType, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Car>> GetCarsAsync(System.Collections.Generic.IEnumerable<string> makerNames, int? priceLower, int? priceUpper, string powerTrain, string driveSystem, string bodyType, int? lengthLower, int? lengthUpper, int? widthLower, int? widthUpper, int? heightLower, int? heightUpper, int? weightUpper, int? doorNumLower, int? ridingCapLower, int? ridingCapUpper, float? fcrWltcLower, float? fcrJc08Lower, float? mpcWltcLower, float? ecrWltcLower, float? ecrJc08Lower, float? mpcJc08Lower, string fuelType, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, CarDto>> QueryCarsAsync(System.Collections.Generic.IEnumerable<string> makerNames, float? price_Lower, float? price_Upper, string powerTrain, string driveSystem, string bodyType, float? bodyLength_Lower, float? bodyLength_Upper, float? bodyWidth_Lower, float? bodyWidth_Upper, float? bodyHeight_Lower, float? bodyHeight_Upper, float? weight_Lower, float? weight_Upper, float? doorNum_Lower, float? doorNum_Upper, float? ridingCap_Lower, float? ridingCap_Upper, float? fcrWltc_Lower, float? fcrWltc_Upper, float? fcrJc08_Lower, float? fcrJc08_Upper, float? mpcWltc_Lower, float? mpcWltc_Upper, float? ecrWltc_Lower, float? ecrWltc_Upper, float? ecrJc08_Lower, float? ecrJc08_Upper, float? mpcJc08_Lower, float? mpcJc08_Upper, string fuelType, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/cars?");
             if (makerNames != null)
             {
-                foreach (var item_ in makerNames) { urlBuilder_.Append(System.Uri.EscapeDataString("makerNames") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in makerNames) { urlBuilder_.Append(System.Uri.EscapeDataString("MakerNames") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
-            if (priceLower != null)
+            if (price_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("priceLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(priceLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("Price.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(price_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (priceUpper != null)
+            if (price_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("priceUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(priceUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("Price.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(price_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (powerTrain != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("powerTrain") + "=").Append(System.Uri.EscapeDataString(ConvertToString(powerTrain, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("PowerTrain") + "=").Append(System.Uri.EscapeDataString(ConvertToString(powerTrain, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (driveSystem != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("driveSystem") + "=").Append(System.Uri.EscapeDataString(ConvertToString(driveSystem, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("DriveSystem") + "=").Append(System.Uri.EscapeDataString(ConvertToString(driveSystem, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (bodyType != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("bodyType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("BodyType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (lengthLower != null)
+            if (bodyLength_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("lengthLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(lengthLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("BodyLength.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyLength_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (lengthUpper != null)
+            if (bodyLength_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("lengthUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(lengthUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("BodyLength.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyLength_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (widthLower != null)
+            if (bodyWidth_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("widthLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(widthLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("BodyWidth.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyWidth_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (widthUpper != null)
+            if (bodyWidth_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("widthUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(widthUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("BodyWidth.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyWidth_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (heightLower != null)
+            if (bodyHeight_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("heightLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(heightLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("BodyHeight.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyHeight_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (heightUpper != null)
+            if (bodyHeight_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("heightUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(heightUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("BodyHeight.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bodyHeight_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (weightUpper != null)
+            if (weight_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("weightUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(weightUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("Weight.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(weight_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (doorNumLower != null)
+            if (weight_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("doorNumLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(doorNumLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("Weight.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(weight_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (ridingCapLower != null)
+            if (doorNum_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ridingCapLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ridingCapLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("DoorNum.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(doorNum_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (ridingCapUpper != null)
+            if (doorNum_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ridingCapUpper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ridingCapUpper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("DoorNum.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(doorNum_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (fcrWltcLower != null)
+            if (ridingCap_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("fcrWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("RidingCap.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ridingCap_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (fcrJc08Lower != null)
+            if (ridingCap_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("fcrJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("RidingCap.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ridingCap_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (mpcWltcLower != null)
+            if (fcrWltc_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("mpcWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("FcrWltc.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrWltc_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (ecrWltcLower != null)
+            if (fcrWltc_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ecrWltcLower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrWltcLower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("FcrWltc.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrWltc_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (ecrJc08Lower != null)
+            if (fcrJc08_Lower != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ecrJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("FcrJc08.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrJc08_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (mpcJc08Lower != null)
+            if (fcrJc08_Upper != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("mpcJc08Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcJc08Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("FcrJc08.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fcrJc08_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (mpcWltc_Lower != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("MpcWltc.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcWltc_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (mpcWltc_Upper != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("MpcWltc.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcWltc_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (ecrWltc_Lower != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("EcrWltc.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrWltc_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (ecrWltc_Upper != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("EcrWltc.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrWltc_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (ecrJc08_Lower != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("EcrJc08.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrJc08_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (ecrJc08_Upper != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("EcrJc08.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ecrJc08_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (mpcJc08_Lower != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("MpcJc08.Lower") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcJc08_Lower, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (mpcJc08_Upper != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("MpcJc08.Upper") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mpcJc08_Upper, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (fuelType != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("fuelType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fuelType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("FuelType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fuelType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -590,7 +305,84 @@ namespace HogeBlazor.Client.Helpers
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Car>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, CarDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetCarAttributeValuesAsync(string dataType)
+        {
+            return GetCarAttributeValuesAsync(dataType, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetCarAttributeValuesAsync(string dataType, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/cars/attributes?");
+            if (dataType != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("dataType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(dataType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -998,358 +790,17 @@ namespace HogeBlazor.Client.Helpers
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class TokenClient 
-    {
-        private string _baseUrl = "";
-        private System.Net.Http.HttpClient _httpClient;
-        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
-
-        public TokenClient(string baseUrl, System.Net.Http.HttpClient httpClient)
-        {
-            BaseUrl = baseUrl;
-            _httpClient = httpClient;
-            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
-        }
-
-        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
-        {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
-            UpdateJsonSerializerSettings(settings);
-            return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
-        }
-
-        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
-
-        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
-
-        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
-        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
-        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<AuthResponseDto> RefreshAsync(RefreshTokenDto tokenDto)
-        {
-            return RefreshAsync(tokenDto, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AuthResponseDto> RefreshAsync(RefreshTokenDto tokenDto, System.Threading.CancellationToken cancellationToken)
-        {
-            if (tokenDto == null)
-                throw new System.ArgumentNullException("tokenDto");
-
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/token/refresh");
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(tokenDto, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<AuthResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        protected struct ObjectResponseResult<T>
-        {
-            public ObjectResponseResult(T responseObject, string responseText)
-            {
-                this.Object = responseObject;
-                this.Text = responseText;
-            }
-
-            public T Object { get; }
-
-            public string Text { get; }
-        }
-
-        public bool ReadResponseAsString { get; set; }
-
-        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
-        {
-            if (response == null || response.Content == null)
-            {
-                return new ObjectResponseResult<T>(default(T), string.Empty);
-            }
-
-            if (ReadResponseAsString)
-            {
-                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
-                    return new ObjectResponseResult<T>(typedBody, responseText);
-                }
-                catch (Newtonsoft.Json.JsonException exception)
-                {
-                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
-                }
-            }
-            else
-            {
-                try
-                {
-                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                    using (var streamReader = new System.IO.StreamReader(responseStream))
-                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
-                    {
-                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
-                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
-                        return new ObjectResponseResult<T>(typedBody, string.Empty);
-                    }
-                }
-                catch (Newtonsoft.Json.JsonException exception)
-                {
-                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
-                }
-            }
-        }
-
-        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
-        {
-            if (value == null)
-            {
-                return "";
-            }
-
-            if (value is System.Enum)
-            {
-                var name = System.Enum.GetName(value.GetType(), value);
-                if (name != null)
-                {
-                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
-                    if (field != null)
-                    {
-                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
-                            as System.Runtime.Serialization.EnumMemberAttribute;
-                        if (attribute != null)
-                        {
-                            return attribute.Value != null ? attribute.Value : name;
-                        }
-                    }
-
-                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
-                    return converted == null ? string.Empty : converted;
-                }
-            }
-            else if (value is bool) 
-            {
-                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
-            }
-            else if (value is byte[])
-            {
-                return System.Convert.ToBase64String((byte[]) value);
-            }
-            else if (value.GetType().IsArray)
-            {
-                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
-                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
-            }
-
-            var result = System.Convert.ToString(value, cultureInfo);
-            return result == null ? "" : result;
-        }
-    }
-
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RegistrationResponseDto
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ValidationProblemDetails : HttpValidationProblemDetails
-    {
-        [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IDictionary<string, System.Collections.Generic.ICollection<string>> Errors { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
-
-        [Newtonsoft.Json.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties; }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class HttpValidationProblemDetails : ProblemDetails
-    {
-        [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IDictionary<string, System.Collections.Generic.ICollection<string>> Errors { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ProblemDetails
-    {
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Title { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Status { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Detail { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("instance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Instance { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
-
-        [Newtonsoft.Json.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties; }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UserForRegistrationDto
-    {
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Email { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Password { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("confirmPassword", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ConfirmPassword { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AuthResponseDto
-    {
-        [Newtonsoft.Json.JsonProperty("isAuthSuccessful", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsAuthSuccessful { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("errorMessage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ErrorMessage { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Token { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("refreshToken", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string RefreshToken { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UserForAuthenticationDto
-    {
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Email { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Password { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Car
+    public partial class CarDto
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("deletedAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DeletedAt { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset CreatedAt { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("updatedAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset UpdatedAt { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("makerName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("makerName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string MakerName { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("modelName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("modelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ModelName { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("gradeName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string GradeName { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("modelCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ModelCode { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Price { get; set; }
 
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Url { get; set; }
@@ -1357,26 +808,47 @@ namespace HogeBlazor.Client.Helpers
         [Newtonsoft.Json.JsonProperty("imageUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ImageUrl { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("modelChangeFull", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ModelChangeFull { get; set; }
+        [Newtonsoft.Json.JsonProperty("bodyType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string BodyType { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("modelChangeLast", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ModelChangeLast { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("body", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Body Body { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("interior", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Interior Interior { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("performance", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Performance Performance { get; set; }
+        [Newtonsoft.Json.JsonProperty("driveSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DriveSystem { get; set; }
 
         [Newtonsoft.Json.JsonProperty("powerTrain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PowerTrain { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("driveSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DriveSystem { get; set; }
+        [Newtonsoft.Json.JsonProperty("modelCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ModelCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("gradeName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string GradeName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Price { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("modelChange", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ModelChange ModelChange { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("steering", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Steering { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("suspension", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Suspension Suspension { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("break", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Break Break { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("fuelEfficiency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> FuelEfficiency { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minTurningRadius", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? MinTurningRadius { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("fcr", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Fcr Fcr { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ecr", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ecr Ecr { get; set; }
 
         [Newtonsoft.Json.JsonProperty("engine", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Engine Engine { get; set; }
@@ -1390,134 +862,102 @@ namespace HogeBlazor.Client.Helpers
         [Newtonsoft.Json.JsonProperty("battery", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Battery Battery { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("steering", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Steering { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("suspensionFront", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SuspensionFront { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("suspensionRear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SuspensionRear { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("brakeFront", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string BrakeFront { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("brakeRear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string BrakeRear { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("tireFront", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Tire TireFront { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("tireRear", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Tire TireRear { get; set; }
+        [Newtonsoft.Json.JsonProperty("tire", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Tire Tire { get; set; }
 
         [Newtonsoft.Json.JsonProperty("transmission", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Transmission Transmission { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("fuelEfficiency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> FuelEfficiency { get; set; }
+        [Newtonsoft.Json.JsonProperty("outerBody", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public OuterBody OuterBody { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("interiorBody", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public InteriorBody InteriorBody { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("otherBody", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public OtherBody OtherBody { get; set; }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Body
+    public partial class ModelChange
     {
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty("full", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Full { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Length { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("wheelBase", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? WheelBase { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("treadFront", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? TreadFront { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("treadRear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? TreadRear { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("minRoadClearance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinRoadClearance { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Weight { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("doorNum", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? DoorNum { get; set; }
+        [Newtonsoft.Json.JsonProperty("last", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Last { get; set; }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Interior
+    public partial class Suspension
     {
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Length { get; set; }
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Front { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("luggageCap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LuggageCap { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ridingCap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? RidingCap { get; set; }
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Rear { get; set; }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Performance
+    public partial class Break
     {
-        [Newtonsoft.Json.JsonProperty("minTurningRadius", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? MinTurningRadius { get; set; }
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Front { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("fcrWltc", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? FcrWltc { get; set; }
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Rear { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("fcrWltcL", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? FcrWltcL { get; set; }
+    }
 
-        [Newtonsoft.Json.JsonProperty("fcrWltcM", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? FcrWltcM { get; set; }
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Fcr
+    {
+        [Newtonsoft.Json.JsonProperty("wltc", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Wltc { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("fcrWltcH", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? FcrWltcH { get; set; }
+        [Newtonsoft.Json.JsonProperty("wltcL", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcL { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("fcrWltcExh", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? FcrWltcExh { get; set; }
+        [Newtonsoft.Json.JsonProperty("wltcM", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcM { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("fcrJc08", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? FcrJc08 { get; set; }
+        [Newtonsoft.Json.JsonProperty("wltcH", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcH { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wltcExH", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcExH { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("jc08", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Jc08 { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Ecr
+    {
+        [Newtonsoft.Json.JsonProperty("wltc", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Wltc { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wltcL", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcL { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wltcM", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcM { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wltcH", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcH { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wltcExH", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? WltcExH { get; set; }
 
         [Newtonsoft.Json.JsonProperty("mpcWltc", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? MpcWltc { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("ecrWltc", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? EcrWltc { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ecrWltcL", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? EcrWltcL { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ecrWltcM", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? EcrWltcM { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ecrWltcH", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? EcrWltcH { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ecrWltcExh", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? EcrWltcExh { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ecrJc08", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? EcrJc08 { get; set; }
+        [Newtonsoft.Json.JsonProperty("jc08", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Jc08 { get; set; }
 
         [Newtonsoft.Json.JsonProperty("mpcJc08", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? MpcJc08 { get; set; }
@@ -1557,20 +997,14 @@ namespace HogeBlazor.Client.Helpers
         [Newtonsoft.Json.JsonProperty("maxOutput", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? MaxOutput { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("maxOutputLowerRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxOutputLowerRpm { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("maxOutputUpperRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxOutputUpperRpm { get; set; }
+        [Newtonsoft.Json.JsonProperty("maxOutputRpm", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MaxOutputRpm MaxOutputRpm { get; set; }
 
         [Newtonsoft.Json.JsonProperty("maxTorque", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? MaxTorque { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("maxTorqueLowerRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxTorqueLowerRpm { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("maxTorqueUpperRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxTorqueUpperRpm { get; set; }
+        [Newtonsoft.Json.JsonProperty("maxTorqueRpm", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MaxTorqueRpm MaxTorqueRpm { get; set; }
 
         [Newtonsoft.Json.JsonProperty("fuelSystem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FuelSystem { get; set; }
@@ -1580,6 +1014,28 @@ namespace HogeBlazor.Client.Helpers
 
         [Newtonsoft.Json.JsonProperty("fuelTankCap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? FuelTankCap { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class MaxOutputRpm
+    {
+        [Newtonsoft.Json.JsonProperty("lower", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Lower { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("upper", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Upper { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class MaxTorqueRpm
+    {
+        [Newtonsoft.Json.JsonProperty("lower", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Lower { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("upper", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Upper { get; set; }
 
     }
 
@@ -1601,20 +1057,14 @@ namespace HogeBlazor.Client.Helpers
         [Newtonsoft.Json.JsonProperty("maxOutput", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? MaxOutput { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("maxOutputLowerRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxOutputLowerRpm { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("maxOutputUpperRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxOutputUpperRpm { get; set; }
+        [Newtonsoft.Json.JsonProperty("maxOutputRpm", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MaxOutputRpm MaxOutputRpm { get; set; }
 
         [Newtonsoft.Json.JsonProperty("maxTorque", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public float? MaxTorque { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("maxTorqueLowerRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxTorqueLowerRpm { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("maxTorqueUpperRpm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxTorqueUpperRpm { get; set; }
+        [Newtonsoft.Json.JsonProperty("maxTorqueRpm", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public MaxTorqueRpm MaxTorqueRpm { get; set; }
 
     }
 
@@ -1638,14 +1088,47 @@ namespace HogeBlazor.Client.Helpers
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Tire
     {
-        [Newtonsoft.Json.JsonProperty("sectionWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? SectionWidth { get; set; }
+        [Newtonsoft.Json.JsonProperty("sectionWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SectionWidth SectionWidth { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("aspectRatio", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AspectRatio { get; set; }
+        [Newtonsoft.Json.JsonProperty("aspectRatio", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AspectRatio AspectRatio { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("wheelDiameter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? WheelDiameter { get; set; }
+        [Newtonsoft.Json.JsonProperty("wheelDiameter", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public WheelDiameter WheelDiameter { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SectionWidth
+    {
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Front { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Rear { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AspectRatio
+    {
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Front { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Rear { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class WheelDiameter
+    {
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Front { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Rear { get; set; }
 
     }
 
@@ -1655,28 +1138,127 @@ namespace HogeBlazor.Client.Helpers
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Type { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("gearRatiosFront", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<float> GearRatiosFront { get; set; }
+        [Newtonsoft.Json.JsonProperty("gearRatio", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public GearRatio GearRatio { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("gearRatioRear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? GearRatioRear { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("reductionRatioFront", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? ReductionRatioFront { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("reductionRatioRear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public float? ReductionRatioRear { get; set; }
+        [Newtonsoft.Json.JsonProperty("reductionRatio", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ReductionRatio ReductionRatio { get; set; }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RefreshTokenDto
+    public partial class GearRatio
     {
-        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Token { get; set; }
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<float> Front { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("refreshToken", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string RefreshToken { get; set; }
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Rear { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ReductionRatio
+    {
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Front { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public float? Rear { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OuterBody
+    {
+        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Length { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Width { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Height { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wheelBase", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? WheelBase { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("tread", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Tread Tread { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minRoadClearance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinRoadClearance { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Tread
+    {
+        [Newtonsoft.Json.JsonProperty("front", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Front { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("rear", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Rear { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InteriorBody
+    {
+        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Length { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Width { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Height { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OtherBody
+    {
+        [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Weight { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("doorNum", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DoorNum { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("luggageCap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LuggageCap { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ridingCap", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RidingCap { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProblemDetails
+    {
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Type { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Status { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Detail { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("instance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Instance { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
 
     }
 

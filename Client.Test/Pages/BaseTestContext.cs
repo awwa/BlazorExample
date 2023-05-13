@@ -1,7 +1,6 @@
 using HogeBlazor.Client.Helpers;
 using HogeBlazor.Client.Pages;
 using HogeBlazor.Client.Repositories;
-using HogeBlazor.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
@@ -18,8 +17,5 @@ public class BaseTestContext : TestContext
         this.Services.AddHttpClientInterceptor();
         this.Services.AddScoped<ICarHttpRepository, CarHttpRepository>();
         this.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
-        this.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-        this.Services.AddScoped<RefreshTokenService>();
-        this.Services.AddScoped<HttpInterceptorService>();
     }
 }

@@ -1,17 +1,21 @@
 @page "/cars"
-@using Helpers
 @using HogeBlazor.Client.Models
 
 <BreadCrumb />
+<RadzenPanel>
+    <RadzenDropDown @bind-Value=@Query.MakerNames Data=@MakerNames TextProperty="Name" ValueProperty="Name"
+        Multiple=true AllowClear=true Placeholder="@CarLabel.MakerName" Chips=true />
+
+</RadzenPanel>
 <div>
     <RadzenCheckBox Name="OuterBodyVisibleCheckBox" Change=@((bool v) => OuterBodyVisible = !OuterBodyVisible) />
-    <RadzenLabel Text="外寸" Component="OuterBodyVisibleCheckBox" />
+    <RadzenLabel Text="@CarLabel.OuterBody" Component="OuterBodyVisibleCheckBox" />
 
     <RadzenCheckBox Name="PerformanceVisibleCheckBox" Change=@((bool v) => PerformanceVisible = !PerformanceVisible) />
-    <RadzenLabel Text="走行性能" Component="PerformanceVisibleCheckBox" />
+    <RadzenLabel Text="@CarLabel.Performance" Component="PerformanceVisibleCheckBox" />
 
     <RadzenCheckBox Name="EngineVisibleCheckBox" Change=@((bool v) => EngineVisible = !EngineVisible) />
-    <RadzenLabel Text="エンジン" Component="EngineVisibleCheckBox" />
+    <RadzenLabel Text="@CarLabel.Engine" Component="EngineVisibleCheckBox" />
 
     <RadzenCheckBox Name="MotorVisibleCheckBox" Change=@((bool v) => MotorVisible = !MotorVisible) />
     <RadzenLabel Text="モーター" Component="MotorVisibleCheckBox" />
@@ -20,15 +24,15 @@
     <RadzenLabel Text="その他" Component="OtherVisibleCheckBox" />
 </div>
 <div>
-    <RadzenDataGrid Data="@CarList" TItem="CarDisp" AllowColumnResize="true" ColumnWidth="80px" AllowFiltering="true"
-        AllowSorting="true" AllowRowSelectOnRowClick="true" EqualsText="一致" NotEqualsText="不一致" ContainsText="含む"
-        DoesNotContainText="含まない" StartsWithText="先頭" EndsWithText="末尾" IsNullText="データなし" IsNotNullText="データあり"
-        AndOperatorText="かつ" OrOperatorText="または" ClearFilterText="クリア" ApplyFilterText="適用" FilterText="フィルタ"
-        SelectionMode="DataGridSelectionMode.Single" RowSelect=@OnRowSelect>
+    <RadzenDataGrid Data="@Items" TItem="HogeBlazor.Shared.Models.Dto.CarDto" AllowColumnResize="true"
+        ColumnWidth="80px" AllowFiltering="true" AllowSorting="true" AllowRowSelectOnRowClick="true" EqualsText="一致"
+        NotEqualsText="不一致" ContainsText="含む" DoesNotContainText="含まない" StartsWithText="先頭" EndsWithText="末尾"
+        IsNullText="データなし" IsNotNullText="データあり" AndOperatorText="かつ" OrOperatorText="または" ClearFilterText="クリア"
+        ApplyFilterText="適用" FilterText="フィルタ" SelectionMode="DataGridSelectionMode.Single" RowSelect=@OnRowSelect>
         <Columns>
             <!-- 基本情報 -->
-            <RadzenDataGridColumn TItem="CarDisp" Property="MakerName" Frozen="true" Filterable="false"
-                Sortable="false">
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MakerName" Frozen="true"
+                Filterable="false" Sortable="false">
                 <Template Context="car">
                     <div class="flex-container">
                         <div class="flex-item">
@@ -39,121 +43,128 @@
                     </div>
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="CarDisp" Property="ModelName" Title=@CarDisp.DisplayName("ModelName")
-                Width="100px" Frozen="true" />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="ModelName"
+                Title="@CarLabel.MakerName" Width="100px" Frozen="true" />
 
-            <RadzenDataGridColumn TItem="CarDisp" Property="MakerName" Title=@CarDisp.DisplayName("MakerName")
-                Width="80px" />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Body.Type" Title=@CarDisp.DisplayName("BodyType")
-                Width="80px">
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MakerName"
+                Title="@CarLabel.MakerName" Width="80px" />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Body.Type"
+                Title="@CarLabel.BodyType" Width="80px">
                 <Template Context="car">
-                    @(ConvertForDisplay<HogeBlazor.Shared.Models.Db.BodyType>(car.BodyType))
+                    @(BodyType.Label(car.BodyType))
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="CarDisp" Property="DriveSystem" Title=@CarDisp.DisplayName("DriveSystem")
-                Width="80px" />
-            <RadzenDataGridColumn TItem="CarDisp" Property="PowerTrain" Title=@CarDisp.DisplayName("PowerTrain")
-                Width="80px">
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="DriveSystem"
+                Title="@CarLabel.DriveSystem" Width="80px" />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="PowerTrain"
+                Title="@CarLabel.PowerTrain" Width="80px">
                 <Template Context="car">
-                    @(ConvertForDisplay<HogeBlazor.Shared.Models.Db.PowerTrain>(car.PowerTrain))
+                    @(PowerTrain.Label(car.PowerTrain))
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="CarDisp" Property="ModelCode" Title=@CarDisp.DisplayName("ModelCode")
-                Width="80px" />
-            <RadzenDataGridColumn TItem="CarDisp" Property="GradeName" Title=@CarDisp.DisplayName("GradeName")
-                Width="100px" />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Price" Title=@CarDisp.DisplayName("Price")
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="ModelCode"
+                Title="@CarLabel.ModelCode" Width="80px" />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="GradeName"
+                Title="@CarLabel.GradeName" Width="100px" />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Price" Title="@CarLabel.Price"
                 TextAlign="TextAlign.Right" Width="100px">
                 <Template Context="car">
                     @String.Format(new System.Globalization.CultureInfo("ja-JP"), "{0:C0}", car.Price)
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="CarDisp" Property="ModelChange.Full" Title=@(ModelChange.DisplayName("Full") +
-                CarDisp.DisplayName("ModelChange")) Width="60px" />
-            <RadzenDataGridColumn TItem="CarDisp" Property="ModelChange.Last" Title=@(ModelChange.DisplayName("Last") +
-                CarDisp.DisplayName("ModelChange")) Width="60px" />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="ModelChange.Full"
+                Title="@(CarLabel.Full + CarLabel.ModelChange)" Width="60px" />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="ModelChange.Last"
+                Title="@(@CarLabel.Last + @CarLabel.ModelChange)" Width="60px" />
 
             <!-- Performance -->
-            <RadzenDataGridColumn TItem="CarDisp" Property="MinTurningRadius"
-                Title=@CarDisp.DisplayName("MinTurningRadius") FormatString="{0:F1}" TextAlign="TextAlign.Right"
-                Width="40px" Visible=@PerformanceVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Fcr.FcrWltc" Title=@Fcr.DisplayName("FcrWltc")
-                FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px" Visible=@PerformanceVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Ecr.MpcWltc" Title=@Ecr.DisplayName("MpcWltc")
-                FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px" Visible=@PerformanceVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Ecr.EcrWltc" Title=@Ecr.DisplayName("EcrWltc")
-                FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px" Visible=@PerformanceVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MinTurningRadius"
+                Title="@CarLabel.MinTurningRadius" FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="40px"
+                Visible=@PerformanceVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Fcr.FcrWltc"
+                Title="@(CarLabel.Fcr + CarLabel.Wltc)" FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@PerformanceVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Ecr.MpcWltc"
+                Title="@(CarLabel.Ecr + CarLabel.MpcWltc)" FormatString="{0:F1}" TextAlign="TextAlign.Right"
+                Width="80px" Visible=@PerformanceVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Ecr.EcrWltc"
+                Title="@(CarLabel.Ecr + CarLabel.Wltc)" FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@PerformanceVisible />
 
             <!-- Engine -->
-            <RadzenDataGridColumn TItem="CarDisp" Property="Engine.Type" Title=@(CarDisp.DisplayName("Engine") +
-                Models.Engine.DisplayName("Type")) Width="80px" Visible=@EngineVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Engine.Displacement"
-                Title=@Models.Engine.DisplayName("Displacement") TextAlign="TextAlign.Right" Width="80px"
-                Visible=@EngineVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Engine.MaxOutput" Title=@(CarDisp.DisplayName("Engine") +
-                Models.Engine.DisplayName("MaxOutput")) FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px"
-                Visible=@EngineVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Engine.MaxTorque" Title=@(CarDisp.DisplayName("Engine") +
-                Models.Engine.DisplayName("MaxTorque")) FormatString="{0:F1}" TextAlign="TextAlign.Right" Width="80px"
-                Visible=@EngineVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="Engine.FuelType"
-                Title=@Models.Engine.DisplayName("FuelType") Width="80px" Visible=@EngineVisible>
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Engine.Type"
+                Title="@CarLabel.Type" Width="80px" Visible=@EngineVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Engine.Displacement"
+                Title="@CarLabel.Displacement" TextAlign="TextAlign.Right" Width="80px" Visible=@EngineVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Engine.MaxOutput"
+                Title="@(CarLabel.Engine + CarLabel.MaxOutput)" FormatString="{0:F1}" TextAlign="TextAlign.Right"
+                Width="80px" Visible=@EngineVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Engine.MaxTorque"
+                Title="@(CarLabel.Engine + @CarLabel.MaxTorque)" FormatString="{0:F1}" TextAlign="TextAlign.Right"
+                Width="80px" Visible=@EngineVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Engine.FuelType"
+                Title="@CarLabel.FuelType" Width="80px" Visible=@EngineVisible>
                 <Template Context="car">
-                    @(ConvertForDisplay<HogeBlazor.Shared.Models.Db.FuelType>(car.Engine.FuelType))
+                    @(FuelType.Label(car.Engine.FuelType))
                 </Template>
             </RadzenDataGridColumn>
 
             <!-- MotorX -->
-            <RadzenDataGridColumn TItem="CarDisp" Property="MotorX.Purpose" Title=@(CarDisp.DisplayName("MotorX") +
-                Models.Motor.DisplayName("Purpose")) Width="80px" Visible=@MotorVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="MotorX.MaxOutput" Title=@(CarDisp.DisplayName("MotorX") +
-                Models.Motor.DisplayName("MaxOutput")) FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
-                Visible=@MotorVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="MotorX.MaxTorque" Title=@(CarDisp.DisplayName("MotorX") +
-                Models.Motor.DisplayName("MaxTorque")) FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
-                Visible=@MotorVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MotorX.Purpose"
+                Title="@(CarLabel.MotorX + CarLabel.Purpose)" Width="80px" Visible=@MotorVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MotorX.MaxOutput"
+                Title="@(CarLabel.MotorX + CarLabel.MaxOutput)" FormatString="{0:#,0}" TextAlign="TextAlign.Right"
+                Width="80px" Visible=@MotorVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MotorX.MaxTorque"
+                Title="@(CarLabel.MotorX + CarLabel.MaxTorque)" FormatString="{0:#,0}" TextAlign="TextAlign.Right"
+                Width="80px" Visible=@MotorVisible />
 
             <!-- MotorY -->
-            <RadzenDataGridColumn TItem="CarDisp" Property="MotorY.Purpose" Title=@(CarDisp.DisplayName("MotorY") +
-                Models.Motor.DisplayName("Purpose")) Width="80px" Visible=@MotorVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="MotorY.MaxOutput" Title=@(CarDisp.DisplayName("MotorY") +
-                Models.Motor.DisplayName("MaxOutput")) FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
-                Visible=@MotorVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="MotorY.MaxTorque" Title=@(CarDisp.DisplayName("MotorY") +
-                Models.Motor.DisplayName("MaxTorque")) FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
-                Visible=@MotorVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MotorY.Purpose"
+                Title="@(CarLabel.MotorY + CarLabel.Purpose)" Width="80px" Visible=@MotorVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MotorY.MaxOutput"
+                Title="@(CarLabel.MotorY + CarLabel.MaxOutput)" FormatString="{0:#,0}" TextAlign="TextAlign.Right"
+                Width="80px" Visible=@MotorVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MotorY.MaxTorque"
+                Title="@(CarLabel.MotorY + CarLabel.MaxTorque)" FormatString="{0:#,0}" TextAlign="TextAlign.Right"
+                Width="80px" Visible=@MotorVisible />
 
             <!-- OuterBody -->
-            <RadzenDataGridColumn TItem="CarDisp" Property="OuterBody.Length" Title=@(OuterBody.DisplayName("Length") +
-                "(mm)") FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px" Visible=@OuterBodyVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OuterBody.Width" Title=@(OuterBody.DisplayName("Width") +
-                "(mm)") FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px" Visible=@OuterBodyVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OuterBody.Height" Title=@(OuterBody.DisplayName("Height") +
-                "(mm)") FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px" Visible=@OuterBodyVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OuterBody.WheelBase"
-                Title=@(OuterBody.DisplayName("WheelBase") + "(mm)") FormatString="{0:#,0}" TextAlign="TextAlign.Right"
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OuterBody.Length"
+                Title="@CarLabel.OuterBody_Length" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OuterBodyVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OuterBody.Width"
+                Title="@CarLabel.OuterBody_Width" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OuterBodyVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OuterBody.Height"
+                Title="@CarLabel.OuterBody_Height" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OuterBodyVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OuterBody.WheelBase"
+                Title="@CarLabel.WheelBase" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OuterBodyVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OuterBody.TreadFront"
+                Title="@(CarLabel.Tread + CarLabel.Front)" FormatString="{0:#,0}" TextAlign="TextAlign.Right"
                 Width="80px" Visible=@OuterBodyVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OuterBody.TreadFront"
-                Title=@(OuterBody.DisplayName("TreadFront") + "(mm)") FormatString="{0:#,0}" TextAlign="TextAlign.Right"
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OuterBody.TreadRear"
+                Title="@(CarLabel.Tread + CarLabel.Rear)" FormatString="{0:#,0}" TextAlign="TextAlign.Right"
                 Width="80px" Visible=@OuterBodyVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OuterBody.TreadRear"
-                Title=@(OuterBody.DisplayName("TreadRear") + "(mm)") FormatString="{0:#,0}" TextAlign="TextAlign.Right"
-                Width="80px" Visible=@OuterBodyVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OuterBody.MinRoadClearance"
-                Title=@(OuterBody.DisplayName("MinRoadClearance") + "(mm)") FormatString="{0:#,0}"
-                TextAlign="TextAlign.Right" Width="80px" Visible=@OuterBodyVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OuterBody.MinRoadClearance"
+                Title="@CarLabel.MinRoadClearance" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OuterBodyVisible />
 
             <!-- Other -->
-            <RadzenDataGridColumn TItem="CarDisp" Property="OtherBody.Weight" Title=@OtherBody.DisplayName("Weight")
-                FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px" Visible=@OtherVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OtherBody.DoorNum" Title=@OtherBody.DisplayName("DoorNum")
-                FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px" Visible=@OtherVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OtherBody.LuggageCap"
-                Title=@OtherBody.DisplayName("LuggageCap") FormatString="{0:#,0}" TextAlign="TextAlign.Right"
-                Width="80px" Visible=@OtherVisible />
-            <RadzenDataGridColumn TItem="CarDisp" Property="OtherBody.RidingCap"
-                Title=@OtherBody.DisplayName("RidingCap") FormatString="{0:#,0}" TextAlign="TextAlign.Right"
-                Width="80px" Visible=@OtherVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OtherBody.Weight"
+                Title="@CarLabel.Weight" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OtherVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OtherBody.DoorNum"
+                Title="@CarLabel.DoorNum" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OtherVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OtherBody.LuggageCap"
+                Title="@CarLabel.LuggageCap" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OtherVisible />
+            <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="OtherBody.RidingCap"
+                Title="@CarLabel.RidingCap" FormatString="{0:#,0}" TextAlign="TextAlign.Right" Width="80px"
+                Visible=@OtherVisible />
         </Columns>
     </RadzenDataGrid>
 </div>
