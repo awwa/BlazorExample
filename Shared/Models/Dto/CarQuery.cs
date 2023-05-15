@@ -87,8 +87,8 @@ public class CarQuery
 
     public class NumberRange
     {
-        public float? Lower { get; set; }
-        public float? Upper { get; set; }
+        public int? Lower { get; set; }
+        public int? Upper { get; set; }
 
         public bool ShouldQuery()
         {

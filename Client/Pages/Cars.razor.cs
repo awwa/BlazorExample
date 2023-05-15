@@ -15,7 +15,15 @@ public partial class Cars
     bool OtherVisible = false;
     CarQuery Query = new CarQuery();
 
-    IEnumerable<MakerName> MakerNames = new List<MakerName>();
+    IEnumerable<string> MakerNames = new List<string>();
+
+    IEnumerable<PowerTrain> PowerTrains = PowerTrain.CreateItems();
+
+    IEnumerable<DriveSystem> DriveSystems = DriveSystem.CreateItems();
+
+    IEnumerable<BodyType> BodyTypes = BodyType.CreateItems();
+
+    IEnumerable<FuelType> FuelTypes = FuelType.CreateItems();
 
     [Inject]
     public ICarHttpRepository CarRepo { get; set; } = default!;
@@ -23,16 +31,10 @@ public partial class Cars
     [Inject]
     public NavigationManager NavigationManager { get; set; } = default!;
 
-    class MakerName
-    {
-        public string Name { get; set; } = string.Empty;
-    }
-
     protected async override Task OnInitializedAsync()
     {
         // await GetCars();
-        IEnumerable<string> names = await CarRepo.GetCarAttributeValuesAsync("MakerName");
-        MakerNames = names.Select(name => new MakerName { Name = name }); // new List<MakerName> { new MakerName { Name = "あいう" }, new MakerName { Name = "えおか" } };//
+        MakerNames = await CarRepo.GetCarAttributeValuesAsync("MakerName");
     }
 
     private async Task GetCars()

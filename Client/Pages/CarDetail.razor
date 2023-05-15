@@ -1,5 +1,6 @@
 @page "/cars/{Id}"
 @using HogeBlazor.Client.Models
+@using HogeBlazor.Shared.Models.Dto
 
 <BreadCrumb />
 <div class="row">
@@ -14,7 +15,7 @@
                 <div class="spec-container">
                     <SingleItem Name=@CarLabel.BodyType Value=@Car.BodyType />
                     <SingleItem Name=@CarLabel.DriveSystem Value=@Car.DriveSystem />
-                    <SingleItem Name=@CarLabel.PowerTrain Value=@PowerTrain.Label(Car.PowerTrain) />
+                    <SingleItem Name=@CarLabel.PowerTrain Value=@PowerTrain.GetLabel(Car.PowerTrain) />
                     <SingleItem Name=@CarLabel.ModelCode Value=@Car.ModelCode />
                     <SingleItem Name=@CarLabel.GradeName Value=@Car.GradeName />
                     <SingleItem Name=@CarLabel.Price Value=@ToPrice(Car.Price) />
@@ -49,7 +50,8 @@
                     <SingleItem Name=@CarLabel.Code Value=@Car.Engine.Code />
                     <SingleItem Name=@CarLabel.Type Value=@Car.Engine.Type />
                     <SingleItem Name=@CarLabel.CylinderNum Value=@ToString(Car.Engine.CylinderNum) />
-                    <SingleItem Name=@CarLabel.CylinderLayout Value=@CylinderLayout.Label(Car.Engine.CylinderLayout) />
+                    <SingleItem Name=@CarLabel.CylinderLayout
+                        Value=@CylinderLayout.GetLabel(Car.Engine.CylinderLayout) />
                     <SingleItem Name=@CarLabel.ValveSystem Value=@Car.Engine.ValveSystem />
                     <SingleItem Name=@CarLabel.Displacement Value=@ToString(Car.Engine.Displacement) />
                     <SingleItem Name=@CarLabel.Bore Value=@ToString(Car.Engine.Bore) />
@@ -61,7 +63,7 @@
                     <MultipleItem Name=@CarLabel.MaxTorqueRpm KVPairs=@MaxTorqueRpm(Car.Engine.MaxTorqueRpm) />
                     <SingleItem Name=@CarLabel.MaxTorque Value=@ToString(Car.Engine.MaxTorque) />
                     <SingleItem Name=@CarLabel.FuelSystem Value=@Car.Engine.FuelSystem />
-                    <SingleItem Name=@CarLabel.FuelType Value=@FuelType.Label(Car.Engine.FuelType) />
+                    <SingleItem Name=@CarLabel.FuelType Value=@FuelType.GetLabel(Car.Engine.FuelType) />
                     <SingleItem Name=@CarLabel.FuelTankCap Value=@ToString(Car.Engine.FuelTankCap) />
                 </div>
             </RadzenPanel>

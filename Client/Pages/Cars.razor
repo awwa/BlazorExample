@@ -1,21 +1,109 @@
 @page "/cars"
 @using HogeBlazor.Client.Models
+@using HogeBlazor.Shared.Models.Dto
 
 <BreadCrumb />
 <RadzenPanel>
-    <RadzenDropDown @bind-Value=@Query.MakerNames Data=@MakerNames TextProperty="Name" ValueProperty="Name"
-        Multiple=true AllowClear=true Placeholder="@CarLabel.MakerName" Chips=true />
-
+    <RadzenDropDown @bind-Value=@Query.MakerNames Data=@MakerNames Multiple="true" AllowClear="true"
+        Placeholder=@CarLabel.MakerName Chips="true" />
+    <RadzenDropDown @bind-Value=@Query.PowerTrain Data=@PowerTrains TextProperty="Label" ValueProperty="Value"
+        Placeholder=@CarLabel.PowerTrain />
+    <RadzenDropDown @bind-Value=@Query.DriveSystem Data=@DriveSystems TextProperty="Label" ValueProperty="Value"
+        Placeholder=@CarLabel.DriveSystem />
+    <RadzenDropDown @bind-Value=@Query.BodyType Data=@BodyTypes TextProperty="Label" ValueProperty="Value"
+        Placeholder=@CarLabel.BodyType />
+    <RadzenDropDown @bind-Value=@Query.FuelType Data=@FuelTypes TextProperty="Label" ValueProperty="Value"
+        Placeholder=@CarLabel.FuelType />
+    <div>
+        <RadzenLabel Text=@CarLabel.Price />
+        <RadzenNumeric ShowUpDown=false TValue="int?" @bind-Value=@Query.Price.Lower Placeholder=@CarLabel.LowerLimit
+            TextAlign="TextAlign.Right" />
+        <RadzenLabel Text=@CarLabel.Between />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.Price.Upper Placeholder=@CarLabel.UpperLimit
+            TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text=@CarLabel.OuterBody_Length />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.BodyLength.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+        <RadzenLabel Text=@CarLabel.Between />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.BodyLength.Upper
+            Placeholder=@CarLabel.UpperLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text=@CarLabel.OuterBody_Width />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.BodyWidth.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+        <RadzenLabel Text=@CarLabel.Between />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.BodyWidth.Upper
+            Placeholder=@CarLabel.UpperLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text=@CarLabel.OuterBody_Height />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.BodyHeight.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+        <RadzenLabel Text="@CarLabel.Between" />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.BodyHeight.Upper
+            Placeholder=@CarLabel.UpperLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text=@CarLabel.Weight />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.Weight.Upper Placeholder=@CarLabel.UpperLimit
+            TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text=@CarLabel.DoorNum />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.DoorNum.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text=@CarLabel.RidingCap />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.RidingCap.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+        <RadzenLabel Text=@CarLabel.Between />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.RidingCap.Upper
+            Placeholder=@CarLabel.UpperLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text="@(CarLabel.Fcr + CarLabel.Wltc)" />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.FcrWltc.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text="@(CarLabel.Fcr + CarLabel.Jc08)" />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.FcrJc08.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text="@CarLabel.MpcWltc" />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.MpcWltc.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text="@(CarLabel.Ecr + CarLabel.Wltc)" />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.EcrWltc.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text="@(CarLabel.Ecr + CarLabel.Jc08)" />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.EcrJc08.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+    </div>
+    <div>
+        <RadzenLabel Text="@CarLabel.MpcJc08" />
+        <RadzenNumeric ShowUpDown="false" TValue="int?" @bind-Value=@Query.MpcJc08.Lower
+            Placeholder=@CarLabel.LowerLimit TextAlign="TextAlign.Right" />
+    </div>
 </RadzenPanel>
 <div>
     <RadzenCheckBox Name="OuterBodyVisibleCheckBox" Change=@((bool v) => OuterBodyVisible = !OuterBodyVisible) />
-    <RadzenLabel Text="@CarLabel.OuterBody" Component="OuterBodyVisibleCheckBox" />
+    <RadzenLabel Text=@CarLabel.OuterBody Component="OuterBodyVisibleCheckBox" />
 
     <RadzenCheckBox Name="PerformanceVisibleCheckBox" Change=@((bool v) => PerformanceVisible = !PerformanceVisible) />
-    <RadzenLabel Text="@CarLabel.Performance" Component="PerformanceVisibleCheckBox" />
+    <RadzenLabel Text=@CarLabel.Performance Component="PerformanceVisibleCheckBox" />
 
     <RadzenCheckBox Name="EngineVisibleCheckBox" Change=@((bool v) => EngineVisible = !EngineVisible) />
-    <RadzenLabel Text="@CarLabel.Engine" Component="EngineVisibleCheckBox" />
+    <RadzenLabel Text=@CarLabel.Engine Component="EngineVisibleCheckBox" />
 
     <RadzenCheckBox Name="MotorVisibleCheckBox" Change=@((bool v) => MotorVisible = !MotorVisible) />
     <RadzenLabel Text="モーター" Component="MotorVisibleCheckBox" />
@@ -24,11 +112,11 @@
     <RadzenLabel Text="その他" Component="OtherVisibleCheckBox" />
 </div>
 <div>
-    <RadzenDataGrid Data="@Items" TItem="HogeBlazor.Shared.Models.Dto.CarDto" AllowColumnResize="true"
-        ColumnWidth="80px" AllowFiltering="true" AllowSorting="true" AllowRowSelectOnRowClick="true" EqualsText="一致"
-        NotEqualsText="不一致" ContainsText="含む" DoesNotContainText="含まない" StartsWithText="先頭" EndsWithText="末尾"
-        IsNullText="データなし" IsNotNullText="データあり" AndOperatorText="かつ" OrOperatorText="または" ClearFilterText="クリア"
-        ApplyFilterText="適用" FilterText="フィルタ" SelectionMode="DataGridSelectionMode.Single" RowSelect=@OnRowSelect>
+    <RadzenDataGrid Data=@Items TItem="HogeBlazor.Shared.Models.Dto.CarDto" AllowColumnResize="true" ColumnWidth="80px"
+        AllowFiltering="true" AllowSorting="true" AllowRowSelectOnRowClick="true" EqualsText="一致" NotEqualsText="不一致"
+        ContainsText="含む" DoesNotContainText="含まない" StartsWithText="先頭" EndsWithText="末尾" IsNullText="データなし"
+        IsNotNullText="データあり" AndOperatorText="かつ" OrOperatorText="または" ClearFilterText="クリア" ApplyFilterText="適用"
+        FilterText="フィルタ" SelectionMode="DataGridSelectionMode.Single" RowSelect=@OnRowSelect>
         <Columns>
             <!-- 基本情報 -->
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MakerName" Frozen="true"
@@ -44,28 +132,28 @@
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="ModelName"
-                Title="@CarLabel.MakerName" Width="100px" Frozen="true" />
+                Title=@CarLabel.MakerName Width="100px" Frozen="true" />
 
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="MakerName"
-                Title="@CarLabel.MakerName" Width="80px" />
+                Title=@CarLabel.MakerName Width="80px" />
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Body.Type"
-                Title="@CarLabel.BodyType" Width="80px">
+                Title=@CarLabel.BodyType Width="80px">
                 <Template Context="car">
-                    @(BodyType.Label(car.BodyType))
+                    @(BodyType.GetLabel(car.BodyType))
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="DriveSystem"
-                Title="@CarLabel.DriveSystem" Width="80px" />
+                Title=@CarLabel.DriveSystem Width="80px" />
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="PowerTrain"
-                Title="@CarLabel.PowerTrain" Width="80px">
+                Title=@CarLabel.PowerTrain Width="80px">
                 <Template Context="car">
-                    @(PowerTrain.Label(car.PowerTrain))
+                    @(PowerTrain.GetLabel(car.PowerTrain))
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="ModelCode"
-                Title="@CarLabel.ModelCode" Width="80px" />
+                Title=@CarLabel.ModelCode Width="80px" />
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="GradeName"
-                Title="@CarLabel.GradeName" Width="100px" />
+                Title=@CarLabel.GradeName Width="100px" />
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Price" Title="@CarLabel.Price"
                 TextAlign="TextAlign.Right" Width="100px">
                 <Template Context="car">
@@ -105,7 +193,7 @@
             <RadzenDataGridColumn TItem="HogeBlazor.Shared.Models.Dto.CarDto" Property="Engine.FuelType"
                 Title="@CarLabel.FuelType" Width="80px" Visible=@EngineVisible>
                 <Template Context="car">
-                    @(FuelType.Label(car.Engine.FuelType))
+                    @(FuelType.GetLabel(car.Engine.FuelType))
                 </Template>
             </RadzenDataGridColumn>
 

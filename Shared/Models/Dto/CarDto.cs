@@ -268,96 +268,96 @@ public class Transmission
     public ReductionRatio ReductionRatio { get; set; } = new ReductionRatio();
 }
 
-/// <summary>
-/// ボディタイプ
-/// </summary>
-public class BodyType
-{
-    private const string SEDAN = "SEDAN";
-    public const string HATCHBACK = "HATCHBACK";
-    public const string CROSS_COUNTRY = "CROSS_COUNTRY";
-    public const string K = "K";
-    public const string COUPE = "COUPE";
-    public const string STATION_WAGON = "STATION_WAGON";
-    public const string SUV = "SUV";
-    public const string ONEBOX = "ONEBOX";
-    public const string K_OPEN = "K_OPEN";
-    public const string K_ONEBOX = "K_ONEBOX";
-    public const string OPEN = "OPEN";
-    public const string PICKUP_TRUCK = "PICKUP_TRUCK";
-}
+// /// <summary>
+// /// ボディタイプ
+// /// </summary>
+// public class BodyType
+// {
+//     private const string SEDAN = "SEDAN";
+//     public const string HATCHBACK = "HATCHBACK";
+//     public const string CROSS_COUNTRY = "CROSS_COUNTRY";
+//     public const string K = "K";
+//     public const string COUPE = "COUPE";
+//     public const string STATION_WAGON = "STATION_WAGON";
+//     public const string SUV = "SUV";
+//     public const string ONEBOX = "ONEBOX";
+//     public const string K_OPEN = "K_OPEN";
+//     public const string K_ONEBOX = "K_ONEBOX";
+//     public const string OPEN = "OPEN";
+//     public const string PICKUP_TRUCK = "PICKUP_TRUCK";
+// }
 
-/// <summary>
-/// パワートレイン
-/// </summary>
-public class PowerTrain
-{
-    public const string ICE = "ICE";
-    public const string StrHV = "StrHV";
-    public const string MldHV = "MldHV";
-    public const string SerHV = "SerHV";
-    public const string PHEV = "PHEV";
-    public const string BEV = "BEV";
-    public const string RexEV = "RexEV";
-    public const string FCEV = "FCEV";
-}
+// /// <summary>
+// /// パワートレイン
+// /// </summary>
+// public class PowerTrain
+// {
+//     public const string ICE = "ICE";
+//     public const string StrHV = "StrHV";
+//     public const string MldHV = "MldHV";
+//     public const string SerHV = "SerHV";
+//     public const string PHEV = "PHEV";
+//     public const string BEV = "BEV";
+//     public const string RexEV = "RexEV";
+//     public const string FCEV = "FCEV";
+// }
 
-/// <summary>
-/// 駆動方式
-/// </summary>
-public class DriveSystem
-{
-    public const string FF = "FF";
-    public const string FR = "FR";
-    public const string RR = "RR";
-    public const string MR = "MR";
-    public const string AWD = "AWD";
-}
+// /// <summary>
+// /// 駆動方式
+// /// </summary>
+// public class DriveSystem
+// {
+//     public const string FF = "FF";
+//     public const string FR = "FR";
+//     public const string RR = "RR";
+//     public const string MR = "MR";
+//     public const string AWD = "AWD";
+// }
 
-/// <summary>
-/// シリンダーレイアウト
-/// </summary>
-public class CylinderLayout
-{
-    public const string I = "I";
-    public const string V = "V";
-    public const string B = "B";
-    public const string W = "W";
-}
+// /// <summary>
+// /// シリンダーレイアウト
+// /// </summary>
+// public class CylinderLayout
+// {
+//     public const string I = "I";
+//     public const string V = "V";
+//     public const string B = "B";
+//     public const string W = "W";
+// }
 
-/// <summary>
-/// バルブ構造
-/// </summary>
-public class ValveSystem
-{
-    public const string SV = "SV";
-    public const string OHV = "OHV";
-    public const string SOHC = "SOHC";
-    public const string DOHC = "DOHC";
-}
+// /// <summary>
+// /// バルブ構造
+// /// </summary>
+// public class ValveSystem
+// {
+//     public const string SV = "SV";
+//     public const string OHV = "OHV";
+//     public const string SOHC = "SOHC";
+//     public const string DOHC = "DOHC";
+// }
 
-/// <summary>
-/// 使用燃料種類
-/// </summary>
-public class FuelType
-{
-    public const string DIESEL = "DIESEL";
-    public const string REGULAR = "REGULAR";
-    public const string PREMIUM = "PREMIUM";
-    public const string LPG = "LPG";
-    public const string BIO = "BIO";
-    public const string HYDROGEN = "HYDROGEN";
-}
+// /// <summary>
+// /// 使用燃料種類
+// /// </summary>
+// public class FuelType
+// {
+//     public const string DIESEL = "DIESEL";
+//     public const string REGULAR = "REGULAR";
+//     public const string PREMIUM = "PREMIUM";
+//     public const string LPG = "LPG";
+//     public const string BIO = "BIO";
+//     public const string HYDROGEN = "HYDROGEN";
+// }
 
-/// <summary>
-/// トランスミッション種類
-/// </summary>
-public class TransmissionType
-{
-    public const string AT = "AT";
-    public const string DCT = "DCT";
-    public const string AMT = "AMT";
-    public const string MT = "MT";
-    public const string CVT = "CVT";
-    public const string PG = "PG";
-}
+// /// <summary>
+// /// トランスミッション種類
+// /// </summary>
+// public class TransmissionType
+// {
+//     public const string AT = "AT";
+//     public const string DCT = "DCT";
+//     public const string AMT = "AMT";
+//     public const string MT = "MT";
+//     public const string CVT = "CVT";
+//     public const string PG = "PG";
+// }

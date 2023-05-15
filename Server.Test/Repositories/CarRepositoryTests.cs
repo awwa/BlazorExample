@@ -1913,7 +1913,7 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrWltc.Upper = 13.0f;
+        q.FcrWltc.Upper = 13;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -1928,7 +1928,7 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrWltc.Lower = 13.0f;
+        q.FcrWltc.Lower = 13;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -1943,8 +1943,8 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrWltc.Lower = 13.0f;
-        q.FcrWltc.Upper = 13.0f;
+        q.FcrWltc.Lower = 13;
+        q.FcrWltc.Upper = 13;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -1959,7 +1959,7 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrWltc.Lower = 13.1f;
+        q.FcrWltc.Lower = 14;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Empty(actual);
@@ -1973,7 +1973,7 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrJc08.Upper = 14.2f;
+        q.FcrJc08.Upper = 15;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -1988,7 +1988,7 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrJc08.Lower = 14.2f;
+        q.FcrJc08.Lower = 14;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2003,8 +2003,8 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrJc08.Lower = 14.2f;
-        q.FcrJc08.Upper = 14.2f;
+        q.FcrJc08.Lower = 14;
+        q.FcrJc08.Upper = 15;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2019,7 +2019,7 @@ public class CarRepositoryTests
         CarRepository repo = new CarRepository();
         // Act
         CarQuery q = new CarQuery(new[] { "マツダ" });
-        q.FcrJc08.Lower = 14.3f;
+        q.FcrJc08.Lower = 15;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Empty(actual);
@@ -2034,7 +2034,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcWltc.Upper = 259f;
+        q.MpcWltc.Upper = 259;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2050,7 +2050,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcWltc.Lower = 259f;
+        q.MpcWltc.Lower = 259;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2066,8 +2066,8 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcWltc.Lower = 259f;
-        q.MpcWltc.Upper = 259f;
+        q.MpcWltc.Lower = 259;
+        q.MpcWltc.Upper = 259;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2083,7 +2083,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcWltc.Lower = 260f;
+        q.MpcWltc.Lower = 260;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Empty(actual);
@@ -2099,7 +2099,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrWltc.Upper = 138f;
+        q.EcrWltc.Upper = 138;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2115,7 +2115,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrWltc.Lower = 138f;
+        q.EcrWltc.Lower = 138;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2131,8 +2131,8 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrWltc.Lower = 138f;
-        q.EcrWltc.Upper = 138f;
+        q.EcrWltc.Lower = 138;
+        q.EcrWltc.Upper = 138;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2148,7 +2148,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrWltc.Lower = 139f;
+        q.EcrWltc.Lower = 139;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Empty(actual);
@@ -2164,7 +2164,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrJc08.Upper = 135f;
+        q.EcrJc08.Upper = 135;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2180,7 +2180,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrJc08.Lower = 135f;
+        q.EcrJc08.Lower = 135;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2196,8 +2196,8 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrJc08.Lower = 135f;
-        q.EcrJc08.Upper = 135f;
+        q.EcrJc08.Lower = 135;
+        q.EcrJc08.Upper = 135;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2213,7 +2213,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.EcrJc08.Lower = 136f;
+        q.EcrJc08.Lower = 136;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Empty(actual);
@@ -2229,7 +2229,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcJc08.Upper = 274f;
+        q.MpcJc08.Upper = 274;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2245,7 +2245,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcJc08.Lower = 274f;
+        q.MpcJc08.Lower = 274;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2261,8 +2261,8 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcJc08.Lower = 274f;
-        q.MpcJc08.Upper = 274f;
+        q.MpcJc08.Lower = 274;
+        q.MpcJc08.Upper = 274;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Single(actual);
@@ -2278,7 +2278,7 @@ public class CarRepositoryTests
         await repo.PutAsync(hondaEFactory());
         // Act
         CarQuery q = new CarQuery(new[] { "ホンダ" });
-        q.MpcJc08.Lower = 275f;
+        q.MpcJc08.Lower = 275;
         var actual = await repo.QueryAsync(q);
         // Assert
         Assert.Empty(actual);
